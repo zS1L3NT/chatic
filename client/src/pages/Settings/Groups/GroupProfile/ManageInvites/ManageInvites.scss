@@ -1,0 +1,71 @@
+@import "../../../../../App.scss";
+
+.manage__invites {
+	padding: 0.5rem;
+	
+	&__properties {
+		height: 25px;
+		display: grid;
+		grid-template-columns: auto 80px 200px 35px;
+
+		p {
+			text-align: left;
+		}
+
+		p:nth-child(1) {
+			margin: auto 10px;
+		}
+
+		p:nth-child(2),
+		p:nth-child(3) {
+			margin: auto;
+		}
+
+		p:nth-child(4) {
+			margin-right: 10px;
+		}
+	}
+
+	&__create {
+		height: 25px;
+		display: grid;
+		margin-bottom: 1rem;
+		grid-template-columns: auto 80px 200px 35px;
+
+		& > :nth-child(1) {
+			margin: auto 10px;
+			width: 50%;
+		}
+
+		& > :nth-child(2),
+		& > :nth-child(3) {
+			width: 100%;
+			margin: auto;
+
+			input {
+				display: block;
+				margin: 0 auto;
+			}
+		}
+
+		& > :nth-child(4) {
+			margin-right: 10px;
+
+			border: none;
+			border-radius: 50%;
+			outline: none;
+			font-size: 17px;
+
+			transition: background-color 0.2s, color 0.2s;
+
+			&:hover:not(.disabled) {
+				color: white;
+				background-color: #19b819;
+			}
+		}
+	}
+
+	&__response {
+		margin: 0 10px 1.2rem;
+	}
+}

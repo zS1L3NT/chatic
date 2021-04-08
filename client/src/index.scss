@@ -1,0 +1,99 @@
+html {
+	overflow: hidden;
+}
+
+html::-webkit-scrollbar {
+	display: none;
+}
+
+body {
+	transition: background-image 2s ease;
+	background-image: url("./assets/images/lines.png");
+	background-size: cover;
+}
+
+* {
+	margin: 0;
+	padding: 0;
+	outline: none;
+	box-sizing: border-box;
+	font-family: sans-serif;
+}
+
+html,
+body,
+#root {
+	height: 100%;
+	width: 100%;
+}
+
+article {
+	transition: opacity 0.35s;
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	width: fit-content;
+	height: fit-content;
+
+	&.elipse {
+		text-align: left;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		overflow: hidden;
+	}
+}
+
+button:hover {
+	cursor: pointer;
+}
+
+.disabled {
+	cursor: not-allowed !important;
+}
+
+/* Width */
+*::-webkit-scrollbar {
+	width: 5px;
+}
+
+/* Track */
+*::-webkit-scrollbar-track {
+	background: #f1f1f1;
+}
+
+/* Handle */
+*::-webkit-scrollbar-thumb {
+	background: #6c84ff;
+	border-radius: 10px;
+}
+
+/* Handle on hover */
+*::-webkit-scrollbar-thumb:hover {
+	background: #3b5bfe;
+}
+
+@font-face {
+	font-family: Poppins-Thin;
+	src: url("./assets/fonts/Poppins-Thin.ttf");
+}
+
+@font-face {
+	font-family: Poppins-SemiBold;
+	src: url("./assets/fonts/Poppins-SemiBold.ttf");
+}
+
+@font-face {
+	font-family: Poppins-Regular;
+	src: url("./assets/fonts/Poppins-Regular.ttf");
+}
+
+@font-face {
+	font-family: BungeeOutline-Regular;
+	src: url("./assets/fonts/BungeeOutline-Regular.ttf");
+}

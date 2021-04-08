@@ -1,0 +1,20 @@
+@import "../../App.scss";
+
+#chat-page {
+	opacity: 0;
+	width: 100vw;
+	height: 100vh;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	.content {
+		width: 90%;
+		height: 90%;
+		background: #f4f3f9;
+
+		display: grid;
+		grid-template-areas: "chatlist chatcontent chatdetails";
+		grid-template-columns: minmax(280px, 1fr) 2fr 1fr;
+	}
+}

@@ -1,0 +1,85 @@
+@import "../../../App.scss";
+
+.sidebar {
+	height: 80vh;
+	background: linear-gradient(135deg, $themedark, $themelight);
+	border-top-left-radius: 25px;
+	border-bottom-left-radius: 25px;
+
+	&__icon {
+		height: 15%;
+		margin-bottom: 1rem;
+		display: flex;
+		align-items: center;
+
+		&__img {
+			height: 80%;
+			margin-left: 0.5rem;
+
+			border: 2px solid white;
+			border-radius: 50%;
+
+			&__skeleton {
+				height: 9vh;
+				width: 9vh !important;
+				margin-left: 0.5rem;
+
+				border-radius: 50% !important;
+			}
+		}
+	}
+
+	&__menu {
+		height: 10%;
+		display: flex;
+		align-items: center;
+
+		&__wrapper {
+			display: flex;
+			flex-direction: row;
+			margin-left: 1rem;
+
+			&__i {
+				height: fit-content;
+				margin: auto 0.5rem auto 0;
+
+				color: #ededf0;
+				transition: opacity 0.3s;
+				opacity: 0.5;
+			}
+
+			&__p {
+				height: 10%;
+				font-family: Poppins-Regular;
+
+				color: #ededf0;
+				transition: opacity 0.3s;
+				opacity: 0.5;
+			}
+		}
+
+		&:hover,
+		&.active {
+			cursor: pointer;
+
+			& .sidebar__menu__wrapper__p,
+			& .sidebar__menu__wrapper__i {
+				opacity: 1;
+			}
+		}
+
+		&::after {
+			content: "";
+			background: white;
+			margin-left: auto;
+			width: 0px;
+			height: 24px;
+
+			transition: width 0.3s;
+		}
+
+		&.active::after {
+			width: 3px;
+		}
+	}
+}

@@ -1,0 +1,57 @@
+@import "../../../App.scss";
+
+.chatlist {
+	grid-area: chatlist;
+	height: 88vh;
+	margin: auto 1rem;
+	display: grid;
+	grid-template-areas:
+		"header"
+		"usercards";
+	grid-template-rows: 3.5rem auto;
+
+	&__header {
+		position: relative;
+		border-radius: 25px;
+		margin-bottom: 0.5rem;
+		background: white;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+
+		&__title {
+			grid-area: header;
+			margin-left: 10%;
+			font-family: Poppins-SemiBold;
+			font-weight: 600;
+		}
+
+		&__icons {
+			margin-right: 10%;
+			height: 20px;
+			display: flex;
+			align-items: center;
+
+			.chatlist__header__icon {
+				margin: auto 4px;
+				cursor: pointer;
+
+				transition: font-size 0.2s ease, color 0.2s ease;
+
+				&:hover {
+					color: red;
+					font-size: 20px;
+				}
+			}
+		}
+	}
+
+	&__usercards {
+		grid-area: usercards;
+		overflow-y: scroll;
+		scrollbar-width: none;
+		background: white;
+		padding: 0.5rem;
+		border-radius: 25px;
+	}
+}

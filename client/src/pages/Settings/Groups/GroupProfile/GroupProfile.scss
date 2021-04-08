@@ -1,0 +1,54 @@
+@import "../../../../App.scss";
+
+.group_profile {
+	&__icon {
+		width: 125px;
+		height: 125px;
+		border-radius: 50%;
+		display: block;
+
+		&__skeleton {
+			width: 125px !important;
+			height: 125px !important;
+			border-radius: 50% !important;
+			display: block !important;
+		}
+		
+		&__button {
+			margin: 0.5rem 10px 1rem 10px;
+			padding: 0.5rem 1rem;
+			border: 0;
+			border-radius: 25px;
+			background: $themedark;
+		}
+	}
+
+	&__response {
+		margin: 1rem 10px 0;
+		color: lightgray;
+	}
+
+	.buttonspinner {
+		margin: 1rem 10px;
+	}
+
+	.manage {
+		font-family: Poppins-Regular;
+		margin: 10px;
+	}
+
+	.manage__users,
+	.manage__invites {
+		width: calc(100% - 20px);
+		border: 2px solid lightgray;
+		border-radius: 25px;
+	}
+
+	.manage__users {
+		margin: 10px 0 30px 10px;
+	}
+
+	.manage__invites {
+		margin: 10px 0 10px 10px;
+	}
+}

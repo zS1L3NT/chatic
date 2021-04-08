@@ -1,0 +1,31 @@
+{
+	"name": "Chatic: Simple. Safe. Fast.",
+	"short_name": "Chatic",
+	"description": "Chatic is a chat website built by zS1L3NT for safe communication via Google's Servers",
+	"icons": [
+		{
+			"src": "favicon.ico",
+			"sizes": "128x128",
+			"type": "image/x-icon"
+		}
+	],
+	"start_url": "/",
+	"scope": "/",
+	"display": "standalone",
+	"theme_color": "#5BD0A4",
+	"background_color": "#151019",
+	"shortcuts": [
+		{
+			"name": "Login to Chatic",
+			"short_name": "Login",
+			"description": "Login to start chatting!",
+			"url": "/login"			
+		},
+		{
+			"name": "Register an account on Chatic",
+			"short_name": "Register",
+			"description": "Register to start chatting!",
+			"url": "/register"
+		}
+	]
+}

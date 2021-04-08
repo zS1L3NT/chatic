@@ -1,0 +1,89 @@
+@import "../../App.scss";
+
+.input {
+	background: #fff;
+	width: 100%;
+
+	@include media($desktop) {
+		padding: 25px 10px 0px 10px;
+	}
+
+	@include media($mobile...) {
+		padding: 15px 10px 0px 10px;
+	}
+
+	&__wrapper {
+		height: 40px;
+		width: 100%;
+		position: relative;
+
+		&__input {
+			width: 100%;
+			height: 100%;
+			border: none;
+			font-size: 17px;
+			border-bottom: 2px solid silver;
+
+			&:focus,
+			&.active {
+				& ~ label {
+					@include media($desktop) {
+						transform: translateY(-30px);
+					}
+
+					@include media($mobile...) {
+						transform: translateY(-20px);
+					}
+					font-size: 15px;
+					color: $hovertext;
+				}
+
+				& ~ .underline:before {
+					transform: scaleX(1);
+				}
+			}
+
+			&__eye {
+				position: absolute;
+				bottom: 12px;
+				right: 10px;
+
+				&:hover {
+					cursor: pointer;
+				}
+
+				&.fa-eye {
+					padding-right: 1px;
+				}
+			}
+		}
+
+		&__label {
+			position: absolute;
+			bottom: 10px;
+			left: 0;
+			color: grey;
+			pointer-events: none;
+			transition: all 0.3s ease;
+			font-family: Poppins-SemiBold;
+		}
+
+		&__underline {
+			position: absolute;
+			height: 2px;
+			width: 100%;
+			bottom: 0;
+
+			&:before {
+				position: absolute;
+				content: "";
+				height: 100%;
+				width: 100%;
+				background: $hovertext;
+				transform: scaleX(0);
+				transform-origin: center;
+				transition: transform 0.3s ease;
+			}
+		}
+	}
+}

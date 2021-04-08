@@ -1,0 +1,182 @@
+@import "../../App";
+
+.navigator {
+	z-index: 2;
+	position: relative;
+
+	&__button {
+		position: absolute;
+		top: 35px;
+		right: 35px;
+		z-index: 3;
+
+		transition: all 0.5s ease-out;
+		cursor: pointer;
+
+		&__line {
+			width: 28px;
+			height: 3px;
+			margin: 0 0 7px 0;
+
+			background: #eece1a;
+			transition: all 0.5s ease-out;
+		}
+
+		// Rotate Into X With Menu Lines
+		&.close {
+			transform: rotate(180deg);
+
+			& > .navigator__button__line {
+				margin: 0 0 5.1px 0;
+
+				&:nth-child(1) {
+					transform: rotate(45deg) translate(5.5px, 5px);
+				}
+
+				&:nth-child(2) {
+					opacity: 0;
+				}
+
+				&:nth-child(3) {
+					transform: rotate(-45deg) translate(6px, -6px);
+				}
+			}
+		}
+
+		&:hover :not(.close) {
+			transform: scale(1.2);
+		}
+	}
+
+	&__menu {
+		position: fixed;
+		top: 0;
+
+		width: 100%;
+		opacity: 0.9;
+		visibility: hidden;
+
+		&.show {
+			visibility: visible;
+		}
+
+		&__branding,
+		&__nav {
+			float: left;
+			width: 50%;
+			height: 100vh;
+			overflow: hidden;
+
+			display: flex;
+			flex-flow: column wrap;
+			align-items: center;
+			justify-content: center;
+
+			@include media("<tablet") {
+				float: none;
+				width: 100%;
+				min-height: 0;
+
+				&.show {
+					transform: translate3d(0, 0, 0);
+				}
+			}
+		}
+
+		&__branding {
+			transform: translate3d(0, 100%, 0);
+			transition: all 0.5s ease-out;
+
+			background: #444;
+
+			&.show {
+				// Slide in from bottom
+				transform: translate3d(0, 0, 0);
+			}
+
+			&__portrait {
+				width: 250px;
+				height: 250px;
+
+				border-radius: 50%;
+				border: solid 3px #eece1a;
+
+				@include media("<tablet") {
+					width: 150px;
+					height: 150px;
+				}
+			}
+
+			@include media("<tablet") {
+				height: 25vh;
+				transform: translate3d(100%, 0, 0);
+			}
+		}
+
+		&__nav {
+			margin: 0;
+			padding: 0;
+
+			transform: translate3d(0, -100%, 0);
+			transition: all 0.5s ease-out;
+
+			list-style: none;
+			background: darken(#444, 5);
+
+			&.show {
+				// Slide in from top
+				transform: translate3d(0, 0, 0);
+			}
+
+			@include media("<tablet") {
+				font-size: 24px;
+				height: 75vh;
+
+				transform: translate3d(-100%, 0, 0);
+			}
+
+			&__item {
+				transform: translate3d(600px, 0, 0);
+				transition: all 0.5s ease-out;
+
+				&.show {
+					// Slide in from right
+					transform: translate3d(0, 0, 0);
+				}
+
+				&.current > button {
+					color: #eece1a;
+				}
+			}
+
+			&__link {
+				display: inline-block;
+				position: relative;
+
+				padding: 1rem 0;
+
+				font-size: 30px;
+				font-weight: 300;
+				font-family: "Segoe UI", Tahoma;
+				text-transform: uppercase;
+				text-decoration: none;
+				line-height: 45px;
+
+				color: white;
+				background: none;
+				border: none;
+				transition: all 0.5s ease-out;
+
+				&:hover {
+					color: #eece1a;
+					cursor: pointer;
+					transform: scale(1.1);
+				}
+
+				&:focus {
+					outline: none;
+				}
+			}
+		}
+	}
+}

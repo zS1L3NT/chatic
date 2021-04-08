@@ -1,0 +1,36 @@
+@import "../../../App.scss";
+
+.security {
+	grid-area: content;
+	overflow-y: scroll;
+	scrollbar-width: none;
+	padding: 3rem;
+
+	&__img {
+		width: 150px;
+		height: 150px;
+		display: block;
+		border-radius: 50%;
+
+		&__skeleton {
+			width: 150px !important;
+			height: 150px !important;
+			display: block !important;
+			border-radius: 50% !important;
+		}
+	}
+
+	&__socialreset {
+		margin: 1rem 10px 1rem;
+		font-size: 13.3333px;
+	}
+
+	&__response {
+		margin: 1rem 10px 0;
+		color: lightgray;
+	}
+
+	.buttonspinner {
+		margin: 1rem 10px;
+	}
+}
