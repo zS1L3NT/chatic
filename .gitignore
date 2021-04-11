@@ -1,0 +1,6 @@
+/node_modules
+/.metadata/
+.rest
+.editorconfig
+.prettierrc
+/config

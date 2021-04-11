@@ -1,0 +1,333 @@
+/* Floating labels */
+
+@keyframes spinLoader {
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+@keyframes moveLeft {
+	from {
+		transform: translateX(100%);
+	}
+	to {
+		transform: translateX(0%);
+	}
+}
+
+@keyframes moveRight {
+	from {
+		transform: translateX(0%);
+	}
+	to {
+		transform: translateX(100%);
+	}
+}
+
+:root {
+	--input-padding-x: 0.75rem;
+	--input-padding-y: 0.75rem;
+}
+
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { width: 5px; background: #f5f5f5; }
+::-webkit-scrollbar-thumb { width: 1em; background-color: #ddd; outline: 1px solid slategrey; border-radius: 1rem; }
+
+html {
+	scroll-behavior: smooth;
+}
+
+body {
+	background-color: #74ebd5;
+	background-image: linear-gradient(90deg, #74ebd5 0%, #9face6 100%);
+	overflow-y: scroll;
+}
+
+p {
+	font-size: 17px;
+}
+
+.sidebtn {
+	background: none;
+	border: none;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	text-decoration: none !important;
+	padding: 8px;
+	color: rgb(0, 0, 0, 0.7);
+}
+
+.sidebtn:hover {
+	color: rgb(0, 0, 0, 0.7);
+}
+
+.sidebtn:focus {
+	outline: none;
+}
+
+#aboutPage,
+#loginPage,
+#registerPage,
+#accountPage {
+	overflow: hidden;
+}
+
+#aboutPage {
+	padding-bottom: 200px;
+}
+
+.typewrite>.wrap {
+	border-right: 0.08em solid #fff
+}
+
+.btntoa {
+	background: none;
+	border: 0;
+	outline: 0;
+	color: #007bff;
+	box-shadow: none;
+}
+
+.btntoa:hover {
+	color: #0156b3;
+	text-decoration: underline;
+}
+
+.btntoa:focus {
+	outline: 0;
+}
+
+.fullBtn {
+	width: 100%;
+	text-align: left;
+}
+
+.chat-box {
+    height: calc(100% - 55px);
+	overflow-y: scroll;
+	overflow-x: hidden;
+}
+
+.messages-box {
+    height: calc(100% - 55px);
+    overflow-y: scroll;
+}
+
+input::placeholder {
+    font-size: 0.9rem;
+    color: #999;
+}
+
+main#howPageMain {
+	overflow-y: scroll;
+}
+
+main#howPageMain::-webkit-scrollbar {
+	display: none;
+}
+
+/* ########## DEFAULTS ########## */
+/* ######## Do not edit! ######## */
+
+@font-face {
+    font-family: "Handlee";
+    font-style: normal;
+    src: url("./fonts/handlee-v8-latin-regular.eot");
+    src: local("Handlee Regular"), local("Handlee-Regular"),
+        url("./fonts/handlee-v8-latin-regular.eot?#iefix")
+            format("embedded-opentype"),
+        url("./fonts/handlee-v8-latin-regular.woff2") format("woff2"),
+        url("./fonts/handlee-v8-latin-regular.woff") format("woff"),
+        url("./fonts/handlee-v8-latin-regular.ttf") format("truetype"),
+        url("./fonts/handlee-v8-latin-regular.svg#Handlee") format("svg");
+}
+
+body {
+    font-family: "Handlee", cursive !important;
+}
+
+.br-50 {
+	border-radius: 50% !important;
+}
+
+.br-25 {
+	border-radius: 25px !important;
+}
+
+.bgcol-lg {
+	background-color: lightgray !important;
+}
+
+.color-lg {
+	color: lightgray !important
+}
+
+.mw-100 {
+	max-width: 100%;
+}
+
+.mh-100 {
+	max-height: 100%;
+}
+
+.mw-50 {
+	max-width: 50px;
+}
+
+.mh-50 {
+	max-height: 50px;
+}
+
+.mw-40 {
+	max-width: 40px;
+}
+
+.mh-40 {
+	max-height: 40px;
+}
+
+.form-signin {
+	width: 100%;
+	max-width: 420px;
+	padding: 15px;
+	margin: 0 auto;
+}
+
+.form-label-group {
+	position: relative;
+	margin-bottom: 1rem;
+}
+
+.form-label-group>input, .form-label-group>label {
+	padding: var(--input-padding-y) var(--input-padding-x);
+}
+
+.form-label-group>label {
+	position: absolute;
+	top: 0;
+	left: 0;
+	display: block;
+	width: 100%;
+	margin-bottom: 0;
+	line-height: 1.5;
+	color: #495057;
+	border: 1px solid transparent;
+	border-radius: 0.25rem;
+	transition: all 0.1s ease-in-out;
+}
+
+.form-label-group input::-webkit-input-placeholder {
+	color: transparent;
+}
+
+.form-label-group input:-ms-input-placeholder {
+	color: transparent;
+}
+
+.form-label-group input::-ms-input-placeholder {
+	color: transparent;
+}
+
+.form-label-group input::-moz-placeholder {
+	color: transparent;
+}
+
+.form-label-group input::placeholder {
+	color: transparent;
+}
+
+.form-label-group input:not(:placeholder-shown) {
+	padding-top: calc( var(--input-padding-y) + var(--input-padding-y) * (2 / 3));
+	padding-bottom: calc(var(--input-padding-y) / 3);
+}
+
+.form-label-group input:not(:placeholder-shown)~label {
+	padding-top: calc(var(--input-padding-y) / 3);
+	padding-bottom: calc(var(--input-padding-y) / 3);
+	font-size: 12px;
+	color: #777;
+}
+
+.item-enter {
+	opacity: 0;
+}
+
+.item-enter-active {
+	opacity: 1;
+	transition: opacity 500ms ease-in;
+}
+
+.item-exit {
+	opacity: 1;
+}
+
+.item-exit-active {
+	opacity: 0;
+	transition: opacity 500ms ease-in;
+}
+
+.msg-enter {
+	opacity: 0;
+}
+
+.msg-enter-active {
+	opacity: 1;
+	transition: opacity 500ms ease-in;
+}
+
+.msg-exit {
+	opacity: 1;
+}
+
+.msg-exit-active {
+	opacity: 0;
+	transition: opacity 0s ease-in;
+}
+
+.cl-item {
+	padding: 20px 0;
+	border-top: 1px solid #eeeeee;
+}
+
+.cl-content {
+	display: inline-block;
+}
+
+.cl-title {
+	font-size: 28px;
+	font-weight: 600;
+	line-height: 28px;
+}
+
+.cl-type {
+	display: inline-block;
+	color: white;
+	border-radius: 30px;
+	padding: 4px 15px 4px 15px;
+	margin-top: 12px;
+	margin-bottom: 12px;
+	font-size: 15px;
+	font-weight: bold;
+}
+
+.cl-fix {
+	background-color: #1c9bdd;
+}
+
+.cl-new {
+	background-color: #2cb967;
+}
+
+.cl-change {
+	background-color: #ffb400;
+}
+
+.cl-body {
+	font-size: 18px;
+	font-weight: 300;
+	line-height: 26px;
+}

@@ -1,0 +1,33 @@
+{
+	"name": "chatbubble",
+	"version": "1.0.0",
+	"description": "ChatBubble",
+	"main": "server",
+	"dependencies": {
+		"bcryptjs": "^2.4.3",
+		"cloudinary": "^1.21.0",
+		"colors": "^1.4.0",
+		"config": "^3.3.1",
+		"express": "^4.17.1",
+		"jsonwebtoken": "^8.5.1",
+		"mongodb": "^3.5.7",
+		"nodemailer": "^6.4.6",
+		"socket.io": "^2.3.0"
+	},
+	"devDependencies": {
+		"concurrently": "^5.2.0",
+		"nodemon": "^2.0.3"
+	},
+	"scripts": {
+		"start": "node server",
+		"server": "nodemon server",
+		"client": "npm start --prefix client",
+		"dev": "concurrently \"npm run server\" \"npm start --prefix client\"",
+		"heroku-postbuild": "NPM_CONFIG_PRODUCTION=false cd client && yarn && yarn build"
+	},
+	"author": "zS1L3NT",
+	"license": "ISC",
+	"publishConfig": {
+		"registry": "https://npm.pkg.github.com/"
+	}
+}
