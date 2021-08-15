@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="AppTheme" parent="Theme.Chatic">
+        <item name="android:statusBarColor">?attr/statusBarBackground</item>
+    </style>
+
+    <style name="ErrorTheme" parent="Theme.Chatic">
+        <item name="android:statusBarColor">@color/red</item>
+        <item name="colorPrimary">@color/red</item>
+    </style>
+
+    <style name="SplashActivity" parent="Theme.Chatic">
+        <item name="android:windowBackground">@drawable/splash_screen</item>
+        <item name="android:statusBarColor">?attr/statusBarBackground</item>
+    </style>
+
+</resources>

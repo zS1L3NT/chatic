@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "981652700447",
+    "project_id": "android-chatic",
+    "storage_bucket": "android-chatic.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:981652700447:android:b82cbfd92a7d024208c42a",
+        "android_client_info": {
+          "package_name": "com.zectan.chatic"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "981652700447-hou6icdqt38eahb4hgehnvf8tog81k7r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDSFlyioXGA8ZQP22sWT7D1GjzLssg6g5U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "981652700447-hou6icdqt38eahb4hgehnvf8tog81k7r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
