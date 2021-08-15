@@ -10,9 +10,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".activities.AuthActivity"
+            android:exported="true" />
+        <activity
             android:name=".activities.ErrorActivity"
-            android:exported="true"
-            android:theme="@style/ErrorTheme" />
+            android:exported="true" />
         <activity
             android:name=".MainActivity"
             android:exported="true"

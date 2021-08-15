@@ -17,7 +17,7 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@+id/toolbar" />
             <PropertySet android:alpha="0" />
         </Constraint>
         <Constraint android:id="@+id/message_text">
@@ -49,7 +49,7 @@
                 android:layout_marginTop="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@+id/toolbar" />
             <Transform android:rotation="270" />
         </Constraint>
         <Constraint android:id="@+id/error_text">

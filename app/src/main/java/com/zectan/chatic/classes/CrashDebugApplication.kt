@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.zectan.chatic.activities.ErrorActivity
+import com.zectan.chatic.models.User
 
 open class CrashDebugApplication : AppCompatActivity() {
     private val mAuth: FirebaseAuth = FirebaseAuth.getInstance()

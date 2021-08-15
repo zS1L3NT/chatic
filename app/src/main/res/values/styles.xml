@@ -2,12 +2,12 @@
 <resources>
 
     <style name="AppTheme" parent="Theme.Chatic">
+        <item name="android:textViewStyle">@style/textViewStyle</item>
         <item name="android:statusBarColor">?attr/statusBarBackground</item>
     </style>
 
-    <style name="ErrorTheme" parent="Theme.Chatic">
-        <item name="android:statusBarColor">@color/red</item>
-        <item name="colorPrimary">@color/red</item>
+    <style name="textViewStyle" parent="">
+        <item name="android:textColor">?attr/colorOnBackground</item>
     </style>
 
     <style name="SplashActivity" parent="Theme.Chatic">

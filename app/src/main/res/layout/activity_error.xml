@@ -9,6 +9,15 @@
     tools:context=".activities.ErrorActivity"
     tools:ignore="HardcodedText">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/red"
+        app:layout_constraintTop_toTopOf="parent"
+        app:title="@string/app_name"
+        app:titleTextColor="@color/white" />
+
     <TextView
         android:id="@+id/title_text"
         android:layout_width="wrap_content"
@@ -36,7 +45,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@id/title_text"
         app:layout_constraintStart_toStartOf="@id/title_text"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
     <ImageView
         android:id="@+id/reload_image"
@@ -91,6 +100,5 @@
             android:textSize="12sp" />
 
     </ScrollView>
-
 
 </androidx.constraintlayout.motion.widget.MotionLayout>
