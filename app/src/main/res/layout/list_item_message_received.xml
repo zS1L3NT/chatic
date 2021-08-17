@@ -6,7 +6,6 @@
     android:minHeight="40dp">
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/cardView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
@@ -22,6 +21,7 @@
             android:layout_height="match_parent"
             android:maxWidth="250dp"
             android:paddingStart="8dp"
+            android:paddingTop="4dp"
             android:paddingEnd="8dp"
             android:paddingBottom="4dp">
 
@@ -30,24 +30,60 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="2dp"
-                android:layout_marginTop="4dp"
                 android:maxWidth="234dp"
                 android:text="Username"
-                android:textSize="14sp"
+                android:textSize="15sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <LinearLayout
+                android:id="@+id/reply_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/background_reply_layout"
+                android:orientation="vertical"
+                android:padding="5dp"
+                android:paddingStart="8dp"
+                android:paddingTop="4dp"
+                android:paddingEnd="8dp"
+                android:paddingBottom="8dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/username_text">
+
+                <TextView
+                    android:id="@+id/reply_username_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="2dp"
+                    android:maxWidth="218dp"
+                    android:text="Reply Username"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/reply_content_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="2dp"
+                    android:maxWidth="218dp"
+                    android:maxLines="10"
+                    android:text="Reply Message Content when it becomes very long"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/media_image_wrapper"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="8dp"
                 app:cardCornerRadius="10dp"
                 app:layout_constraintBottom_toTopOf="@id/content_text"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/username_text">
+                app:layout_constraintTop_toBottomOf="@id/reply_layout">
 
                 <ImageView
                     android:id="@+id/media_image"
@@ -62,11 +98,11 @@
                 android:id="@+id/content_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="4dp"
+                android:layout_marginTop="4dp"
                 android:maxWidth="234dp"
                 android:maxLines="20"
                 android:minWidth="30dp"
-                android:text="Message Content"
+                android:text="Message Content when it becomes very long"
                 android:textSize="15sp"
                 app:layout_constraintBottom_toTopOf="@id/time_text"
                 app:layout_constraintStart_toStartOf="parent"

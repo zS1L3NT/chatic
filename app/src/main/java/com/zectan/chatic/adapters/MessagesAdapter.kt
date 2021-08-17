@@ -50,10 +50,10 @@ class MessagesAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         when (holder.itemViewType) {
             SENT -> {
-                (holder as MessageSentViewHolder).bind(message, mUsers, mStatuses)
+                (holder as MessageSentViewHolder).bind(message, mUsers, mStatuses, mMessages)
             }
             RECEIVED -> {
-                (holder as MessageReceivedViewHolder).bind(message, mUsers)
+                (holder as MessageReceivedViewHolder).bind(message, mUsers, mMessages)
             }
         }
     }
@@ -109,11 +109,37 @@ class MessageReceivedViewHolder(itemView: View) : RecyclerView.ViewHolder(itemVi
 
     fun bind(
         message: Message,
-        users: List<User>
+        users: List<User>,
+        messages: List<Message>
     ) {
-        binding.timeText.text = Date.getTime(message.date)
-        binding.contentText.text = message.content
+        // Username
+        val user = users
+            .filter { it.id == message.userId }
+            .getOrNull(0)
+        binding.usernameText.text = user?.username ?: ""
 
+        // Reply
+        if (message.replyId != null) {
+            binding.replyLayout.visibility = View.VISIBLE
+            val replyMessage = messages
+                .filter { it.id == message.replyId }
+                .getOrNull(0)
+
+            if (replyMessage != null) {
+                // Reply Username
+                val replyUser = users
+                    .filter { it.id == replyMessage.userId }
+                    .getOrNull(0)
+                binding.replyUsernameText.text = replyUser?.username ?: ""
+
+                // Reply Content
+                binding.replyContentText.text = replyMessage.content
+            }
+        } else {
+            binding.replyLayout.visibility = View.GONE
+        }
+
+        // Media
         if (message.media != null) {
             binding.mediaImageWrapper.visibility = View.VISIBLE
             // TODO Glide error & placeholder
@@ -127,10 +153,11 @@ class MessageReceivedViewHolder(itemView: View) : RecyclerView.ViewHolder(itemVi
             binding.mediaImageWrapper.visibility = View.GONE
         }
 
-        val user = users
-            .filter { it.id == message.userId }
-            .getOrNull(0)
-        binding.usernameText.text = user?.username ?: ""
+        // Message content
+        binding.contentText.text = message.content
+
+        // Date
+        binding.timeText.text = Date.getTime(message.date)
     }
 
 }
@@ -142,11 +169,31 @@ class MessageSentViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) 
     fun bind(
         message: Message,
         users: List<User>,
-        statuses: List<Status>
+        statuses: List<Status>,
+        messages: List<Message>
     ) {
-        binding.timeText.text = Date.getTime(message.date)
-        binding.contentText.text = message.content
+        // Reply
+        if (message.replyId != null) {
+            binding.replyLayout.visibility = View.VISIBLE
+            val replyMessage = messages
+                .filter { it.id == message.replyId }
+                .getOrNull(0)
 
+            if (replyMessage != null) {
+                // Reply Username
+                val replyUser = users
+                    .filter { it.id == replyMessage.userId }
+                    .getOrNull(0)
+                binding.replyUsernameText.text = replyUser?.username ?: ""
+
+                // Reply Content
+                binding.replyContentText.text = replyMessage.content
+            }
+        } else {
+            binding.replyLayout.visibility = View.GONE
+        }
+
+        // Media
         if (message.media != null) {
             binding.mediaImageWrapper.visibility = View.VISIBLE
             // TODO Glide error & placeholder
@@ -160,6 +207,13 @@ class MessageSentViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) 
             binding.mediaImageWrapper.visibility = View.GONE
         }
 
+        // Message Content
+        binding.contentText.text = message.content
+
+        // Date
+        binding.timeText.text = Date.getTime(message.date)
+
+        // Status
         val status = statuses
             .filter { it.messageId == message.id }
             .map { it.state }
