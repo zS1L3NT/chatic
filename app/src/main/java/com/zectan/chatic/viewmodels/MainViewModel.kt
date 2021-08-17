@@ -1,6 +1,7 @@
 package com.zectan.chatic.viewmodels
 
 import android.util.Log
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
@@ -117,5 +118,38 @@ class MainViewModel : ViewModel() {
                         myPresences.postValue(snaps!!.toObjects(Presence::class.java))
                     }
             }
+    }
+
+    fun watchMessagesFromChat(
+        owner: LifecycleOwner,
+        chatId: String,
+        callback: (messages: List<Message>) -> Unit
+    ) {
+        return myMessages.observe(owner, {
+            callback(it.filter { message -> message.chatId == chatId })
+        })
+    }
+
+    fun watchUsersFromChat(
+        owner: LifecycleOwner,
+        chatId: String,
+        callback: (users: List<User>) -> Unit
+    ) {
+        return myUsers.observe(owner, {
+            val chat = myChats.value.filter { chat -> chat.id == chatId }.getOrNull(0)
+            if (chat != null) {
+                callback(it.filter { user -> chat.users.contains(user.id) })
+            }
+        })
+    }
+
+    fun watchStatusesFromChat(
+        owner: LifecycleOwner,
+        chatId: String,
+        callback: (messages: List<Status>) -> Unit
+    ) {
+        return myStatuses.observe(owner, {
+            callback(it.filter { status -> status.chatId == chatId })
+        })
     }
 }

@@ -4,6 +4,7 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Codes/android-chatic/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.26614583333333336" />
+        <entry key="..\:/Codes/android-chatic/app/src/main/res/drawable/background_unread.xml" value="0.1680921052631579" />
         <entry key="..\:/Codes/android-chatic/app/src/main/res/drawable/ic_back.xml" value="0.26614583333333336" />
         <entry key="..\:/Codes/android-chatic/app/src/main/res/drawable/ic_launcher_background.xml" value="0.26614583333333336" />
         <entry key="..\:/Codes/android-chatic/app/src/main/res/drawable/ic_refresh.xml" value="0.26614583333333336" />
@@ -15,6 +16,14 @@
         <entry key="..\:/Codes/android-chatic/app/src/main/res/layout/activity_error.xml" value="0.176" />
         <entry key="..\:/Codes/android-chatic/app/src/main/res/layout/activity_login.xml" value="0.25" />
         <entry key="..\:/Codes/android-chatic/app/src/main/res/layout/activity_main.xml" value="0.152" />
+        <entry key="..\:/Codes/android-chatic/app/src/main/res/layout/chats_fragment.xml" value="0.15789473684210525" />
+        <entry key="..\:/Codes/android-chatic/app/src/main/res/layout/fragment_chat_view.xml" value="0.15789473684210525" />
+        <entry key="..\:/Codes/android-chatic/app/src/main/res/layout/fragment_chats.xml" value="0.152" />
+        <entry key="..\:/Codes/android-chatic/app/src/main/res/layout/list_item_chat.xml" value="0.2" />
+        <entry key="..\:/Codes/android-chatic/app/src/main/res/layout/list_item_message_received.xml" value="0.72" />
+        <entry key="..\:/Codes/android-chatic/app/src/main/res/layout/list_item_message_receiver.xml" value="0.15789473684210525" />
+        <entry key="..\:/Codes/android-chatic/app/src/main/res/layout/list_item_message_sent.xml" value="0.6" />
+        <entry key="..\:/Codes/android-chatic/app/src/main/res/menu/chats_toolbar_menu.xml" value="0.264" />
         <entry key="..\:/Codes/android-chatic/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1680921052631579" />
         <entry key="..\:/Codes/android-chatic/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.1680921052631579" />
       </map>

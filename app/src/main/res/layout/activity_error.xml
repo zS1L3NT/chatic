@@ -6,8 +6,7 @@
     android:layout_height="match_parent"
     android:background="?attr/backgroundColor"
     app:layoutDescription="@xml/activity_error_scene"
-    tools:context=".activities.ErrorActivity"
-    tools:ignore="HardcodedText">
+    tools:context=".activities.ErrorActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"

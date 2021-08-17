@@ -40,10 +40,10 @@ class ErrorActivity : AppCompatActivity() {
             binding.stackText.text = Html.fromHtml(
                 stack
                     .stream()
-                    .map { line ->
+                    .map {
                         // Use Regex to print the stack with HTML
                         val pattern: Pattern = Pattern.compile("(.*)\\((.*)\\)")
-                        val matcher: Matcher = pattern.matcher(line)
+                        val matcher: Matcher = pattern.matcher(it)
                         if (matcher.find()) {
                             // If the line matches the Regex
                             val path: String = matcher.group(1) ?: ""
@@ -54,7 +54,7 @@ class ErrorActivity : AppCompatActivity() {
                                 file
                             )
                         } else {
-                            return@map line
+                            return@map it
                         }
                     }
                     .collect(Collectors.joining("<br /><br />")),

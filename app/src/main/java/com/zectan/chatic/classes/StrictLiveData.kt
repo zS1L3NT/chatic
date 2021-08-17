@@ -2,7 +2,7 @@ package com.zectan.chatic.classes
 
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
-
+import androidx.lifecycle.Observer
 
 /**
  * Strict Live Data is an extension of MutableLiveData with @NotNull @NonNull annotations.
@@ -15,7 +15,7 @@ class StrictLiveData<T>(value: T) : MutableLiveData<T>(value) {
         super.postValue(value)
     }
 
-    fun observe(owner: LifecycleOwner, observer: Observer<in T>) {
+    override fun observe(owner: LifecycleOwner, observer: Observer<in T>) {
         super.observe(owner, observer)
     }
 
@@ -25,9 +25,5 @@ class StrictLiveData<T>(value: T) : MutableLiveData<T>(value) {
 
     override fun setValue(value: T) {
         super.setValue(value)
-    }
-
-    interface Observer<T> : androidx.lifecycle.Observer<T> {
-        override fun onChanged(t: T)
     }
 }
