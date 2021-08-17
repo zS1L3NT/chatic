@@ -9,8 +9,8 @@ data class Chat(
     val type: Int
 ) {
     companion object {
-        val DIRECT = 0
-        val GROUP = 1
+        const val DIRECT = 0
+        const val GROUP = 1
     }
 
     constructor() : this("", null, ArrayList(), null, null, -1)
@@ -18,11 +18,11 @@ data class Chat(
     override fun equals(other: Any?): Boolean {
         return when (other) {
             is Chat -> this.id == other.id &&
-                    this.admins == other.admins &&
-                    this.users == other.users &&
-                    this.photo == other.photo &&
-                    this.name == other.name &&
-                    this.type == other.type
+                this.admins == other.admins &&
+                this.users == other.users &&
+                this.photo == other.photo &&
+                this.name == other.name &&
+                this.type == other.type
             else -> false
         }
     }

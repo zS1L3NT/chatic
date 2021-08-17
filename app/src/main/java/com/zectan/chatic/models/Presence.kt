@@ -4,6 +4,7 @@ data class Presence(
     val id: String,
     val userId: String,
     val deviceId: String,
+    @field: JvmField
     var isOnline: Boolean,
     var typingTo: String?,
     var lastSeen: Long

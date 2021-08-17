@@ -1,12 +1,15 @@
 package com.zectan.chatic
 
 import android.os.Bundle
+import android.util.DisplayMetrics
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.recyclerview.widget.LinearSmoothScroller
+import androidx.recyclerview.widget.RecyclerView
 import com.zectan.chatic.classes.CrashDebugApplication
 import com.zectan.chatic.databinding.ActivityMainBinding
 import com.zectan.chatic.viewmodels.MainViewModel
-import androidx.navigation.NavController
-import androidx.navigation.fragment.NavHostFragment
 
 
 class MainActivity : CrashDebugApplication() {
@@ -31,7 +34,7 @@ class MainActivity : CrashDebugApplication() {
         val provider = ViewModelProvider(this)
         mMainVM = provider.get(MainViewModel::class.java)
 
-        mMainVM.userId = "user-1"
+        mMainVM.userId = intent.extras!!.getString("userId")
 
         // NavHostFragment
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment

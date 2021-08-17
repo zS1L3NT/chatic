@@ -12,10 +12,10 @@ data class Status(
     override fun equals(other: Any?): Boolean {
         return when (other) {
             is Status -> this.id == other.id &&
-                    this.userId == other.userId &&
-                    this.messageId == other.messageId &&
-                    this.chatId == other.chatId &&
-                    this.state == other.state
+                this.userId == other.userId &&
+                this.messageId == other.messageId &&
+                this.chatId == other.chatId &&
+                this.state == other.state
             else -> false
         }
     }

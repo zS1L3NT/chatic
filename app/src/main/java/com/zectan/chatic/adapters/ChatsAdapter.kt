@@ -13,9 +13,9 @@ import com.zectan.chatic.models.Chat
 import com.zectan.chatic.models.Message
 import com.zectan.chatic.models.Status
 import com.zectan.chatic.models.User
-import kotlin.reflect.KFunction1
 
-class ChatsAdapter(private val callback: (chat: Chat) -> Unit) : RecyclerView.Adapter<ChatViewHolder>() {
+class ChatsAdapter(private val callback: (chat: Chat) -> Unit) :
+    RecyclerView.Adapter<ChatViewHolder>() {
     private var myUser: User = User()
     private var mChats: List<Chat> = ArrayList()
     private var mUsers: List<User> = ArrayList()
@@ -85,7 +85,8 @@ class ChatsAdapter(private val callback: (chat: Chat) -> Unit) : RecyclerView.Ad
     }
 }
 
-class ChatViewHolder(itemView: View, private val callback: (chat: Chat) -> Unit) : RecyclerView.ViewHolder(itemView) {
+class ChatViewHolder(itemView: View, private val callback: (chat: Chat) -> Unit) :
+    RecyclerView.ViewHolder(itemView) {
     private val binding = ListItemChatBinding.bind(itemView)
     private val context = itemView.context
 
@@ -131,8 +132,8 @@ class ChatViewHolder(itemView: View, private val callback: (chat: Chat) -> Unit)
                 .centerCrop()
                 .into(binding.photoImage)
         } else {
-            val friendId = chat.users.filter { it != myUser.id }[0]
-            val friend = users.filter { it.id == friendId }.getOrNull(0) ?: User()
+            val friendId = chat.users.find { it != myUser.id }!!
+            val friend = users.find { it.id == friendId } ?: User()
 
             binding.titleText.text = friend.username
             // TODO Glide error & placeholder
@@ -177,10 +178,9 @@ class ChatsDiffCallback(
 
         var friendIsSame = true
         if (oldChat.type == Chat.DIRECT) {
-            val friendId = oldChat.users.filter { it != myUser.id }[0]
+            val friendId = oldChat.users.find { it != myUser.id }!!
             friendIsSame =
-                oldUsers.filter { it.id == friendId }.getOrNull(0) ==
-                    newUsers.filter { it.id == friendId }.getOrNull(0)
+                oldUsers.find { it.id == friendId } == newUsers.find { it.id == friendId }
         }
 
         return oldChat == newChat

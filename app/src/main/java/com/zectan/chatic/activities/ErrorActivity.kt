@@ -6,12 +6,13 @@ import android.os.Bundle
 import android.text.Html
 import androidx.appcompat.app.AppCompatActivity
 import com.zectan.chatic.R
+import com.zectan.chatic.classes.CrashDebugApplication
 import com.zectan.chatic.databinding.ActivityErrorBinding
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 import java.util.stream.Collectors
 
-class ErrorActivity : AppCompatActivity() {
+class ErrorActivity : CrashDebugApplication() {
     private lateinit var binding: ActivityErrorBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {

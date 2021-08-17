@@ -3,6 +3,7 @@ package com.zectan.chatic.viewmodels
 import android.util.Log
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
+import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
 import com.zectan.chatic.MainActivity
@@ -136,7 +137,7 @@ class MainViewModel : ViewModel() {
         callback: (users: List<User>) -> Unit
     ) {
         return myUsers.observe(owner, {
-            val chat = myChats.value.filter { chat -> chat.id == chatId }.getOrNull(0)
+            val chat = myChats.value.find { chat -> chat.id == chatId }
             if (chat != null) {
                 callback(it.filter { user -> chat.users.contains(user.id) })
             }
@@ -151,5 +152,13 @@ class MainViewModel : ViewModel() {
         return myStatuses.observe(owner, {
             callback(it.filter { status -> status.chatId == chatId })
         })
+    }
+
+    fun newMessageDocument(): DocumentReference {
+        return mDb.collection("messages").document()
+    }
+
+    fun newStatusDocument(): DocumentReference {
+        return mDb.collection("statuses").document()
     }
 }

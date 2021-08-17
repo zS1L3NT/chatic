@@ -14,12 +14,12 @@ data class Message(
     override fun equals(other: Any?): Boolean {
         return when (other) {
             is Message -> this.id == other.id &&
-                    this.content == other.content &&
-                    this.media == other.media &&
-                    this.date == other.date &&
-                    this.replyId == other.replyId &&
-                    this.userId == other.userId &&
-                    this.chatId == other.chatId
+                this.content == other.content &&
+                this.media == other.media &&
+                this.date == other.date &&
+                this.replyId == other.replyId &&
+                this.userId == other.userId &&
+                this.chatId == other.chatId
             else -> false
         }
     }

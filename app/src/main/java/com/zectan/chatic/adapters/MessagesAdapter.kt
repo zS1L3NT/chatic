@@ -10,14 +10,13 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.zectan.chatic.R
 import com.zectan.chatic.databinding.ListItemMessageReceivedBinding
 import com.zectan.chatic.databinding.ListItemMessageSentBinding
+import com.zectan.chatic.models.Chat
 import com.zectan.chatic.models.Message
 import com.zectan.chatic.models.Status
 import com.zectan.chatic.models.User
 import com.zectan.chatic.utils.Date
-import java.util.*
-import kotlin.collections.ArrayList
 
-class MessagesAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class MessagesAdapter(private val chatType: Int) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     companion object {
         private const val SENT = 0
         private const val RECEIVED = 1
@@ -37,7 +36,7 @@ class MessagesAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             }
             RECEIVED -> {
                 val itemView = inflater.inflate(R.layout.list_item_message_received, parent, false)
-                MessageReceivedViewHolder(itemView)
+                MessageReceivedViewHolder(itemView, chatType)
             }
             else -> {
                 throw RuntimeException("Unknown view type")
@@ -103,7 +102,7 @@ class MessagesAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 }
 
-class MessageReceivedViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+class MessageReceivedViewHolder(itemView: View, private val chatType: Int) : RecyclerView.ViewHolder(itemView) {
     private val binding = ListItemMessageReceivedBinding.bind(itemView)
     private val context = itemView.context
 
@@ -113,23 +112,23 @@ class MessageReceivedViewHolder(itemView: View) : RecyclerView.ViewHolder(itemVi
         messages: List<Message>
     ) {
         // Username
-        val user = users
-            .filter { it.id == message.userId }
-            .getOrNull(0)
-        binding.usernameText.text = user?.username ?: ""
+        when (chatType) {
+            Chat.DIRECT -> binding.usernameText.visibility = View.GONE
+            Chat.GROUP -> {
+                binding.usernameText.visibility = View.VISIBLE
+                val user = users.find { it.id == message.userId }
+                binding.usernameText.text = user?.username ?: ""
+            }
+        }
 
         // Reply
         if (message.replyId != null) {
             binding.replyLayout.visibility = View.VISIBLE
-            val replyMessage = messages
-                .filter { it.id == message.replyId }
-                .getOrNull(0)
+            val replyMessage = messages.find { it.id == message.replyId }
 
             if (replyMessage != null) {
                 // Reply Username
-                val replyUser = users
-                    .filter { it.id == replyMessage.userId }
-                    .getOrNull(0)
+                val replyUser = users.find { it.id == replyMessage.userId }
                 binding.replyUsernameText.text = replyUser?.username ?: ""
 
                 // Reply Content
@@ -175,15 +174,11 @@ class MessageSentViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) 
         // Reply
         if (message.replyId != null) {
             binding.replyLayout.visibility = View.VISIBLE
-            val replyMessage = messages
-                .filter { it.id == message.replyId }
-                .getOrNull(0)
+            val replyMessage = messages.find { it.id == message.replyId }
 
             if (replyMessage != null) {
                 // Reply Username
-                val replyUser = users
-                    .filter { it.id == replyMessage.userId }
-                    .getOrNull(0)
+                val replyUser = users.find { it.id == replyMessage.userId }
                 binding.replyUsernameText.text = replyUser?.username ?: ""
 
                 // Reply Content
