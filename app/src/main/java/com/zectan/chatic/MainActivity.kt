@@ -1,12 +1,13 @@
 package com.zectan.chatic
 
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.util.DisplayMetrics
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
-import androidx.recyclerview.widget.LinearSmoothScroller
-import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.FirebaseFirestore
 import com.zectan.chatic.classes.CrashDebugApplication
 import com.zectan.chatic.databinding.ActivityMainBinding
@@ -63,4 +64,21 @@ class MainActivity : CrashDebugApplication() {
                     .update("state", 2)
             }
     }
+}
+
+fun Drawable.toBitmap(): Bitmap {
+    if (this is BitmapDrawable) {
+        return this.bitmap
+    }
+
+    val bitmap = Bitmap.createBitmap(
+        intrinsicWidth,
+        intrinsicHeight,
+        Bitmap.Config.ARGB_8888
+    )
+    val canvas = Canvas(bitmap)
+    setBounds(0, 0, canvas.width, canvas.height)
+    draw(canvas)
+
+    return bitmap!!
 }

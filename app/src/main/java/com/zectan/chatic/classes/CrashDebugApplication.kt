@@ -5,7 +5,6 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.zectan.chatic.activities.ErrorActivity
-import com.zectan.chatic.models.User
 
 open class CrashDebugApplication : AppCompatActivity() {
     private val mAuth: FirebaseAuth = FirebaseAuth.getInstance()
@@ -28,6 +27,7 @@ open class CrashDebugApplication : AppCompatActivity() {
                 intent.putExtra("className", classname)
                 intent.putExtra("userId", userId)
 
+                e.printStackTrace()
                 startActivity(intent)
                 Runtime.getRuntime().exit(1)
             }

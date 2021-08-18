@@ -5,8 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.zectan.chatic.adapters.MessagesAdapter
+import com.zectan.chatic.adapters.MessagesItemTouchHelper
 import com.zectan.chatic.classes.Fragment
 import com.zectan.chatic.databinding.FragmentChatViewBinding
 import com.zectan.chatic.models.Message
@@ -31,6 +33,7 @@ class ChatViewFragment : Fragment<FragmentChatViewBinding>() {
         linearLayoutManager.stackFromEnd = true
         binding.recyclerView.layoutManager = linearLayoutManager
         binding.recyclerView.adapter = mAdapter
+        ItemTouchHelper(MessagesItemTouchHelper({})).attachToRecyclerView(binding.recyclerView)
 
         mMainVM.myUser.observe(this, mAdapter::setMyUser)
         mMainVM.watchUsersFromChat(this, mChatId, mAdapter::setUsers)
