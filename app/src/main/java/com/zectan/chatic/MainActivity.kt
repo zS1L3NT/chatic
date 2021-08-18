@@ -7,14 +7,17 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.firestore.FirebaseFirestore
 import com.zectan.chatic.classes.CrashDebugApplication
 import com.zectan.chatic.databinding.ActivityMainBinding
+import com.zectan.chatic.models.Status
 import com.zectan.chatic.viewmodels.MainViewModel
 
 
 class MainActivity : CrashDebugApplication() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var mMainVM: MainViewModel
+    private val mDb = FirebaseFirestore.getInstance()
 
     lateinit var navController: NavController
 
@@ -39,10 +42,25 @@ class MainActivity : CrashDebugApplication() {
         // NavHostFragment
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
+
+        // Set messages received
+        mMainVM.myStatuses.observe(this, this::onStatusesChange)
     }
 
     override fun onResume() {
         super.onResume()
         mMainVM.watch(this)
+    }
+
+    private fun onStatusesChange(statuses: List<Status>) {
+        statuses
+            .filter { it.userId == mMainVM.userId }
+            .filter { it.state < 2 }
+            .forEach {
+                mDb
+                    .collection("statuses")
+                    .document(it.id)
+                    .update("state", 2)
+            }
     }
 }

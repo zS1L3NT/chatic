@@ -34,10 +34,13 @@ class ChatViewFragment : Fragment<FragmentChatViewBinding>() {
 
         mMainVM.myUser.observe(this, mAdapter::setMyUser)
         mMainVM.watchUsersFromChat(this, mChatId, mAdapter::setUsers)
-        mMainVM.watchStatusesFromChat(this, mChatId, mAdapter::setStatuses)
+        mMainVM.watchStatusesFromChat(this, mChatId, this::onStatusesChange)
         mMainVM.watchMessagesFromChat(this, mChatId, this::onMessagesChange)
         binding.fileImage.setOnClickListener { onFileImageClicked() }
         binding.sendImage.setOnClickListener { onSendImageClicked() }
+
+        // Set messages as read
+
 
         return binding.root
     }
@@ -77,6 +80,21 @@ class ChatViewFragment : Fragment<FragmentChatViewBinding>() {
             messages.add(message)
             mMainVM.myMessages.value = messages
         }
+    }
+
+    private fun onStatusesChange(statuses: List<Status>) {
+        mAdapter.setStatuses(statuses)
+
+        // Set messages read
+        statuses
+            .filter { it.userId == mMainVM.userId }
+            .filter { it.state < 3 }
+            .forEach {
+                mDb
+                    .collection("statuses")
+                    .document(it.id)
+                    .update("state", 3)
+            }
     }
 
     private fun onMessagesChange(messages: List<Message>) {

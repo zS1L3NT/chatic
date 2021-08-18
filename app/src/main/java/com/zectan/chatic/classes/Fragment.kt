@@ -13,8 +13,8 @@ import com.zectan.chatic.MainActivity
 import com.zectan.chatic.viewmodels.MainViewModel
 
 abstract class Fragment<T : ViewBinding> : androidx.fragment.app.Fragment() {
-    protected val mAuth: FirebaseAuth = FirebaseAuth.getInstance()
-    protected val mDb: FirebaseFirestore = FirebaseFirestore.getInstance()
+    protected val mAuth = FirebaseAuth.getInstance()
+    protected val mDb = FirebaseFirestore.getInstance()
     protected lateinit var binding: T
     protected lateinit var mActivity: MainActivity
     protected lateinit var mNavController: NavController

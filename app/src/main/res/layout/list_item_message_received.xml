@@ -39,18 +39,18 @@
 
             <LinearLayout
                 android:id="@+id/reply_layout"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:background="@drawable/background_reply_layout"
                 android:orientation="vertical"
-                android:padding="5dp"
                 android:paddingStart="8dp"
                 android:paddingTop="4dp"
                 android:paddingEnd="8dp"
                 android:paddingBottom="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/username_text">
+                app:layout_constraintTop_toBottomOf="@id/username_text">
 
                 <TextView
                     android:id="@+id/reply_username_text"

@@ -80,8 +80,8 @@ class ChatsAdapter(private val callback: (chat: Chat) -> Unit) :
     }
 
     fun setMessages(messages: List<Message>) {
-        mMessages = messages
         reload(null, null, null, messages)
+        mMessages = messages
     }
 }
 

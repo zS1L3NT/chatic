@@ -102,7 +102,8 @@ class MessagesAdapter(private val chatType: Int) : RecyclerView.Adapter<Recycler
     }
 }
 
-class MessageReceivedViewHolder(itemView: View, private val chatType: Int) : RecyclerView.ViewHolder(itemView) {
+class MessageReceivedViewHolder(itemView: View, private val chatType: Int) :
+    RecyclerView.ViewHolder(itemView) {
     private val binding = ListItemMessageReceivedBinding.bind(itemView)
     private val context = itemView.context
 
