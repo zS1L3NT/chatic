@@ -39,9 +39,6 @@ class ChatViewFragment : Fragment<FragmentChatViewBinding>() {
         binding.fileImage.setOnClickListener { onFileImageClicked() }
         binding.sendImage.setOnClickListener { onSendImageClicked() }
 
-        // Set messages as read
-
-
         return binding.root
     }
 
@@ -67,11 +64,15 @@ class ChatViewFragment : Fragment<FragmentChatViewBinding>() {
             messageDocument.set(message)
 
             chat.users.forEach {
-                if (it != mMainVM.userId!!) {
-                    val statusDocument = mMainVM.newStatusDocument()
-                    val status = Status(statusDocument.id, it, message.id, mChatId, 1)
-                    statusDocument.set(status)
-                }
+                val statusDocument = mMainVM.newStatusDocument()
+                val status = Status(
+                    statusDocument.id,
+                    it,
+                    message.id,
+                    mChatId,
+                    if (it != mMainVM.userId!!) 1 else 0
+                )
+                statusDocument.set(status)
             }
 
             binding.messageEditText.text.clear()
@@ -88,7 +89,7 @@ class ChatViewFragment : Fragment<FragmentChatViewBinding>() {
         // Set messages read
         statuses
             .filter { it.userId == mMainVM.userId }
-            .filter { it.state < 3 }
+            .filter { it.state in 1..2 }
             .forEach {
                 mDb
                     .collection("statuses")

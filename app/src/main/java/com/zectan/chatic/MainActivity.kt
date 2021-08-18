@@ -55,7 +55,7 @@ class MainActivity : CrashDebugApplication() {
     private fun onStatusesChange(statuses: List<Status>) {
         statuses
             .filter { it.userId == mMainVM.userId }
-            .filter { it.state < 2 }
+            .filter { it.state == 1 }
             .forEach {
                 mDb
                     .collection("statuses")

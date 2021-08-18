@@ -113,7 +113,7 @@ class ChatViewHolder(itemView: View, private val callback: (chat: Chat) -> Unit)
         val unread = statuses
             .filter { it.chatId == chat.id }
             .filter { it.userId == myUser.id }
-            .filter { it.state < 3 }
+            .filter { it.state in 1..2 }
             .count()
         if (unread == 0) {
             binding.unreadText.visibility = View.INVISIBLE

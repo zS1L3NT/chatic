@@ -248,9 +248,14 @@ class MessagesDiffCallback(
     }
 
     override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        return oldMessages[oldItemPosition] == newMessages[newItemPosition] &&
-            oldUsers == newUsers &&
-            oldStatuses == newStatuses
+        val oldMessage = oldMessages[oldItemPosition]
+        val newMessage = newMessages[newItemPosition]
+        val messageId = oldMessage.id
+        val userId = oldMessage.userId
+
+        return oldMessage == newMessage &&
+            oldUsers.find { it.id == userId } == newUsers.find { it.id == userId } &&
+            oldStatuses.filter { it.messageId == messageId } == newStatuses.filter { it.messageId == messageId }
     }
 
 }
