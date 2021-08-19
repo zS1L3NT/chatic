@@ -275,8 +275,8 @@ class MessagesDiffCallback(
 
 class MessagesItemTouchHelper(private val callback: (position: Int) -> Unit) :
     ItemTouchHelper.Callback() {
-    private var swipingBack: Boolean = false
-    private var ranCallback: Boolean = false
+    private var swipingBack: Boolean = true
+    private var ranCallback: Boolean = true
 
     override fun getMovementFlags(
         recyclerView: RecyclerView,
@@ -297,6 +297,7 @@ class MessagesItemTouchHelper(private val callback: (position: Int) -> Unit) :
     }
 
     override fun convertToAbsoluteDirection(flags: Int, layoutDirection: Int): Int {
+        // Reset happened?
         if (swipingBack) {
             ranCallback = false
             swipingBack = false
@@ -329,7 +330,7 @@ class MessagesItemTouchHelper(private val callback: (position: Int) -> Unit) :
             actionState,
             isCurrentlyActive
         )
-        drawReply(c, viewHolder, myDx)
+        drawReply(c, viewHolder, myDx, isCurrentlyActive)
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -341,7 +342,12 @@ class MessagesItemTouchHelper(private val callback: (position: Int) -> Unit) :
         }
     }
 
-    private fun drawReply(canvas: Canvas, viewHolder: RecyclerView.ViewHolder, dX: Float) {
+    private fun drawReply(
+        canvas: Canvas,
+        viewHolder: RecyclerView.ViewHolder,
+        dX: Float,
+        isCurrentlyActive: Boolean
+    ) {
         val view = viewHolder.itemView
         val paint = Paint()
 
@@ -351,7 +357,7 @@ class MessagesItemTouchHelper(private val callback: (position: Int) -> Unit) :
         var horizontalStart = dX - 120
         if (horizontalStart > 80) {
             horizontalStart = 80f
-            if (!ranCallback) {
+            if (!ranCallback && !isCurrentlyActive) {
                 ranCallback = true
                 callback(viewHolder.adapterPosition)
             }
