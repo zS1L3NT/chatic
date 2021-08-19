@@ -20,6 +20,8 @@ import com.zectan.chatic.models.Chat
 import com.zectan.chatic.models.Message
 import com.zectan.chatic.models.Status
 import com.zectan.chatic.models.User
+import com.zectan.chatic.remove
+import com.zectan.chatic.show
 import com.zectan.chatic.toBitmap
 import com.zectan.chatic.utils.Date
 
@@ -88,6 +90,10 @@ class MessagesAdapter(private val chatType: Int) : RecyclerView.Adapter<Recycler
         ).dispatchUpdatesTo(this)
     }
 
+    fun getMessage(position: Int): Message {
+        return mMessages[position]
+    }
+
     fun setMyUser(user: User) {
         reload(null, null, null)
         myUser = user
@@ -121,9 +127,9 @@ class MessageReceivedViewHolder(itemView: View, private val chatType: Int) :
     ) {
         // Username
         when (chatType) {
-            Chat.DIRECT -> binding.usernameText.visibility = View.GONE
+            Chat.DIRECT -> binding.usernameText.remove()
             Chat.GROUP -> {
-                binding.usernameText.visibility = View.VISIBLE
+                binding.usernameText.show()
                 val user = users.find { it.id == message.userId }
                 binding.usernameText.text = user?.username ?: ""
             }
@@ -131,24 +137,24 @@ class MessageReceivedViewHolder(itemView: View, private val chatType: Int) :
 
         // Reply
         if (message.replyId != null) {
-            binding.replyLayout.visibility = View.VISIBLE
+            binding.replyInclude.replyLayout.show()
             val replyMessage = messages.find { it.id == message.replyId }
 
             if (replyMessage != null) {
                 // Reply Username
                 val replyUser = users.find { it.id == replyMessage.userId }
-                binding.replyUsernameText.text = replyUser?.username ?: ""
+                binding.replyInclude.replyUsernameText.text = replyUser?.username ?: ""
 
                 // Reply Content
-                binding.replyContentText.text = replyMessage.content
+                binding.replyInclude.replyContentText.text = replyMessage.content
             }
         } else {
-            binding.replyLayout.visibility = View.GONE
+            binding.replyInclude.replyLayout.remove()
         }
 
         // Media
         if (message.media != null) {
-            binding.mediaImageWrapper.visibility = View.VISIBLE
+            binding.mediaImageWrapper.show()
             // TODO Glide error & placeholder
             Glide
                 .with(context)
@@ -157,7 +163,7 @@ class MessageReceivedViewHolder(itemView: View, private val chatType: Int) :
                 .centerInside()
                 .into(binding.mediaImage)
         } else {
-            binding.mediaImageWrapper.visibility = View.GONE
+            binding.mediaImageWrapper.remove()
         }
 
         // Message content
@@ -181,24 +187,24 @@ class MessageSentViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) 
     ) {
         // Reply
         if (message.replyId != null) {
-            binding.replyLayout.visibility = View.VISIBLE
+            binding.replyInclude.replyLayout.show()
             val replyMessage = messages.find { it.id == message.replyId }
 
             if (replyMessage != null) {
                 // Reply Username
                 val replyUser = users.find { it.id == replyMessage.userId }
-                binding.replyUsernameText.text = replyUser?.username ?: ""
+                binding.replyInclude.replyUsernameText.text = replyUser?.username ?: ""
 
                 // Reply Content
-                binding.replyContentText.text = replyMessage.content
+                binding.replyInclude.replyContentText.text = replyMessage.content
             }
         } else {
-            binding.replyLayout.visibility = View.GONE
+            binding.replyInclude.replyLayout.remove()
         }
 
         // Media
         if (message.media != null) {
-            binding.mediaImageWrapper.visibility = View.VISIBLE
+            binding.mediaImageWrapper.show()
             // TODO Glide error & placeholder
             Glide
                 .with(context)
@@ -207,7 +213,7 @@ class MessageSentViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) 
                 .centerInside()
                 .into(binding.mediaImage)
         } else {
-            binding.mediaImageWrapper.visibility = View.GONE
+            binding.mediaImageWrapper.remove()
         }
 
         // Message Content

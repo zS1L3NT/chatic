@@ -12,7 +12,6 @@ import com.zectan.chatic.databinding.FragmentChatsBinding
 import com.zectan.chatic.models.Chat
 
 class ChatsFragment : Fragment<FragmentChatsBinding>() {
-    private val mTAG = "ChatsFragment"
     private lateinit var mAdapter: ChatsAdapter
 
     override fun onCreateView(

@@ -9,10 +9,13 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.zectan.chatic.R
 import com.zectan.chatic.databinding.ListItemChatBinding
+import com.zectan.chatic.hide
 import com.zectan.chatic.models.Chat
 import com.zectan.chatic.models.Message
 import com.zectan.chatic.models.Status
 import com.zectan.chatic.models.User
+import com.zectan.chatic.remove
+import com.zectan.chatic.show
 
 class ChatsAdapter(private val callback: (chat: Chat) -> Unit) :
     RecyclerView.Adapter<ChatViewHolder>() {
@@ -104,9 +107,9 @@ class ChatViewHolder(itemView: View, private val callback: (chat: Chat) -> Unit)
             .filter { it.chatId == chat.id }
             .sortedByDescending { it.date }
         if (chatMessages.isEmpty()) {
-            binding.recentMessageText.visibility = View.GONE
+            binding.recentMessageText.remove()
         } else {
-            binding.recentMessageText.visibility = View.VISIBLE
+            binding.recentMessageText.show()
             binding.recentMessageText.text = chatMessages[0].content
         }
 
@@ -116,9 +119,9 @@ class ChatViewHolder(itemView: View, private val callback: (chat: Chat) -> Unit)
             .filter { it.state in 1..2 }
             .count()
         if (unread == 0) {
-            binding.unreadText.visibility = View.INVISIBLE
+            binding.unreadText.hide()
         } else {
-            binding.unreadText.visibility = View.VISIBLE
+            binding.unreadText.show()
             binding.unreadText.text = unread.toString()
         }
 

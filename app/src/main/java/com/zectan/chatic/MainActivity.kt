@@ -5,6 +5,7 @@ import android.graphics.Canvas
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -38,7 +39,7 @@ class MainActivity : CrashDebugApplication() {
         val provider = ViewModelProvider(this)
         mMainVM = provider.get(MainViewModel::class.java)
 
-        mMainVM.userId = intent.extras!!.getString("userId")
+        mMainVM.userId = intent.extras!!.getString("userId")!!
 
         // NavHostFragment
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
@@ -81,4 +82,16 @@ fun Drawable.toBitmap(): Bitmap {
     draw(canvas)
 
     return bitmap!!
+}
+
+fun View.remove() {
+    visibility = View.GONE
+}
+
+fun View.hide() {
+    visibility = View.INVISIBLE
+}
+
+fun View.show() {
+    visibility = View.VISIBLE
 }

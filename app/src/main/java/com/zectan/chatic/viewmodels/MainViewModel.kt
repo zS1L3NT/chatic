@@ -30,11 +30,11 @@ class MainViewModel : ViewModel() {
     val myHandshakes: StrictLiveData<List<Handshake>> = StrictLiveData(ArrayList())
     val myFriendships: StrictLiveData<List<Friendship>> = StrictLiveData(ArrayList())
 
-    var userId: String? = null
+    var userId: String = ""
 
     fun watch(activity: MainActivity) {
         mDb.collection("users")
-            .document(userId!!)
+            .document(userId)
             .addSnapshotListener(activity) { snap, error ->
                 if (error != null) {
                     Log.d(mTAG, "Error: ${error.message}")
@@ -44,7 +44,7 @@ class MainViewModel : ViewModel() {
             }
 
         mDb.collection("friendships")
-            .whereArrayContains("users", userId!!)
+            .whereArrayContains("users", userId)
             .addSnapshotListener { snaps, error ->
                 if (error != null) {
                     Log.d(mTAG, "Error: ${error.message}")
@@ -54,7 +54,7 @@ class MainViewModel : ViewModel() {
             }
 
         mDb.collection("handshakes")
-            .whereArrayContains("users", userId!!)
+            .whereArrayContains("users", userId)
             .addSnapshotListener { snaps, error ->
                 if (error != null) {
                     Log.d(mTAG, "Error: ${error.message}")
@@ -64,7 +64,7 @@ class MainViewModel : ViewModel() {
             }
 
         mDb.collection("chats")
-            .whereArrayContains("users", userId!!)
+            .whereArrayContains("users", userId)
             .addSnapshotListener { snaps_, error_ ->
                 if (error_ != null) {
                     Log.d(mTAG, "Error: ${error_.message}")

@@ -10,6 +10,7 @@ import androidx.viewbinding.ViewBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.zectan.chatic.MainActivity
+import com.zectan.chatic.viewmodels.ChatViewViewModel
 import com.zectan.chatic.viewmodels.MainViewModel
 
 abstract class Fragment<T : ViewBinding> : androidx.fragment.app.Fragment() {
@@ -20,6 +21,7 @@ abstract class Fragment<T : ViewBinding> : androidx.fragment.app.Fragment() {
     protected lateinit var mNavController: NavController
 
     protected lateinit var mMainVM: MainViewModel
+    protected lateinit var mChatViewVM: ChatViewViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -31,6 +33,7 @@ abstract class Fragment<T : ViewBinding> : androidx.fragment.app.Fragment() {
 
         val provider = ViewModelProvider(mActivity)
         mMainVM = provider.get(MainViewModel::class.java)
+        mChatViewVM = provider.get(ChatViewViewModel::class.java)
 
         return binding.root
     }

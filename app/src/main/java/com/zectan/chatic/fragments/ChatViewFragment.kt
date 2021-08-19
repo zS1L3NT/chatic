@@ -1,6 +1,10 @@
 package com.zectan.chatic.fragments
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +17,9 @@ import com.zectan.chatic.classes.Fragment
 import com.zectan.chatic.databinding.FragmentChatViewBinding
 import com.zectan.chatic.models.Message
 import com.zectan.chatic.models.Status
+import com.zectan.chatic.remove
+import com.zectan.chatic.show
+import com.zectan.chatic.viewmodels.MessageBuilder
 import java.util.*
 
 class ChatViewFragment : Fragment<FragmentChatViewBinding>() {
@@ -33,16 +40,42 @@ class ChatViewFragment : Fragment<FragmentChatViewBinding>() {
         linearLayoutManager.stackFromEnd = true
         binding.recyclerView.layoutManager = linearLayoutManager
         binding.recyclerView.adapter = mAdapter
-        ItemTouchHelper(MessagesItemTouchHelper({})).attachToRecyclerView(binding.recyclerView)
+        ItemTouchHelper(MessagesItemTouchHelper {
+            // Delay to let the view holder item animation finish
+            Handler(Looper.getMainLooper()).postDelayed({
+                mChatViewVM.setReplyId(mChatId, mAdapter.getMessage(it).id)
+            }, 250)
+        }).attachToRecyclerView(binding.recyclerView)
 
         mMainVM.myUser.observe(this, mAdapter::setMyUser)
         mMainVM.watchUsersFromChat(this, mChatId, mAdapter::setUsers)
         mMainVM.watchStatusesFromChat(this, mChatId, this::onStatusesChange)
         mMainVM.watchMessagesFromChat(this, mChatId, this::onMessagesChange)
+        mChatViewVM.getMessageBuilder(mChatId).observe(this, { onMessageBuilderChange(it) })
         binding.fileImage.setOnClickListener { onFileImageClicked() }
         binding.sendImage.setOnClickListener { onSendImageClicked() }
+        binding.closeReplyImage.setOnClickListener { onCloseReplyClicked() }
+        binding.messageEditText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                if (!mChatViewVM.editing) {
+                    val text = s.toString()
+                    mChatViewVM.setContent(mChatId, text)
+                    binding.messageEditText.setSelection(text.length)
+                }
+            }
+        })
 
         return binding.root
+    }
+
+    private fun onCloseReplyClicked() {
+        mChatViewVM.setReplyId(mChatId, null)
     }
 
     private fun onFileImageClicked() {
@@ -50,18 +83,18 @@ class ChatViewFragment : Fragment<FragmentChatViewBinding>() {
     }
 
     private fun onSendImageClicked() {
-        val text = binding.messageEditText.text.toString()
+        val messageBuilder = mChatViewVM.getMessageBuilder(mChatId).value
         val chat = mMainVM.myChats.value.find { it.id == mChatId }!!
 
-        if (text != "") {
+        if (messageBuilder.content != "") {
             val messageDocument = mMainVM.newMessageDocument()
             val message = Message(
                 messageDocument.id,
-                text,
-                null,
+                messageBuilder.content,
+                messageBuilder.media,
                 Calendar.getInstance().timeInMillis,
-                null,
-                mMainVM.userId!!,
+                messageBuilder.replyId,
+                mMainVM.userId,
                 mChatId
             )
             messageDocument.set(message)
@@ -73,17 +106,46 @@ class ChatViewFragment : Fragment<FragmentChatViewBinding>() {
                     it,
                     message.id,
                     mChatId,
-                    if (it != mMainVM.userId!!) 1 else 0
+                    if (it != mMainVM.userId) 1 else 0
                 )
                 statusDocument.set(status)
             }
 
-            binding.messageEditText.text.clear()
-
-            val messages = mMainVM.myMessages.value.toMutableList()
-            messages.add(message)
-            mMainVM.myMessages.value = messages
+            mChatViewVM.resetMessageBuilder(mChatId)
         }
+    }
+
+    private fun onMessageBuilderChange(messageBuilder: MessageBuilder) {
+        // region Content
+        if (binding.messageEditText.text.toString() == "") {
+            mChatViewVM.editing = true
+            binding.messageEditText.setText(messageBuilder.content)
+            mChatViewVM.editing = false
+        }
+
+        if (messageBuilder.content == "") {
+            mChatViewVM.editing = true
+            binding.messageEditText.setText("")
+            mChatViewVM.editing = false
+        }
+        // endregion
+
+        // region Media
+        // endregion
+
+        // region Reply
+        val replyId = messageBuilder.replyId
+        val repliedMessage = mMainVM.myMessages.value.find { it.id == replyId }
+        val repliedUser = mMainVM.myUsers.value.find { it.id == repliedMessage?.userId }
+
+        if (replyId != null && repliedMessage != null && repliedUser != null) {
+            binding.replyConstraint.show()
+            binding.replyInclude.replyUsernameText.text = repliedUser.username
+            binding.replyInclude.replyContentText.text = repliedMessage.content
+        } else {
+            binding.replyConstraint.remove()
+        }
+        // endregion
     }
 
     private fun onStatusesChange(statuses: List<Status>) {
