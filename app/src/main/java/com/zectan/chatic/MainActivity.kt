@@ -1,5 +1,6 @@
 package com.zectan.chatic
 
+import android.animation.ValueAnimator
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.drawable.BitmapDrawable
@@ -128,4 +129,13 @@ fun View.hide() {
 
 fun View.show() {
     visibility = View.VISIBLE
+}
+
+fun View.animateBackground(startColor: Int, endColor: Int, duration: Long) {
+    val animator = ValueAnimator.ofArgb(startColor, endColor)
+    animator.duration = duration
+    animator.addUpdateListener {
+        setBackgroundColor(it.animatedValue as Int)
+    }
+    animator.start()
 }

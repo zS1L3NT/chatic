@@ -46,7 +46,13 @@ class ChatViewFragment : Fragment<FragmentChatViewBinding>() {
         super.onCreateView(inflater, container, savedInstanceState)
         mChatId = navArgs<ChatViewFragmentArgs>().value.chatId
 
-        mAdapter = MessagesAdapter(mMainVM.myChats.value.find { it.id == mChatId }!!.type)
+        mAdapter = MessagesAdapter(mMainVM.myChats.value.find { it.id == mChatId }!!.type,
+            object : MessagesAdapter.Callback {
+                override fun onScrollToPosition(position: Int) {
+                    binding.recyclerView.smoothScrollToPosition(position)
+                    mAdapter.highlightPosition(position)
+                }
+            })
         val linearLayoutManager = LinearLayoutManager(mActivity)
         linearLayoutManager.stackFromEnd = true
         binding.recyclerView.layoutManager = linearLayoutManager

@@ -2,6 +2,8 @@ package com.zectan.chatic.adapters
 
 import android.annotation.SuppressLint
 import android.graphics.*
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -13,24 +15,23 @@ import androidx.recyclerview.widget.ItemTouchHelper.ACTION_STATE_SWIPE
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
-import com.zectan.chatic.R
+import com.zectan.chatic.*
 import com.zectan.chatic.databinding.ListItemMessageReceivedBinding
 import com.zectan.chatic.databinding.ListItemMessageSentBinding
 import com.zectan.chatic.models.Chat
 import com.zectan.chatic.models.Message
 import com.zectan.chatic.models.Status
 import com.zectan.chatic.models.User
-import com.zectan.chatic.remove
-import com.zectan.chatic.show
-import com.zectan.chatic.toBitmap
 import com.zectan.chatic.utils.Date
 
-class MessagesAdapter(private val chatType: Int) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class MessagesAdapter(private val chatType: Int, private val callback: Callback) :
+    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     companion object {
         private const val SENT = 0
         private const val RECEIVED = 1
     }
 
+    private var highlight: String? = null
     private var myUser: User = User()
     private var mUsers: List<User> = ArrayList()
     private var mStatuses: List<Status> = ArrayList()
@@ -41,11 +42,11 @@ class MessagesAdapter(private val chatType: Int) : RecyclerView.Adapter<Recycler
         return when (viewType) {
             SENT -> {
                 val itemView = inflater.inflate(R.layout.list_item_message_sent, parent, false)
-                MessageSentViewHolder(itemView)
+                MessageSentViewHolder(callback, itemView)
             }
             RECEIVED -> {
                 val itemView = inflater.inflate(R.layout.list_item_message_received, parent, false)
-                MessageReceivedViewHolder(itemView, chatType)
+                MessageReceivedViewHolder(callback, itemView, chatType)
             }
             else -> {
                 throw RuntimeException("Unknown view type")
@@ -58,10 +59,16 @@ class MessagesAdapter(private val chatType: Int) : RecyclerView.Adapter<Recycler
 
         when (holder.itemViewType) {
             SENT -> {
-                (holder as MessageSentViewHolder).bind(message, mUsers, mStatuses, mMessages)
+                (holder as MessageSentViewHolder).bind(
+                    highlight,
+                    message,
+                    mUsers,
+                    mStatuses,
+                    mMessages
+                )
             }
             RECEIVED -> {
-                (holder as MessageReceivedViewHolder).bind(message, mUsers, mMessages)
+                (holder as MessageReceivedViewHolder).bind(highlight, message, mUsers, mMessages)
             }
         }
     }
@@ -113,19 +120,53 @@ class MessagesAdapter(private val chatType: Int) : RecyclerView.Adapter<Recycler
         reload(null, null, messages)
         mMessages = messages
     }
+
+    fun highlightPosition(position: Int) {
+        val message = mMessages.getOrNull(position)
+        if (message != null) {
+            highlight = message.id
+            notifyItemChanged(position)
+        }
+    }
+
+    interface Callback {
+        fun onScrollToPosition(position: Int)
+    }
 }
 
-class MessageReceivedViewHolder(itemView: View, private val chatType: Int) :
+class MessageReceivedViewHolder(
+    private val callback: MessagesAdapter.Callback,
+    itemView: View,
+    private val chatType: Int
+) :
     RecyclerView.ViewHolder(itemView) {
     private val binding = ListItemMessageReceivedBinding.bind(itemView)
     private val context = itemView.context
 
     fun bind(
+        highlight: String?,
         message: Message,
         users: List<User>,
         messages: List<Message>
     ) {
-        // Username
+        // region Highlight
+        if (highlight == message.id) {
+            binding.root.animateBackground(
+                Color.parseColor("#FFFFFF"),
+                Color.parseColor("#FF0000"),
+                100
+            )
+            Handler(Looper.getMainLooper()).postDelayed({
+                binding.root.animateBackground(
+                    Color.parseColor("#FF0000"),
+                    Color.parseColor("#FFFFFF"),
+                    1000
+                )
+            }, 1000)
+        }
+        // endregion
+
+        // region Username
         when (chatType) {
             Chat.DIRECT -> binding.usernameText.remove()
             Chat.GROUP -> {
@@ -134,25 +175,30 @@ class MessageReceivedViewHolder(itemView: View, private val chatType: Int) :
                 binding.usernameText.text = user?.username ?: ""
             }
         }
+        // endregion
 
-        // Reply
-        if (message.replyId != null) {
+        // region Reply
+        val replyMessage = messages.find { it.id == message.replyId }
+        if (message.replyId != null && replyMessage != null) {
             binding.reply.root.show()
-            val replyMessage = messages.find { it.id == message.replyId }
 
-            if (replyMessage != null) {
-                // Reply Username
-                val replyUser = users.find { it.id == replyMessage.userId }
-                binding.reply.replyUsernameText.text = replyUser?.username ?: ""
+            // Reply Username
+            val replyUser = users.find { it.id == replyMessage.userId }
+            binding.reply.replyUsernameText.text = replyUser?.username ?: ""
 
-                // Reply Content
-                binding.reply.replyContentText.text = replyMessage.content
+            // Reply Content
+            binding.reply.replyContentText.text = replyMessage.content
+
+            // Reply reference
+            binding.replyBackground.setOnClickListener {
+                callback.onScrollToPosition(messages.indexOf(replyMessage))
             }
         } else {
             binding.reply.root.remove()
         }
+        // endregion
 
-        // Media
+        // region Media
         if (message.media != null) {
             binding.mediaImageWrapper.show()
             // TODO Glide error & placeholder
@@ -165,44 +211,72 @@ class MessageReceivedViewHolder(itemView: View, private val chatType: Int) :
         } else {
             binding.mediaImageWrapper.remove()
         }
+        // endregion
 
-        // Message content
+        // region Message content
         binding.contentText.text = message.content
+        // endregion
 
-        // Date
+        // region Date
         binding.timeText.text = Date.getTime(message.date)
+        // endregion
     }
 
 }
 
-class MessageSentViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+class MessageSentViewHolder(
+    private val callback: MessagesAdapter.Callback,
+    itemView: View
+) : RecyclerView.ViewHolder(itemView) {
     private val binding = ListItemMessageSentBinding.bind(itemView)
     private val context = itemView.context
 
     fun bind(
+        highlight: String?,
         message: Message,
         users: List<User>,
         statuses: List<Status>,
         messages: List<Message>
     ) {
-        // Reply
-        if (message.replyId != null) {
+        // region Highlight
+        if (highlight == message.id) {
+            binding.root.animateBackground(
+                Color.parseColor("#FFFFFF"),
+                Color.parseColor("#FF0000"),
+                100
+            )
+            Handler(Looper.getMainLooper()).postDelayed({
+                binding.root.animateBackground(
+                    Color.parseColor("#FF0000"),
+                    Color.parseColor("#FFFFFF"),
+                    1000
+                )
+            }, 1000)
+        }
+        // endregion
+
+        // region Reply
+        val replyMessage = messages.find { it.id == message.replyId }
+        if (message.replyId != null && replyMessage != null) {
             binding.reply.root.show()
-            val replyMessage = messages.find { it.id == message.replyId }
 
-            if (replyMessage != null) {
-                // Reply Username
-                val replyUser = users.find { it.id == replyMessage.userId }
-                binding.reply.replyUsernameText.text = replyUser?.username ?: ""
+            // Reply Username
+            val replyUser = users.find { it.id == replyMessage.userId }
+            binding.reply.replyUsernameText.text = replyUser?.username ?: ""
 
-                // Reply Content
-                binding.reply.replyContentText.text = replyMessage.content
+            // Reply Content
+            binding.reply.replyContentText.text = replyMessage.content
+
+            // Reply reference
+            binding.replyBackground.setOnClickListener {
+                callback.onScrollToPosition(messages.indexOf(replyMessage))
             }
         } else {
             binding.reply.root.remove()
         }
+        // endregion
 
-        // Media
+        // region Media
         if (message.media != null) {
             binding.mediaImageWrapper.show()
             // TODO Glide error & placeholder
@@ -215,14 +289,17 @@ class MessageSentViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) 
         } else {
             binding.mediaImageWrapper.remove()
         }
+        // endregion
 
-        // Message Content
+        // region Message Content
         binding.contentText.text = message.content
+        // endregion
 
-        // Date
+        // region Date
         binding.timeText.text = Date.getTime(message.date)
+        // endregion
 
-        // Status
+        // region Status
         val status = statuses
             .filter { it.messageId == message.id }
             .map { it.state }
@@ -236,6 +313,7 @@ class MessageSentViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) 
                 else -> R.drawable.ic_status_0
             }
         )
+        // endregion
     }
 
 }
