@@ -9,7 +9,8 @@
             <Layout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintBottom_toTopOf="@id/typebox_constraint"
+                android:layout_marginBottom="42dp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
             <PropertySet android:alpha="1" />
         </Constraint>
@@ -21,7 +22,7 @@
         <KeyFrameSet>
             <KeyAttribute
                 android:alpha="0"
-                app:framePosition="85"
+                app:framePosition="80"
                 app:motionTarget="@id/reply_constraint" />
         </KeyFrameSet>
 

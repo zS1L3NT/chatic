@@ -143,10 +143,10 @@ class MessageReceivedViewHolder(itemView: View, private val chatType: Int) :
             if (replyMessage != null) {
                 // Reply Username
                 val replyUser = users.find { it.id == replyMessage.userId }
-                binding.reply.usernameText.text = replyUser?.username ?: ""
+                binding.reply.replyUsernameText.text = replyUser?.username ?: ""
 
                 // Reply Content
-                binding.reply.contentText.text = replyMessage.content
+                binding.reply.replyContentText.text = replyMessage.content
             }
         } else {
             binding.reply.root.remove()
@@ -193,10 +193,10 @@ class MessageSentViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) 
             if (replyMessage != null) {
                 // Reply Username
                 val replyUser = users.find { it.id == replyMessage.userId }
-                binding.reply.usernameText.text = replyUser?.username ?: ""
+                binding.reply.replyUsernameText.text = replyUser?.username ?: ""
 
                 // Reply Content
-                binding.reply.contentText.text = replyMessage.content
+                binding.reply.replyContentText.text = replyMessage.content
             }
         } else {
             binding.reply.root.remove()

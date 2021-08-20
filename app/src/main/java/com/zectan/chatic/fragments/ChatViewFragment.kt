@@ -42,7 +42,7 @@ class ChatViewFragment : Fragment<FragmentChatViewBinding>() {
             // Delay to let the view holder item animation finish
             Handler(Looper.getMainLooper()).postDelayed({
                 mChatViewVM.setReplyId(mChatId, mAdapter.getMessage(it).id)
-            }, 250)
+            }, 200)
         }).attachToRecyclerView(binding.recyclerView)
 
         mMainVM.myUser.observe(this, mAdapter::setMyUser)
@@ -137,11 +137,12 @@ class ChatViewFragment : Fragment<FragmentChatViewBinding>() {
         val repliedUser = mMainVM.myUsers.value.find { it.id == repliedMessage?.userId }
 
         if (replyId != null && repliedMessage != null && repliedUser != null) {
-            binding.typebox.reply.usernameText.text = repliedUser.username
-            binding.typebox.reply.contentText.text = repliedMessage.content
-            binding.root.requestLayout()
+            binding.typebox.reply.replyUsernameText.text = repliedUser.username
+            binding.typebox.reply.replyContentText.text = repliedMessage.content
+            binding.typebox.motionLayout.setTransitionDuration(200)
             binding.typebox.motionLayout.transitionToEnd()
         } else {
+            binding.typebox.motionLayout.setTransitionDuration(150)
             binding.typebox.motionLayout.transitionToStart()
         }
         // endregion
