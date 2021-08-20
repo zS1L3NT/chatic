@@ -1,18 +1,15 @@
 package com.zectan.chatic.activities
 
 import android.content.Intent
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.text.Html
-import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.auth.FirebaseAuth
 import com.zectan.chatic.R
 import com.zectan.chatic.classes.CrashDebugApplication
 import com.zectan.chatic.databinding.ActivityErrorBinding
-import java.util.regex.Matcher
-import java.util.regex.Pattern
-import java.util.stream.Collectors
+import com.zectan.chatic.models.ErrorHandler
 
 class ErrorActivity : CrashDebugApplication() {
+    private val mAuth: FirebaseAuth = FirebaseAuth.getInstance()
     private lateinit var binding: ActivityErrorBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,46 +21,14 @@ class ErrorActivity : CrashDebugApplication() {
         binding.reloadImage.setOnClickListener { onReloadImageClicked() }
         binding.arrowImage.setOnClickListener { onArrowImageClicked() }
 
-        try {
-            val extras = intent.extras ?: Bundle()
-            val stack = extras.getStringArrayList("stack") ?: ArrayList()
-            val message = extras.getString("message", "Error message not provided")
-            val className = extras.getString("className", "class.not.Defined")
-            // val userId = extras.getString("userId", "undefined")
+        val errorHandler =
+            ErrorHandler.fromBundle(intent.extras?.getBundle("errorHandler") ?: Bundle())
+        binding.errorText.maxLines = Int.MAX_VALUE
+        binding.stackText.maxLines = Int.MAX_VALUE
+        binding.errorText.text = errorHandler.getErrorText()
+        binding.stackText.text = errorHandler.getStackText()
 
-            binding.errorText.text = Html.fromHtml(
-                java.lang.String.format(
-                    "<h1>%s</h1><br /><h5>%s</h5>",
-                    message,
-                    className
-                ), Html.FROM_HTML_MODE_COMPACT
-            )
-            binding.stackText.text = Html.fromHtml(
-                stack
-                    .stream()
-                    .map {
-                        // Use Regex to print the stack with HTML
-                        val pattern: Pattern = Pattern.compile("(.*)\\((.*)\\)")
-                        val matcher: Matcher = pattern.matcher(it)
-                        if (matcher.find()) {
-                            // If the line matches the Regex
-                            val path: String = matcher.group(1) ?: ""
-                            val file: String = matcher.group(2) ?: ""
-                            return@map String.format(
-                                "%s<br /> <b>%s</b>",
-                                path.replace(".", "<br />"),
-                                file
-                            )
-                        } else {
-                            return@map it
-                        }
-                    }
-                    .collect(Collectors.joining("<br /><br />")),
-                Html.FROM_HTML_MODE_COMPACT
-            )
-        } catch (err: Exception) {
-
-        }
+        errorHandler.report(mAuth.uid ?: "unknown", false)
     }
 
     private fun onReloadImageClicked() {

@@ -150,15 +150,15 @@ class ChatViewFragment : Fragment<FragmentChatViewBinding>() {
             if (messageBuilder.media != null) {
                 val ref = mStorage.reference.child("${message.chatId}/${message.id}.png")
                 ref.putFile(Uri.parse(messageBuilder.media))
+                    .continueWithTask { ref.downloadUrl }
                     .addOnSuccessListener {
-                        ref.downloadUrl
-                            .addOnSuccessListener {
-                                message.media = it.toString()
-                                sendConstructedMessage(message, messageDocument, chat)
-                            }
-                            .addOnFailureListener { }
+                        message.media = it.toString()
+                        sendConstructedMessage(message, messageDocument, chat)
                     }
-                    .addOnFailureListener { }
+                    .addOnFailureListener {
+                        mActivity.handle(it)
+                        sendConstructedMessage(message, messageDocument, chat)
+                    }
             } else {
                 sendConstructedMessage(message, messageDocument, chat)
             }
