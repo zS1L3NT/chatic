@@ -160,7 +160,7 @@ class MessageReceivedViewHolder(itemView: View, private val chatType: Int) :
                 .with(context)
                 .load(message.media)
                 .transition(DrawableTransitionOptions().crossFade())
-                .centerInside()
+                .centerCrop()
                 .into(binding.mediaImage)
         } else {
             binding.mediaImageWrapper.remove()
@@ -210,7 +210,7 @@ class MessageSentViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) 
                 .with(context)
                 .load(message.media)
                 .transition(DrawableTransitionOptions().crossFade())
-                .centerInside()
+                .centerCrop()
                 .into(binding.mediaImage)
         } else {
             binding.mediaImageWrapper.remove()

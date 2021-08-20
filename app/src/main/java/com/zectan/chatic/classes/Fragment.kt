@@ -9,6 +9,7 @@ import androidx.navigation.NavController
 import androidx.viewbinding.ViewBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
 import com.zectan.chatic.MainActivity
 import com.zectan.chatic.viewmodels.ChatViewViewModel
 import com.zectan.chatic.viewmodels.MainViewModel
@@ -16,6 +17,7 @@ import com.zectan.chatic.viewmodels.MainViewModel
 abstract class Fragment<T : ViewBinding> : androidx.fragment.app.Fragment() {
     protected val mAuth = FirebaseAuth.getInstance()
     protected val mDb = FirebaseFirestore.getInstance()
+    protected val mStorage = FirebaseStorage.getInstance()
     protected lateinit var binding: T
     protected lateinit var mActivity: MainActivity
     protected lateinit var mNavController: NavController
