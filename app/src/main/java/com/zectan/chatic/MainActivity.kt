@@ -17,6 +17,10 @@ import com.zectan.chatic.viewmodels.MainViewModel
 
 
 class MainActivity : CrashDebugApplication() {
+    companion object {
+        const val TAG = "Chatic"
+    }
+
     private lateinit var binding: ActivityMainBinding
     private lateinit var mMainVM: MainViewModel
     private val mDb = FirebaseFirestore.getInstance()

@@ -40,14 +40,14 @@
             <View
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                app:layout_constraintBottom_toBottomOf="@id/reply_include"
+                app:layout_constraintBottom_toBottomOf="@id/reply"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@id/reply_include"
+                app:layout_constraintTop_toTopOf="@id/reply"
                 android:background="@drawable/background_reply_layout" />
 
             <include
-                android:id="@+id/reply_include"
+                android:id="@+id/reply"
                 layout="@layout/layout_reply"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -64,7 +64,7 @@
                 app:layout_constraintBottom_toTopOf="@id/content_text"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/reply_include">
+                app:layout_constraintTop_toBottomOf="@id/reply">
 
                 <ImageView
                     android:id="@+id/media_image"

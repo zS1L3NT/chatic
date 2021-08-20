@@ -11,7 +11,6 @@ import com.zectan.chatic.classes.StrictLiveData
 import com.zectan.chatic.models.*
 
 class MainViewModel : ViewModel() {
-    private val mTAG = "MainViewModel"
     private val mDb: FirebaseFirestore = FirebaseFirestore.getInstance()
 
     private var mUsersListener: ListenerRegistration? = null
@@ -37,7 +36,7 @@ class MainViewModel : ViewModel() {
             .document(userId)
             .addSnapshotListener(activity) { snap, error ->
                 if (error != null) {
-                    Log.d(mTAG, "Error: ${error.message}")
+                    Log.d(MainActivity.TAG, "Error: ${error.message}")
                     return@addSnapshotListener
                 }
                 myUser.postValue(snap!!.toObject(User::class.java) ?: User())
@@ -47,7 +46,7 @@ class MainViewModel : ViewModel() {
             .whereArrayContains("users", userId)
             .addSnapshotListener { snaps, error ->
                 if (error != null) {
-                    Log.d(mTAG, "Error: ${error.message}")
+                    Log.d(MainActivity.TAG, "Error: ${error.message}")
                     return@addSnapshotListener
                 }
                 myFriendships.postValue(snaps!!.toObjects(Friendship::class.java))
@@ -57,7 +56,7 @@ class MainViewModel : ViewModel() {
             .whereArrayContains("users", userId)
             .addSnapshotListener { snaps, error ->
                 if (error != null) {
-                    Log.d(mTAG, "Error: ${error.message}")
+                    Log.d(MainActivity.TAG, "Error: ${error.message}")
                     return@addSnapshotListener
                 }
                 myHandshakes.postValue(snaps!!.toObjects(Handshake::class.java))
@@ -67,7 +66,7 @@ class MainViewModel : ViewModel() {
             .whereArrayContains("users", userId)
             .addSnapshotListener { snaps_, error_ ->
                 if (error_ != null) {
-                    Log.d(mTAG, "Error: ${error_.message}")
+                    Log.d(MainActivity.TAG, "Error: ${error_.message}")
                     return@addSnapshotListener
                 }
                 myChats.postValue(snaps_!!.toObjects(Chat::class.java))
@@ -81,7 +80,7 @@ class MainViewModel : ViewModel() {
                 mUsersListener = mDb.collection("users")
                     .addSnapshotListener Users@{ snaps, error ->
                         if (error != null) {
-                            Log.d(mTAG, "Error: ${error.message}")
+                            Log.d(MainActivity.TAG, "Error: ${error.message}")
                             return@Users
                         }
                         myUsers.postValue(snaps!!.toObjects(User::class.java))
@@ -89,7 +88,7 @@ class MainViewModel : ViewModel() {
                 mInvitesListener = mDb.collection("invites")
                     .addSnapshotListener Invites@{ snaps, error ->
                         if (error != null) {
-                            Log.d(mTAG, "Error: ${error.message}")
+                            Log.d(MainActivity.TAG, "Error: ${error.message}")
                             return@Invites
                         }
                         myInvites.postValue(snaps!!.toObjects(Invite::class.java))
@@ -97,7 +96,7 @@ class MainViewModel : ViewModel() {
                 mStatusesListener = mDb.collection("statuses")
                     .addSnapshotListener Status@{ snaps, error ->
                         if (error != null) {
-                            Log.d(mTAG, "Error: ${error.message}")
+                            Log.d(MainActivity.TAG, "Error: ${error.message}")
                             return@Status
                         }
                         myStatuses.postValue(snaps!!.toObjects(Status::class.java))
@@ -105,7 +104,7 @@ class MainViewModel : ViewModel() {
                 mMessagesListener = mDb.collection("messages")
                     .addSnapshotListener Message@{ snaps, error ->
                         if (error != null) {
-                            Log.d(mTAG, "Error: ${error.message}")
+                            Log.d(MainActivity.TAG, "Error: ${error.message}")
                             return@Message
                         }
                         myMessages.postValue(snaps!!.toObjects(Message::class.java))
@@ -113,7 +112,7 @@ class MainViewModel : ViewModel() {
                 mPresencesListener = mDb.collection("presences")
                     .addSnapshotListener Presence@{ snaps, error ->
                         if (error != null) {
-                            Log.d(mTAG, "Error: ${error.message}")
+                            Log.d(MainActivity.TAG, "Error: ${error.message}")
                             return@Presence
                         }
                         myPresences.postValue(snaps!!.toObjects(Presence::class.java))

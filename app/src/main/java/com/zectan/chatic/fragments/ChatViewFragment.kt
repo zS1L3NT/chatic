@@ -17,8 +17,6 @@ import com.zectan.chatic.classes.Fragment
 import com.zectan.chatic.databinding.FragmentChatViewBinding
 import com.zectan.chatic.models.Message
 import com.zectan.chatic.models.Status
-import com.zectan.chatic.remove
-import com.zectan.chatic.show
 import com.zectan.chatic.viewmodels.MessageBuilder
 import java.util.*
 
@@ -52,10 +50,10 @@ class ChatViewFragment : Fragment<FragmentChatViewBinding>() {
         mMainVM.watchStatusesFromChat(this, mChatId, this::onStatusesChange)
         mMainVM.watchMessagesFromChat(this, mChatId, this::onMessagesChange)
         mChatViewVM.getMessageBuilder(mChatId).observe(this, { onMessageBuilderChange(it) })
-        binding.fileImage.setOnClickListener { onFileImageClicked() }
-        binding.sendImage.setOnClickListener { onSendImageClicked() }
-        binding.closeReplyImage.setOnClickListener { onCloseReplyClicked() }
-        binding.messageEditText.addTextChangedListener(object : TextWatcher {
+        binding.typebox.fileImage.setOnClickListener { onFileImageClicked() }
+        binding.typebox.sendImage.setOnClickListener { onSendImageClicked() }
+        binding.typebox.replyCloseImage.setOnClickListener { onReplyCloseClicked() }
+        binding.typebox.messageEditText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
 
@@ -66,7 +64,7 @@ class ChatViewFragment : Fragment<FragmentChatViewBinding>() {
                 if (!mChatViewVM.editing) {
                     val text = s.toString()
                     mChatViewVM.setContent(mChatId, text)
-                    binding.messageEditText.setSelection(text.length)
+                    binding.typebox.messageEditText.setSelection(text.length)
                 }
             }
         })
@@ -74,7 +72,7 @@ class ChatViewFragment : Fragment<FragmentChatViewBinding>() {
         return binding.root
     }
 
-    private fun onCloseReplyClicked() {
+    private fun onReplyCloseClicked() {
         mChatViewVM.setReplyId(mChatId, null)
     }
 
@@ -117,15 +115,15 @@ class ChatViewFragment : Fragment<FragmentChatViewBinding>() {
 
     private fun onMessageBuilderChange(messageBuilder: MessageBuilder) {
         // region Content
-        if (binding.messageEditText.text.toString() == "") {
+        if (binding.typebox.messageEditText.text.toString() == "") {
             mChatViewVM.editing = true
-            binding.messageEditText.setText(messageBuilder.content)
+            binding.typebox.messageEditText.setText(messageBuilder.content)
             mChatViewVM.editing = false
         }
 
         if (messageBuilder.content == "") {
             mChatViewVM.editing = true
-            binding.messageEditText.setText("")
+            binding.typebox.messageEditText.setText("")
             mChatViewVM.editing = false
         }
         // endregion
@@ -139,11 +137,12 @@ class ChatViewFragment : Fragment<FragmentChatViewBinding>() {
         val repliedUser = mMainVM.myUsers.value.find { it.id == repliedMessage?.userId }
 
         if (replyId != null && repliedMessage != null && repliedUser != null) {
-            binding.replyConstraint.show()
-            binding.replyInclude.replyUsernameText.text = repliedUser.username
-            binding.replyInclude.replyContentText.text = repliedMessage.content
+            binding.typebox.reply.usernameText.text = repliedUser.username
+            binding.typebox.reply.contentText.text = repliedMessage.content
+            binding.root.requestLayout()
+            binding.typebox.motionLayout.transitionToEnd()
         } else {
-            binding.replyConstraint.remove()
+            binding.typebox.motionLayout.transitionToStart()
         }
         // endregion
     }

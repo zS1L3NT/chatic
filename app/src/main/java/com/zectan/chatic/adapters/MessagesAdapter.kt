@@ -137,19 +137,19 @@ class MessageReceivedViewHolder(itemView: View, private val chatType: Int) :
 
         // Reply
         if (message.replyId != null) {
-            binding.replyInclude.replyLayout.show()
+            binding.reply.root.show()
             val replyMessage = messages.find { it.id == message.replyId }
 
             if (replyMessage != null) {
                 // Reply Username
                 val replyUser = users.find { it.id == replyMessage.userId }
-                binding.replyInclude.replyUsernameText.text = replyUser?.username ?: ""
+                binding.reply.usernameText.text = replyUser?.username ?: ""
 
                 // Reply Content
-                binding.replyInclude.replyContentText.text = replyMessage.content
+                binding.reply.contentText.text = replyMessage.content
             }
         } else {
-            binding.replyInclude.replyLayout.remove()
+            binding.reply.root.remove()
         }
 
         // Media
@@ -187,19 +187,19 @@ class MessageSentViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) 
     ) {
         // Reply
         if (message.replyId != null) {
-            binding.replyInclude.replyLayout.show()
+            binding.reply.root.show()
             val replyMessage = messages.find { it.id == message.replyId }
 
             if (replyMessage != null) {
                 // Reply Username
                 val replyUser = users.find { it.id == replyMessage.userId }
-                binding.replyInclude.replyUsernameText.text = replyUser?.username ?: ""
+                binding.reply.usernameText.text = replyUser?.username ?: ""
 
                 // Reply Content
-                binding.replyInclude.replyContentText.text = replyMessage.content
+                binding.reply.contentText.text = replyMessage.content
             }
         } else {
-            binding.replyInclude.replyLayout.remove()
+            binding.reply.root.remove()
         }
 
         // Media
