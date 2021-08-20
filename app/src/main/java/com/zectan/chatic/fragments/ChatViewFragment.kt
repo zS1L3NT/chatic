@@ -55,6 +55,8 @@ class ChatViewFragment : Fragment<FragmentChatViewBinding>() {
             // Delay to let the view holder item animation finish
             Handler(Looper.getMainLooper()).postDelayed({
                 mChatViewVM.setReplyId(mChatId, mAdapter.getMessage(it).id)
+                binding.typebox.messageEditText.requestFocus()
+                mActivity.showKeyboard()
             }, 200)
         }).attachToRecyclerView(binding.recyclerView)
 
@@ -85,6 +87,8 @@ class ChatViewFragment : Fragment<FragmentChatViewBinding>() {
         mAttachFile = registerForActivityResult(
             ActivityResultContracts.StartActivityForResult()
         ) { onImageChosen(it) }
+        binding.typebox.messageEditText.requestFocus()
+        mActivity.showKeyboard()
 
         return binding.root
     }
