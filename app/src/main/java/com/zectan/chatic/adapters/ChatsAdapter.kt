@@ -14,7 +14,6 @@ import com.zectan.chatic.models.Chat
 import com.zectan.chatic.models.Message
 import com.zectan.chatic.models.Status
 import com.zectan.chatic.models.User
-import com.zectan.chatic.remove
 import com.zectan.chatic.show
 
 class ChatsAdapter(private val callback: (chat: Chat) -> Unit) :
@@ -102,17 +101,18 @@ class ChatViewHolder(itemView: View, private val callback: (chat: Chat) -> Unit)
     ) {
         binding.root.setOnClickListener { callback(chat) }
 
-        binding.titleText.text = chat.name ?: ""
+        // region Recent Messages
         val chatMessages = messages
             .filter { it.chatId == chat.id }
             .sortedByDescending { it.date }
         if (chatMessages.isEmpty()) {
-            binding.recentMessageText.remove()
+            binding.recentMessageText.text = ""
         } else {
-            binding.recentMessageText.show()
             binding.recentMessageText.text = chatMessages[0].content
         }
+        // endregion
 
+        // region Unread
         val unread = statuses
             .filter { it.chatId == chat.id }
             .filter { it.userId == myUser.id }
@@ -124,9 +124,14 @@ class ChatViewHolder(itemView: View, private val callback: (chat: Chat) -> Unit)
             binding.unreadText.show()
             binding.unreadText.text = unread.toString()
         }
+        // endregion
 
         if (chat.type == Chat.GROUP) {
+            // region Title
             binding.titleText.text = chat.name ?: ""
+            // endregion
+
+            // region Photo
             // TODO Glide error & placeholder
             Glide
                 .with(context)
@@ -134,11 +139,16 @@ class ChatViewHolder(itemView: View, private val callback: (chat: Chat) -> Unit)
                 .transition(DrawableTransitionOptions().crossFade())
                 .centerCrop()
                 .into(binding.photoImage)
+            // endregion
         } else {
+            // region Title
             val friendId = chat.users.find { it != myUser.id }!!
             val friend = users.find { it.id == friendId } ?: User()
 
             binding.titleText.text = friend.username
+            // endregion
+
+            // region Photo
             // TODO Glide error & placeholder
             Glide
                 .with(context)
@@ -146,6 +156,7 @@ class ChatViewHolder(itemView: View, private val callback: (chat: Chat) -> Unit)
                 .transition(DrawableTransitionOptions().crossFade())
                 .centerCrop()
                 .into(binding.photoImage)
+            // endregion
         }
     }
 }
