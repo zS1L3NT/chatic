@@ -48,7 +48,7 @@ class ChatViewFragment : Fragment<FragmentChatViewBinding>() {
 
         mAdapter = MessagesAdapter(mMainVM.myChats.value.find { it.id == mChatId }!!.type,
             object : MessagesAdapter.Callback {
-                override fun onScrollToPosition(position: Int) {
+                override fun highlightPosition(position: Int) {
                     binding.recyclerView.smoothScrollToPosition(position)
                     mAdapter.highlightPosition(position)
                 }

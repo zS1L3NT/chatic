@@ -23,6 +23,7 @@ import com.zectan.chatic.models.Message
 import com.zectan.chatic.models.Status
 import com.zectan.chatic.models.User
 import com.zectan.chatic.utils.Date
+import java.util.concurrent.atomic.AtomicReference
 
 class MessagesAdapter(private val chatType: Int, private val callback: Callback) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -31,7 +32,7 @@ class MessagesAdapter(private val chatType: Int, private val callback: Callback)
         private const val RECEIVED = 1
     }
 
-    private var highlight: String? = null
+    private val highlight = AtomicReference<String?>(null)
     private var myUser: User = User()
     private var mUsers: List<User> = ArrayList()
     private var mStatuses: List<Status> = ArrayList()
@@ -42,11 +43,11 @@ class MessagesAdapter(private val chatType: Int, private val callback: Callback)
         return when (viewType) {
             SENT -> {
                 val itemView = inflater.inflate(R.layout.list_item_message_sent, parent, false)
-                MessageSentViewHolder(callback, itemView)
+                MessageSentViewHolder(callback, highlight, itemView)
             }
             RECEIVED -> {
                 val itemView = inflater.inflate(R.layout.list_item_message_received, parent, false)
-                MessageReceivedViewHolder(callback, itemView, chatType)
+                MessageReceivedViewHolder(callback, highlight, itemView, chatType)
             }
             else -> {
                 throw RuntimeException("Unknown view type")
@@ -60,7 +61,6 @@ class MessagesAdapter(private val chatType: Int, private val callback: Callback)
         when (holder.itemViewType) {
             SENT -> {
                 (holder as MessageSentViewHolder).bind(
-                    highlight,
                     message,
                     mUsers,
                     mStatuses,
@@ -68,7 +68,11 @@ class MessagesAdapter(private val chatType: Int, private val callback: Callback)
                 )
             }
             RECEIVED -> {
-                (holder as MessageReceivedViewHolder).bind(highlight, message, mUsers, mMessages)
+                (holder as MessageReceivedViewHolder).bind(
+                    message,
+                    mUsers,
+                    mMessages
+                )
             }
         }
     }
@@ -124,13 +128,13 @@ class MessagesAdapter(private val chatType: Int, private val callback: Callback)
     fun highlightPosition(position: Int) {
         val message = mMessages.getOrNull(position)
         if (message != null) {
-            highlight = message.id
+            highlight.set(message.id)
             notifyItemChanged(position)
         }
     }
 
     interface Callback {
-        fun onScrollToPosition(position: Int)
+        fun highlightPosition(position: Int)
 
         fun onImageClicked(url: String)
     }
@@ -138,21 +142,21 @@ class MessagesAdapter(private val chatType: Int, private val callback: Callback)
 
 class MessageReceivedViewHolder(
     private val callback: MessagesAdapter.Callback,
+    private val highlight: AtomicReference<String?>,
     itemView: View,
     private val chatType: Int
-) :
-    RecyclerView.ViewHolder(itemView) {
+) : RecyclerView.ViewHolder(itemView) {
     private val binding = ListItemMessageReceivedBinding.bind(itemView)
     private val context = itemView.context
 
     fun bind(
-        highlight: String?,
         message: Message,
         users: List<User>,
         messages: List<Message>
     ) {
         // region Highlight
-        if (highlight == message.id) {
+        if (highlight.get() == message.id) {
+            highlight.set(null)
             binding.root.animateBackground(
                 Color.parseColor("#FFFFFF"),
                 Color.parseColor("#FF0000"),
@@ -193,7 +197,7 @@ class MessageReceivedViewHolder(
 
             // Reply reference
             binding.replyBackground.setOnClickListener {
-                callback.onScrollToPosition(messages.indexOf(replyMessage))
+                callback.highlightPosition(messages.indexOf(replyMessage))
             }
         } else {
             binding.reply.root.remove()
@@ -232,20 +236,21 @@ class MessageReceivedViewHolder(
 
 class MessageSentViewHolder(
     private val callback: MessagesAdapter.Callback,
+    private val highlight: AtomicReference<String?>,
     itemView: View
 ) : RecyclerView.ViewHolder(itemView) {
     private val binding = ListItemMessageSentBinding.bind(itemView)
     private val context = itemView.context
 
     fun bind(
-        highlight: String?,
         message: Message,
         users: List<User>,
         statuses: List<Status>,
         messages: List<Message>
     ) {
         // region Highlight
-        if (highlight == message.id) {
+        if (highlight.get() == message.id) {
+            highlight.set(null)
             binding.root.animateBackground(
                 Color.parseColor("#FFFFFF"),
                 Color.parseColor("#FF0000"),
@@ -275,7 +280,7 @@ class MessageSentViewHolder(
 
             // Reply reference
             binding.replyBackground.setOnClickListener {
-                callback.onScrollToPosition(messages.indexOf(replyMessage))
+                callback.highlightPosition(messages.indexOf(replyMessage))
             }
         } else {
             binding.reply.root.remove()
