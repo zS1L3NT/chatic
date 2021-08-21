@@ -25,7 +25,6 @@ import com.zectan.chatic.models.Message
 import com.zectan.chatic.models.Status
 import com.zectan.chatic.models.User
 import com.zectan.chatic.utils.Date
-import java.util.concurrent.atomic.AtomicReference
 
 class MessagesAdapter(private val chatType: Int, private val callback: Callback) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -34,7 +33,7 @@ class MessagesAdapter(private val chatType: Int, private val callback: Callback)
         private const val RECEIVED = 1
     }
 
-    private val highlight = AtomicReference<String?>(null)
+    private val highlight = Pointer<String?>(null)
     private var myUser: User = User()
     private var mUsers: List<User> = ArrayList()
     private var mStatuses: List<Status> = ArrayList()
@@ -130,7 +129,8 @@ class MessagesAdapter(private val chatType: Int, private val callback: Callback)
     fun highlightPosition(position: Int) {
         val message = mMessages.getOrNull(position)
         if (message != null) {
-            highlight.set(message.id)
+
+            highlight.value = message.id
             notifyItemChanged(position)
         }
     }
@@ -144,7 +144,7 @@ class MessagesAdapter(private val chatType: Int, private val callback: Callback)
 
 class MessageReceivedViewHolder(
     private val callback: MessagesAdapter.Callback,
-    private val highlight: AtomicReference<String?>,
+    private val highlight: Pointer<String?>,
     itemView: View,
     private val chatType: Int
 ) : RecyclerView.ViewHolder(itemView) {
@@ -160,8 +160,8 @@ class MessageReceivedViewHolder(
         messages: List<Message>
     ) {
         // region Highlight
-        if (highlight.get() == message.id) {
-            highlight.set(null)
+        if (highlight.value == message.id) {
+            highlight.value = null
             binding.root.animateBackground(
                 highlightAnimation,
                 highlightBackground,
@@ -243,7 +243,7 @@ class MessageReceivedViewHolder(
 
 class MessageSentViewHolder(
     private val callback: MessagesAdapter.Callback,
-    private val highlight: AtomicReference<String?>,
+    private val highlight: Pointer<String?>,
     itemView: View
 ) : RecyclerView.ViewHolder(itemView) {
     private val binding = ListItemMessageSentBinding.bind(itemView)
@@ -259,8 +259,8 @@ class MessageSentViewHolder(
         messages: List<Message>
     ) {
         // region Highlight
-        if (highlight.get() == message.id) {
-            highlight.set(null)
+        if (highlight.value == message.id) {
+            highlight.value = null
             binding.root.animateBackground(
                 highlightAnimation,
                 highlightBackground,
