@@ -1,5 +1,6 @@
 package com.zectan.chatic.adapters
 
+import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.graphics.*
 import android.os.Handler
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.zectan.chatic.*
+import com.zectan.chatic.classes.Pointer
 import com.zectan.chatic.databinding.ListItemMessageReceivedBinding
 import com.zectan.chatic.databinding.ListItemMessageSentBinding
 import com.zectan.chatic.models.Chat
@@ -149,6 +151,9 @@ class MessageReceivedViewHolder(
     private val binding = ListItemMessageReceivedBinding.bind(itemView)
     private val context = itemView.context
 
+    private var highlightAnimation: Pointer<ValueAnimator?> = Pointer(null)
+    private var highlightBackground: Pointer<Int> = Pointer(Color.WHITE)
+
     fun bind(
         message: Message,
         users: List<User>,
@@ -158,13 +163,15 @@ class MessageReceivedViewHolder(
         if (highlight.get() == message.id) {
             highlight.set(null)
             binding.root.animateBackground(
-                Color.parseColor("#FFFFFF"),
+                highlightAnimation,
+                highlightBackground,
                 Color.parseColor("#FF0000"),
                 100
             )
             Handler(Looper.getMainLooper()).postDelayed({
                 binding.root.animateBackground(
-                    Color.parseColor("#FF0000"),
+                    highlightAnimation,
+                    highlightBackground,
                     Color.parseColor("#FFFFFF"),
                     1000
                 )
@@ -242,6 +249,9 @@ class MessageSentViewHolder(
     private val binding = ListItemMessageSentBinding.bind(itemView)
     private val context = itemView.context
 
+    private var highlightAnimation: Pointer<ValueAnimator?> = Pointer(null)
+    private var highlightBackground: Pointer<Int> = Pointer(Color.WHITE)
+
     fun bind(
         message: Message,
         users: List<User>,
@@ -252,13 +262,15 @@ class MessageSentViewHolder(
         if (highlight.get() == message.id) {
             highlight.set(null)
             binding.root.animateBackground(
-                Color.parseColor("#FFFFFF"),
+                highlightAnimation,
+                highlightBackground,
                 Color.parseColor("#FF0000"),
                 100
             )
             Handler(Looper.getMainLooper()).postDelayed({
                 binding.root.animateBackground(
-                    Color.parseColor("#FF0000"),
+                    highlightAnimation,
+                    highlightBackground,
                     Color.parseColor("#FFFFFF"),
                     1000
                 )

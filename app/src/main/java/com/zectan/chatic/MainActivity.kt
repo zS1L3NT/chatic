@@ -1,5 +1,6 @@
 package com.zectan.chatic
 
+import android.animation.Animator
 import android.animation.ValueAnimator
 import android.graphics.Bitmap
 import android.graphics.Canvas
@@ -15,6 +16,7 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.google.firebase.firestore.FirebaseFirestore
 import com.zectan.chatic.classes.CrashDebugApplication
+import com.zectan.chatic.classes.Pointer
 import com.zectan.chatic.databinding.ActivityMainBinding
 import com.zectan.chatic.models.ErrorHandler
 import com.zectan.chatic.models.Status
@@ -53,7 +55,8 @@ class MainActivity : CrashDebugApplication() {
         mMainVM.userId = intent.extras!!.getString("userId")!!
 
         // NavHostFragment
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
 
         // Set messages received
@@ -131,11 +134,40 @@ fun View.show() {
     visibility = View.VISIBLE
 }
 
-fun View.animateBackground(startColor: Int, endColor: Int, duration: Long) {
-    val animator = ValueAnimator.ofArgb(startColor, endColor)
+fun View.animateBackground(
+    previous: Pointer<ValueAnimator?>,
+    background: Pointer<Int>,
+    endColor: Int,
+    duration: Long
+) {
+    previous.value?.cancel()
+
+    val animator =
+        ValueAnimator.ofArgb((previous.value?.animatedValue ?: background.value) as Int, endColor)
     animator.duration = duration
     animator.addUpdateListener {
         setBackgroundColor(it.animatedValue as Int)
+        background.value = it.animatedValue as Int
     }
+    animator.addListener(object : Animator.AnimatorListener {
+        private var cancelled = false
+
+        override fun onAnimationStart(animation: Animator?) {
+        }
+
+        override fun onAnimationEnd(animation: Animator?) {
+            if (!cancelled) {
+                previous.value = null
+            }
+        }
+
+        override fun onAnimationCancel(animation: Animator?) {
+            cancelled = true
+        }
+
+        override fun onAnimationRepeat(animation: Animator?) {
+        }
+    })
     animator.start()
+    previous.value = animator
 }
