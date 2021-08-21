@@ -37,6 +37,8 @@ abstract class Fragment<T : ViewBinding> : androidx.fragment.app.Fragment() {
         mMainVM = provider.get(MainViewModel::class.java)
         mChatViewVM = provider.get(ChatViewViewModel::class.java)
 
+        mActivity.hideKeyboard(binding.root)
+
         return binding.root
     }
 

@@ -26,5 +26,21 @@
         <argument
             android:name="chatId"
             app:argType="string" />
+        <action
+            android:id="@+id/open_image_view"
+            app:destination="@id/fragment_image_view"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragment_image_view"
+        android:name="com.zectan.chatic.fragments.ImageViewFragment"
+        android:label="fragment_image_view"
+        tools:layout="@layout/fragment_image_view">
+        <argument
+            android:name="url"
+            app:argType="string" />
     </fragment>
 </navigation>

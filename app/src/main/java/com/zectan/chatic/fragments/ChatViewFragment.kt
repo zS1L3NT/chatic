@@ -52,6 +52,10 @@ class ChatViewFragment : Fragment<FragmentChatViewBinding>() {
                     binding.recyclerView.smoothScrollToPosition(position)
                     mAdapter.highlightPosition(position)
                 }
+
+                override fun onImageClicked(url: String) {
+                    mNavController.navigate(ChatViewFragmentDirections.openImageView(url))
+                }
             })
         val linearLayoutManager = LinearLayoutManager(mActivity)
         linearLayoutManager.stackFromEnd = true
@@ -93,8 +97,6 @@ class ChatViewFragment : Fragment<FragmentChatViewBinding>() {
         mAttachFile = registerForActivityResult(
             ActivityResultContracts.StartActivityForResult()
         ) { onImageChosen(it) }
-        binding.typebox.messageEditText.requestFocus()
-        mActivity.showKeyboard()
 
         return binding.root
     }

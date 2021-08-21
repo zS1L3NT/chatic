@@ -131,6 +131,8 @@ class MessagesAdapter(private val chatType: Int, private val callback: Callback)
 
     interface Callback {
         fun onScrollToPosition(position: Int)
+
+        fun onImageClicked(url: String)
     }
 }
 
@@ -208,6 +210,10 @@ class MessageReceivedViewHolder(
                 .transition(DrawableTransitionOptions().crossFade())
                 .centerCrop()
                 .into(binding.mediaImage)
+
+            binding.mediaImage.setOnClickListener {
+                callback.onImageClicked(message.media!!)
+            }
         } else {
             binding.mediaImageWrapper.remove()
         }
@@ -286,6 +292,10 @@ class MessageSentViewHolder(
                 .transition(DrawableTransitionOptions().crossFade())
                 .centerCrop()
                 .into(binding.mediaImage)
+
+            binding.mediaImage.setOnClickListener {
+                callback.onImageClicked(message.media!!)
+            }
         } else {
             binding.mediaImageWrapper.remove()
         }
