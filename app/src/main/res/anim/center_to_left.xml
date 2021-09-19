@@ -7,9 +7,4 @@
         android:interpolator="@android:anim/accelerate_interpolator"
         android:toXDelta="-100%"
         android:toYDelta="0%" />
-    <alpha
-        android:duration="400"
-        android:fromAlpha="1"
-        android:interpolator="@android:anim/accelerate_interpolator"
-        android:toAlpha="0" />
 </set>

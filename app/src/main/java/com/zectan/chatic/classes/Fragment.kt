@@ -1,9 +1,7 @@
 package com.zectan.chatic.classes
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.viewbinding.ViewBinding
@@ -11,10 +9,16 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.zectan.chatic.MainActivity
+import com.zectan.chatic.R
 import com.zectan.chatic.viewmodels.ChatViewViewModel
 import com.zectan.chatic.viewmodels.MainViewModel
+import android.view.MenuInflater
 
-abstract class Fragment<T : ViewBinding> : androidx.fragment.app.Fragment() {
+import android.view.ContextMenu.ContextMenuInfo
+
+import android.view.ContextMenu
+
+abstract class Fragment<T : ViewBinding>(private val menuId: Int) : androidx.fragment.app.Fragment() {
     protected val mAuth = FirebaseAuth.getInstance()
     protected val mDb = FirebaseFirestore.getInstance()
     protected val mStorage = FirebaseStorage.getInstance()
@@ -33,6 +37,9 @@ abstract class Fragment<T : ViewBinding> : androidx.fragment.app.Fragment() {
         mActivity = activity as MainActivity
         mNavController = mActivity.navController
 
+        mActivity.setSupportActionBar(binding.root.findViewById(R.id.toolbar))
+        setHasOptionsMenu(true)
+
         val provider = ViewModelProvider(mActivity)
         mMainVM = provider.get(MainViewModel::class.java)
         mChatViewVM = provider.get(ChatViewViewModel::class.java)
@@ -40,6 +47,11 @@ abstract class Fragment<T : ViewBinding> : androidx.fragment.app.Fragment() {
         mActivity.hideKeyboard(binding.root)
 
         return binding.root
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(menuId, menu)
     }
 
 }

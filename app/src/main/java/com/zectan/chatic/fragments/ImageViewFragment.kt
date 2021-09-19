@@ -7,10 +7,11 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.zectan.chatic.R
 import com.zectan.chatic.classes.Fragment
 import com.zectan.chatic.databinding.FragmentImageViewBinding
 
-class ImageViewFragment : Fragment<FragmentImageViewBinding>() {
+class ImageViewFragment : Fragment<FragmentImageViewBinding>(R.menu.menu_image_view) {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

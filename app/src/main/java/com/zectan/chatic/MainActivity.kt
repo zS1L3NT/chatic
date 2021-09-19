@@ -68,6 +68,11 @@ class MainActivity : CrashDebugApplication() {
         mMainVM.watch(this)
     }
 
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
+    }
+
     fun handle(error: Exception) {
         error.printStackTrace()
         val errorHandler = ErrorHandler(error)

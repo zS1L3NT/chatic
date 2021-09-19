@@ -8,12 +8,11 @@ import android.os.Handler
 import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.widget.SearchView
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -28,11 +27,11 @@ import com.zectan.chatic.databinding.FragmentChatViewBinding
 import com.zectan.chatic.models.Chat
 import com.zectan.chatic.models.Message
 import com.zectan.chatic.models.Status
+import com.zectan.chatic.utils.Date
 import com.zectan.chatic.viewmodels.MessageBuilder
 import java.util.*
 
-
-class ChatViewFragment : Fragment<FragmentChatViewBinding>() {
+class ChatViewFragment : Fragment<FragmentChatViewBinding>(R.menu.menu_chat_view) {
     private lateinit var mAdapter: MessagesAdapter
     private lateinit var mChatId: String
     private lateinit var mAttachFile: ActivityResultLauncher<Intent>
@@ -45,8 +44,9 @@ class ChatViewFragment : Fragment<FragmentChatViewBinding>() {
         binding = FragmentChatViewBinding.inflate(inflater, container, false)
         super.onCreateView(inflater, container, savedInstanceState)
         mChatId = navArgs<ChatViewFragmentArgs>().value.chatId
+        val chat = mMainVM.myChats.value.find { it.id == mChatId }!!
 
-        mAdapter = MessagesAdapter(mMainVM.myChats.value.find { it.id == mChatId }!!.type,
+        mAdapter = MessagesAdapter(chat.type,
             object : MessagesAdapter.Callback {
                 override fun highlightPosition(position: Int) {
                     binding.recyclerView.smoothScrollToPosition(position)
@@ -97,9 +97,48 @@ class ChatViewFragment : Fragment<FragmentChatViewBinding>() {
         mAttachFile = registerForActivityResult(
             ActivityResultContracts.StartActivityForResult()
         ) { onImageChosen(it) }
+        if (chat.type == Chat.GROUP) {
+            binding.chatTitleText.text = chat.name
+            Glide
+                .with(this)
+                .load(chat.photo)
+                .transition(DrawableTransitionOptions().crossFade())
+                .into(binding.chatPhotoImage)
+        }
+        else {
+            val friendId = chat.users.find { it != mMainVM.userId }!!
+            val friend = mMainVM.myUsers.value.find { it.id == friendId }!!
+            binding.chatTitleText.text = friend.username
+            Glide
+                .with(this)
+                .load(friend.photo)
+                .transition(DrawableTransitionOptions().crossFade())
+                .into(binding.chatPhotoImage)
+        }
+
+        mActivity.supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        mActivity.supportActionBar!!.setDisplayShowTitleEnabled(false)
 
         return binding.root
     }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        val searchItem = menu.findItem(R.id.action_search)
+        if (searchItem != null) {
+            val searchView = searchItem.actionView as SearchView
+            searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    TODO("Not yet implemented")
+                }
+
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    TODO("Not yet implemented")
+                }
+            })
+        }
+        return super.onCreateOptionsMenu(menu, inflater)
+    }
+
 
     private fun sendConstructedMessage(
         message: Message,

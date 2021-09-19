@@ -235,7 +235,7 @@ class MessageReceivedViewHolder(
         // endregion
 
         // region Date
-        binding.timeText.text = Date.getTime(message.date)
+        binding.timeText.text = Date(message.date).getDateTime()
         // endregion
     }
 
@@ -323,7 +323,7 @@ class MessageSentViewHolder(
         // endregion
 
         // region Date
-        binding.timeText.text = Date.getTime(message.date)
+        binding.timeText.text = Date(message.date).getDateTime()
         // endregion
 
         // region Status

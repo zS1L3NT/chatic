@@ -3,7 +3,7 @@ package com.zectan.chatic.fragments
 import android.app.SearchManager
 import android.os.Bundle
 import android.view.*
-import android.widget.SearchView
+import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.zectan.chatic.R
 import com.zectan.chatic.adapters.ChatsAdapter
@@ -11,7 +11,7 @@ import com.zectan.chatic.classes.Fragment
 import com.zectan.chatic.databinding.FragmentChatsBinding
 import com.zectan.chatic.models.Chat
 
-class ChatsFragment : Fragment<FragmentChatsBinding>() {
+class ChatsFragment : Fragment<FragmentChatsBinding>(R.menu.menu_chats) {
     private lateinit var mAdapter: ChatsAdapter
 
     override fun onCreateView(
@@ -36,7 +36,6 @@ class ChatsFragment : Fragment<FragmentChatsBinding>() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        mActivity.menuInflater.inflate(R.menu.chats_toolbar_menu, menu)
         val searchManager = mActivity.getSystemService(SearchManager::class.java)
         val searchItem = menu.findItem(R.id.action_search)
         if (searchItem != null) {
