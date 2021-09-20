@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="light_grey">#F5F5F5</color>
+    <color name="grey">#DBDBDB</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <color name="teal">#1de9b6</color>
+    <color name="teal_light">#6effe8</color>
+    <color name="teal_dark">#00b686</color>
+    <color name="blue">#4fc3f7</color>
+    <color name="blue_light">#8bf6ff</color>
+    <color name="blue_dark">#0093c4</color>
+
+    <color name="ic_launcher_background">#FFFFFF</color>
+
+    <color name="primary">@color/teal</color>
+    <color name="primaryDark">@color/teal_dark</color>
+</resources>
