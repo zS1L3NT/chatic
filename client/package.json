@@ -7,7 +7,7 @@
 		"axios": "^0.21.1",
 		"firebase": "^8.1.1",
 		"include-media": "^1.4.9",
-		"node-sass": "^4.14.1",
+		"node-sass": "^7.0.0",
 		"public-ip": "^4.0.3",
 		"react": "^17.0.1",
 		"react-beforeunload": "^2.4.0",
