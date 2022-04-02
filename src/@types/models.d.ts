@@ -1,26 +1,26 @@
-interface Document {
+declare interface iUser {
 	id: string
-}
-
-declare interface iUser extends Document {
 	username: string
 	email: string
 	photo: string
 }
 
-declare interface iFriendship extends Document {
+declare interface iFriendship {
+	id: string
 	users: string[]
 	date: number
 }
 
-declare interface iHandshake extends Document {
+declare interface iHandshake {
+	id: string
 	users: string[]
 	requestId: string
 	targetId: string
 	date: number
 }
 
-declare interface iPresence extends Document {
+declare interface iPresence {
+	id: string
 	userId: string
 	deviceId: string
 	isOnline: boolean
@@ -28,11 +28,13 @@ declare interface iPresence extends Document {
 	lastSeen: number
 }
 
-declare interface iChat extends Document {
+declare interface iChat {
+	id: string
 	users: string[]
 }
 
-declare interface iMessage extends Document {
+declare interface iMessage {
+	id: string
 	content: string
 	media: string | null
 	date: number
@@ -41,7 +43,8 @@ declare interface iMessage extends Document {
 	chatId: string
 }
 
-declare interface iStatus extends Document {
+declare interface iStatus {
+	id: string
 	userId: string
 	messageId: string
 	chatId: string
