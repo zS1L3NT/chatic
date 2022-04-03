@@ -31,6 +31,7 @@ declare interface iPresence {
 declare interface iChat {
 	id: string
 	users: string[]
+	lastUpdated: number
 }
 
 declare interface iMessage {
