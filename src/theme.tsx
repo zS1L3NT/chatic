@@ -15,6 +15,7 @@ const palette = {
 export default createTheme({
 	palette: {
 		...palette,
+		mode: "dark",
 		primary: {
 			main: "#01648B",
 			contrastText: "#EEEEEE"
@@ -24,7 +25,15 @@ export default createTheme({
 			contrastText: "#111111"
 		},
 		background: {
-			default: "#EEEEEE"
+			default: "#222222"
+		}
+	},
+	components: {
+		MuiTypography: {
+			defaultProps: {
+				textOverflow: "ellipsis",
+				overflow: "hidden"
+			}
 		}
 	}
 })
