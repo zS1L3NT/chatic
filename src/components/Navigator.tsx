@@ -1,3 +1,4 @@
+import firebaseApp from "../firebaseApp"
 import useAuthUser from "../hooks/useAuthUser"
 import {
 	AppBar,
@@ -12,13 +13,18 @@ import {
 	Toolbar,
 	Typography
 } from "@mui/material"
+import { getAuth, signOut } from "firebase/auth"
 import { Menu, People, PersonAdd, Settings } from "@mui/icons-material"
 import { useNavigate } from "react-router-dom"
+import { useSignInWithGoogle } from "react-firebase-hooks/auth"
 import { useState } from "react"
 
 const Navigator = () => {
+	const auth = getAuth(firebaseApp)
+
 	const [user, userError] = useAuthUser()
 	const navigate = useNavigate()
+	const [signInWithGoogle] = useSignInWithGoogle(auth)
 	const [open, setOpen] = useState(false)
 
 	const handleSettingsClick = () => {
@@ -83,6 +89,8 @@ const Navigator = () => {
 							<ListItemText>Settings</ListItemText>
 						</ListItemButton>
 					</List>
+					<button onClick={() => signInWithGoogle()}>Sign In</button>
+					<button onClick={() => signOut(auth)}>Sign Out</button>
 				</Box>
 			</SwipeableDrawer>
 		</>
