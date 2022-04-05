@@ -13,10 +13,12 @@ const App = () => {
 		<ThemeProvider theme={theme}>
 			<CssBaseline />
 			{user && <Navigator />}
-			<Routes>
-				<Route path="/" element={user ? <Index /> : <Navigate to="/login" />} />
-				<Route path="/login" element={<Login />} />
-			</Routes>
+			<main>
+				<Routes>
+					<Route path="/" element={user ? <Index /> : <Navigate to="/login" />} />
+					<Route path="/login" element={<Login />} />
+				</Routes>
+			</main>
 		</ThemeProvider>
 	)
 }
