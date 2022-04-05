@@ -1,4 +1,4 @@
-import admin from "firebase-admin"
+import firebaseApp from "./firebaseApp"
 import util from "util"
 import {
 	chatData,
@@ -9,57 +9,35 @@ import {
 	statusData,
 	userData
 } from "./data"
+import { CollectionReference, getFirestore } from "firebase-admin/firestore"
 
-const config = require("../../config.json")
+const firestore = getFirestore(firebaseApp)
 
-admin.initializeApp({
-	credential: admin.credential.cert(config.firebase)
-})
-
-const db = admin.firestore()
-
-const users = db.collection("users") as FirebaseFirestore.CollectionReference<iUser>
-const friendships = db.collection(
-	"friendships"
-) as FirebaseFirestore.CollectionReference<iFriendship>
-const handshakes = db.collection("handshakes") as FirebaseFirestore.CollectionReference<iHandshake>
-const presences = db.collection("presences") as FirebaseFirestore.CollectionReference<iPresence>
-const chats = db.collection("chats") as FirebaseFirestore.CollectionReference<iChat>
-const messages = db.collection("messages") as FirebaseFirestore.CollectionReference<iMessage>
-const statuses = db.collection("statuses") as FirebaseFirestore.CollectionReference<iStatus>
-
-const migrate = async () => {
-	const promises = [
-		...(await migrateCollection("users", users, userData)),
-		...(await migrateCollection("friendships", friendships, friendshipData)),
-		...(await migrateCollection("handshakes", handshakes, handshakeData)),
-		...(await migrateCollection("presences", presences, presenceData)),
-		...(await migrateCollection("chats", chats, chatData)),
-		...(await migrateCollection("messages", messages, messageData)),
-		...(await migrateCollection("statuses", statuses, statusData))
-	]
-
-	Promise.allSettled(promises).then(results => {
-		results.forEach((result, i) => {
-			if (result.status === "rejected") {
-				console.error(`Failed at query ${i.toString().padEnd(3, " ")}:`, result.reason)
-			}
-		})
-		if (results.length > 0 && results.filter(r => r.status === "rejected").length === 0) {
-			console.log(`Migrations successful`)
-			console.log(`Changes: ${results.length}`)
-		} else {
-			console.log(`Nothing to migrate`)
-		}
-	})
+const getCollection = <
+	T extends keyof iFirestoreCollections,
+	C extends Record<string, any> = iFirestoreCollections[T]
+>(
+	collection: T
+): CollectionReference<C> => {
+	return firestore.collection(collection) as CollectionReference<C>
 }
 
-const migrateCollection = async <T extends { id: string }>(
-	name: string,
-	coll: FirebaseFirestore.CollectionReference<T>,
-	dataset: T[]
+const users = getCollection("users")
+const friendships = getCollection("friendships")
+const handshakes = getCollection("handshakes")
+const presences = getCollection("presences")
+const chats = getCollection("chats")
+const messages = getCollection("messages")
+const statuses = getCollection("statuses")
+
+const migrateCollection = async <
+	T extends keyof iFirestoreCollections,
+	C extends { id: string } = iFirestoreCollections[T]
+>(
+	name: T,
+	coll: CollectionReference<C>,
+	dataset: C[]
 ): Promise<Promise<any>[]> => {
-	name = name.padEnd(12, " ") + ":"
 	const snaps = await coll.get()
 	const promises: Promise<any>[] = []
 
@@ -91,6 +69,32 @@ const migrateCollection = async <T extends { id: string }>(
 	})
 
 	return promises
+}
+
+const migrate = async () => {
+	const promises = [
+		...(await migrateCollection("users", users, userData)),
+		...(await migrateCollection("friendships", friendships, friendshipData)),
+		...(await migrateCollection("handshakes", handshakes, handshakeData)),
+		...(await migrateCollection("presences", presences, presenceData)),
+		...(await migrateCollection("chats", chats, chatData)),
+		...(await migrateCollection("messages", messages, messageData)),
+		...(await migrateCollection("statuses", statuses, statusData))
+	]
+
+	Promise.allSettled(promises).then(results => {
+		results.forEach((result, i) => {
+			if (result.status === "rejected") {
+				console.error(`Failed at query ${i.toString().padEnd(3, " ")}:`, result.reason)
+			}
+		})
+		if (results.length > 0 && results.filter(r => r.status === "rejected").length === 0) {
+			console.log(`Migrations successful`)
+			console.log(`Changes: ${results.length}`)
+		} else {
+			console.log(`Nothing to migrate`)
+		}
+	})
 }
 
 migrate()

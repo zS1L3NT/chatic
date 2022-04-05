@@ -1,20 +1,15 @@
-import admin from "firebase-admin"
+import firebaseApp from "./firebaseApp"
+import { getFirestore } from "firebase-admin/firestore"
 
-const config = require("../config.json")
+const firestore = getFirestore(firebaseApp)
 
-admin.initializeApp({
-	credential: admin.credential.cert(config.firebase)
-})
-
-const db = admin.firestore()
-
-db.collection("statuses").onSnapshot(snaps =>
+firestore.collection("statuses").onSnapshot(snaps =>
 	snaps.docChanges().forEach(change => {
 		const status = change.doc.data() as iStatus
 
 		if (status.state === 0) {
 			console.log(`Changing state of ${status.id}`)
-			db.collection("statuses").doc(status.id).update({
+			firestore.collection("statuses").doc(status.id).update({
 				state: 3
 			})
 		}
