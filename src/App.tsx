@@ -1,13 +1,14 @@
+import AuthContext from "./contexts/AuthContext"
 import Index from "./pages/Index"
 import Login from "./pages/Login"
 import Navigator from "./components/Navigator"
 import theme from "./theme"
-import useAuthUser from "./hooks/useAuthUser"
 import { CssBaseline, ThemeProvider } from "@mui/material"
 import { Navigate, Route, Routes } from "react-router-dom"
+import { useContext } from "react"
 
 const App = () => {
-	const [user, userError] = useAuthUser()
+	const user = useContext(AuthContext)
 
 	return (
 		<ThemeProvider theme={theme}>

@@ -1,4 +1,4 @@
-import useAuthUser from "../hooks/useAuthUser"
+import AuthContext from "../contexts/AuthContext"
 import {
 	AppBar,
 	Avatar,
@@ -13,11 +13,11 @@ import {
 	Typography
 } from "@mui/material"
 import { Chat, Menu, People, PersonAdd, Settings } from "@mui/icons-material"
+import { useContext, useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { useState } from "react"
 
 const Navigator = () => {
-	const [user, userError] = useAuthUser()
+	const user = useContext(AuthContext)
 	const navigate = useNavigate()
 	const [open, setOpen] = useState(false)
 

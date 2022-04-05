@@ -1,14 +1,14 @@
+import AuthContext from "../contexts/AuthContext"
 import firebaseApp from "../firebaseApp"
-import useAuthUser from "../hooks/useAuthUser"
 import { getAuth, signOut } from "firebase/auth"
-import { useEffect } from "react"
+import { useContext, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { useSignInWithGoogle } from "react-firebase-hooks/auth"
 
 const Login = () => {
 	const auth = getAuth(firebaseApp)
 
-	const [user, userError] = useAuthUser()
+	const user = useContext(AuthContext)
 	const navigate = useNavigate()
 	const [signInWithGoogle] = useSignInWithGoogle(auth)
 
