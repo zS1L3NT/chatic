@@ -1,7 +1,6 @@
-import dotenv from "dotenv"
-import { cert, initializeApp } from "firebase-admin/app"
+import "dotenv/config"
 
-dotenv.config()
+import { cert, initializeApp } from "firebase-admin/app"
 
 export default initializeApp({
 	credential: cert({
