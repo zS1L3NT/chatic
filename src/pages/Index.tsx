@@ -3,12 +3,16 @@ import ChatListItem from "../components/Chat/ChatListItem"
 import useAppCollection from "../hooks/useAppCollection"
 import { motion } from "framer-motion"
 import { useContext } from "react"
-import { where } from "firebase/firestore"
+import { orderBy, where } from "firebase/firestore"
 
 const Index = () => {
 	const user = useContext(AuthContext)!
 
-	const [chats] = useAppCollection("chats", where("users", "array-contains", user.id))
+	const [chats] = useAppCollection(
+		"chats",
+		where("users", "array-contains", user.id),
+		orderBy("lastUpdated", "desc")
+	)
 
 	return (
 		<>

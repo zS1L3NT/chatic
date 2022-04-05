@@ -32,7 +32,8 @@ export default createTheme({
 		MuiTypography: {
 			defaultProps: {
 				textOverflow: "ellipsis",
-				overflow: "hidden"
+				overflow: "hidden",
+				whiteSpace: "nowrap"
 			}
 		}
 	}
