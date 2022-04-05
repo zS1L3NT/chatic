@@ -1,5 +1,4 @@
 import admin from "firebase-admin"
-import { Status } from "./models"
 
 const config = require("../config.json")
 
@@ -11,7 +10,7 @@ const db = admin.firestore()
 
 db.collection("statuses").onSnapshot(snaps =>
 	snaps.docChanges().forEach(change => {
-		const status = change.doc.data() as Status
+		const status = change.doc.data() as iStatus
 
 		if (status.state === 0) {
 			console.log(`Changing state of ${status.id}`)

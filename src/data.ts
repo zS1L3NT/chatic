@@ -1,17 +1,6 @@
-import {
-	Chat,
-	Friendship,
-	Handshake,
-	Invite,
-	Message,
-	Presence,
-	Status,
-	User
-} from "../models"
-
 const mybd = 1101916800000
 
-export const userData: User[] = [
+export const userData: iUser[] = [
 	{
 		id: "user-1",
 		username: "User 1",
@@ -32,7 +21,7 @@ export const userData: User[] = [
 	}
 ]
 
-export const friendshipData: Friendship[] = [
+export const friendshipData: iFriendship[] = [
 	{
 		id: "friendship-1",
 		users: ["user-1", "user-2"],
@@ -45,7 +34,7 @@ export const friendshipData: Friendship[] = [
 	}
 ]
 
-export const handshakeData: Handshake[] = [
+export const handshakeData: iHandshake[] = [
 	{
 		id: "handshake-1",
 		users: ["user-2", "user-3"],
@@ -55,7 +44,7 @@ export const handshakeData: Handshake[] = [
 	}
 ]
 
-export const presenceData: Presence[] = [
+export const presenceData: iPresence[] = [
 	{
 		id: "presence-1",
 		userId: "user-1",
@@ -82,26 +71,20 @@ export const presenceData: Presence[] = [
 	}
 ]
 
-export const chatData: Chat[] = [
+export const chatData: iChat[] = [
 	{
 		id: "chat-1",
-		admins: null,
 		users: ["user-1", "user-2"],
-		photo: null,
-		name: null,
-		type: 0
+		lastUpdated: 1649175583648
 	},
 	{
 		id: "chat-2",
-		admins: ["user-1"],
 		users: ["user-1", "user-2", "user-3"],
-		photo: "https://pbs.twimg.com/media/ExUElF7VcAMx7jx?format=jpg&name=4096x4096",
-		name: "IU Fan Club",
-		type: 1
+		lastUpdated: 1649175583648
 	}
 ]
 
-export const messageData: Message[] = [
+export const messageData: iMessage[] = [
 	{
 		id: "message-1",
 		content: "Hello!",
@@ -167,9 +150,7 @@ export const messageData: Message[] = [
 	}
 ]
 
-export const inviteData: Invite[] = []
-
-export const statusData: Status[] = [
+export const statusData: iStatus[] = [
 	{
 		id: "status-1",
 		messageId: "message-1",
