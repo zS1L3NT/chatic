@@ -7,6 +7,7 @@ import { where } from "firebase/firestore"
 
 const Index = () => {
 	const user = useContext(AuthContext)!
+
 	const [chats] = useAppCollection("chats", where("users", "array-contains", user.id))
 
 	return (

@@ -8,8 +8,9 @@ import { useSignInWithGoogle } from "react-firebase-hooks/auth"
 const Login = () => {
 	const auth = getAuth(firebaseApp)
 
-	const user = useContext(AuthContext)
 	const navigate = useNavigate()
+	const user = useContext(AuthContext)
+
 	const [signInWithGoogle] = useSignInWithGoogle(auth)
 
 	useEffect(() => {

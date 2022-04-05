@@ -17,8 +17,9 @@ import { useContext, useState } from "react"
 import { useNavigate } from "react-router-dom"
 
 const Navigator = () => {
-	const user = useContext(AuthContext)
 	const navigate = useNavigate()
+	const user = useContext(AuthContext)
+
 	const [open, setOpen] = useState(false)
 
 	const handleSettingsClick = () => {
