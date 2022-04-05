@@ -1,8 +1,10 @@
+import Index from "./pages/Index"
+import Login from "./pages/Login"
 import Navigator from "./components/Navigator"
 import theme from "./theme"
 import useAuthUser from "./hooks/useAuthUser"
 import { CssBaseline, ThemeProvider } from "@mui/material"
-import Index from "./pages/Index"
+import { Navigate, Route, Routes } from "react-router-dom"
 
 const App = () => {
 	const [user, userError] = useAuthUser()
@@ -11,7 +13,10 @@ const App = () => {
 		<ThemeProvider theme={theme}>
 			<CssBaseline />
 			{user && <Navigator />}
-			<Index />
+			<Routes>
+				<Route path="/" element={user ? <Index /> : <Navigate to="/login" />} />
+				<Route path="/login" element={<Login />} />
+			</Routes>
 		</ThemeProvider>
 	)
 }
