@@ -1,12 +1,14 @@
-import AuthContext from "../../contexts/AuthContext"
-import SkeletonImage from "../Skeletons/SkeletonImage"
-import SkeletonText from "../Skeletons/SkeletonText"
-import useAppCollection from "../../hooks/useAppCollection"
-import useAppDocument from "../../hooks/useAppDocument"
-import { Avatar, Box, Card, CardActionArea, Skeleton, Typography } from "@mui/material"
 import { limit, orderBy, where } from "firebase/firestore"
 import { motion } from "framer-motion"
 import { useContext } from "react"
+
+import { Avatar, Box, Card, CardActionArea, Skeleton } from "@mui/material"
+
+import AuthContext from "../../contexts/AuthContext"
+import useAppCollection from "../../hooks/useAppCollection"
+import useAppDocument from "../../hooks/useAppDocument"
+import SkeletonImage from "../Skeletons/SkeletonImage"
+import SkeletonText from "../Skeletons/SkeletonText"
 
 interface Props {
 	chat: iChat

@@ -1,9 +1,10 @@
-import AuthContext from "../contexts/AuthContext"
-import ChatListItem from "../components/Chat/ChatListItem"
-import useAppCollection from "../hooks/useAppCollection"
+import { orderBy, where } from "firebase/firestore"
 import { motion } from "framer-motion"
 import { useContext } from "react"
-import { orderBy, where } from "firebase/firestore"
+
+import ChatListItem from "../components/Chat/ChatListItem"
+import AuthContext from "../contexts/AuthContext"
+import useAppCollection from "../hooks/useAppCollection"
 
 const Index = () => {
 	const user = useContext(AuthContext)!

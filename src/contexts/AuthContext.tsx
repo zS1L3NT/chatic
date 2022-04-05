@@ -1,8 +1,9 @@
+import { getAuth } from "firebase/auth"
+import { createContext, PropsWithChildren, useEffect, useState } from "react"
+import { useAuthState } from "react-firebase-hooks/auth"
+
 import firebaseApp from "../firebaseApp"
 import useAppDocument from "../hooks/useAppDocument"
-import { createContext, PropsWithChildren, useEffect, useState } from "react"
-import { getAuth } from "firebase/auth"
-import { useAuthState } from "react-firebase-hooks/auth"
 
 const AuthContext = createContext<iUser | null>(null)
 
@@ -18,11 +19,7 @@ const AuthProvider = (props: PropsWithChildren<{}>) => {
 		setUser(dbUser)
 	}, [dbUser])
 
-	return (
-		<AuthContext.Provider value={user}>
-			{props.children}
-		</AuthContext.Provider>
-	)
+	return <AuthContext.Provider value={user}>{props.children}</AuthContext.Provider>
 }
 
 export { AuthProvider }

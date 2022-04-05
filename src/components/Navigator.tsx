@@ -1,20 +1,13 @@
-import AuthContext from "../contexts/AuthContext"
-import {
-	AppBar,
-	Avatar,
-	Box,
-	IconButton,
-	List,
-	ListItemButton,
-	ListItemIcon,
-	ListItemText,
-	SwipeableDrawer,
-	Toolbar,
-	Typography
-} from "@mui/material"
-import { Chat, Menu, People, PersonAdd, Settings } from "@mui/icons-material"
 import { useContext, useState } from "react"
 import { useNavigate } from "react-router-dom"
+
+import { Menu, People, PersonAdd, Settings } from "@mui/icons-material"
+import {
+	AppBar, Avatar, Box, IconButton, List, ListItemButton, ListItemIcon, ListItemText,
+	SwipeableDrawer, Toolbar, Typography
+} from "@mui/material"
+
+import AuthContext from "../contexts/AuthContext"
 
 const Navigator = () => {
 	const navigate = useNavigate()

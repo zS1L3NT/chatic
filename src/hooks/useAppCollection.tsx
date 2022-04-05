@@ -1,12 +1,9 @@
-import firebaseApp from "../firebaseApp"
 import {
-	collection,
-	CollectionReference,
-	getFirestore,
-	query,
-	QueryConstraint
+	collection, CollectionReference, getFirestore, query, QueryConstraint
 } from "firebase/firestore"
 import { useCollectionData } from "react-firebase-hooks/firestore"
+
+import firebaseApp from "../firebaseApp"
 
 export default <C extends keyof iFirestoreCollections, T = iFirestoreCollections[C]>(
 	coll: C,
