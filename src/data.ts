@@ -79,7 +79,7 @@ export const chatData: iChat[] = [
 	},
 	{
 		id: "chat-2",
-		users: ["mQg4fp1624MxgkIkWpnOVmSfZ7a2", "user-2", "user-3"],
+		users: ["mQg4fp1624MxgkIkWpnOVmSfZ7a2", "user-3"],
 		lastUpdated: 1649175583648
 	}
 ]
@@ -132,15 +132,6 @@ export const messageData: iMessage[] = [
 	},
 	{
 		id: "message-6",
-		content: "Hi, my user id is user-2!",
-		media: null,
-		date: mybd - 1200000,
-		replyId: "message-5",
-		userId: "user-2",
-		chatId: "chat-2"
-	},
-	{
-		id: "message-7",
 		content: "Hi, my user id is user-3!",
 		media: null,
 		date: mybd - 800000,
@@ -217,54 +208,33 @@ export const statusData: iStatus[] = [
 	{
 		id: "status-10",
 		messageId: "message-5",
-		userId: "user-2",
-		chatId: "chat-2",
-		state: 3
-	},
-	{
-		id: "status-11",
-		messageId: "message-5",
 		userId: "user-3",
 		chatId: "chat-2",
 		state: 3
 	},
 	{
-		id: "status-12",
+		id: "status-11",
 		messageId: "message-6",
 		userId: "mQg4fp1624MxgkIkWpnOVmSfZ7a2",
 		chatId: "chat-2",
 		state: 2
 	},
 	{
-		id: "status-13",
-		messageId: "message-6",
-		userId: "user-2",
-		chatId: "chat-2",
-		state: 3
-	},
-	{
-		id: "status-14",
+		id: "status-12",
 		messageId: "message-6",
 		userId: "user-3",
 		chatId: "chat-2",
 		state: 3
 	},
 	{
-		id: "status-15",
+		id: "status-13",
 		messageId: "message-7",
 		userId: "mQg4fp1624MxgkIkWpnOVmSfZ7a2",
 		chatId: "chat-2",
 		state: 1
 	},
 	{
-		id: "status-16",
-		messageId: "message-7",
-		userId: "user-2",
-		chatId: "chat-2",
-		state: 1
-	},
-	{
-		id: "status-17",
+		id: "status-14",
 		messageId: "message-7",
 		userId: "user-3",
 		chatId: "chat-2",
