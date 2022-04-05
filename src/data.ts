@@ -2,7 +2,7 @@ const mybd = 1101916800000
 
 export const userData: iUser[] = [
 	{
-		id: "user-1",
+		id: "mQg4fp1624MxgkIkWpnOVmSfZ7a2",
 		username: "User 1",
 		email: "zechariahtan144@gmail.com",
 		photo: "https://i.scdn.co/image/ab6761610000e5eb006ff3c0136a71bfb9928d34"
@@ -24,12 +24,12 @@ export const userData: iUser[] = [
 export const friendshipData: iFriendship[] = [
 	{
 		id: "friendship-1",
-		users: ["user-1", "user-2"],
+		users: ["mQg4fp1624MxgkIkWpnOVmSfZ7a2", "user-2"],
 		date: mybd
 	},
 	{
 		id: "friendship-2",
-		users: ["user-1", "user-3"],
+		users: ["mQg4fp1624MxgkIkWpnOVmSfZ7a2", "user-3"],
 		date: mybd
 	}
 ]
@@ -47,7 +47,7 @@ export const handshakeData: iHandshake[] = [
 export const presenceData: iPresence[] = [
 	{
 		id: "presence-1",
-		userId: "user-1",
+		userId: "mQg4fp1624MxgkIkWpnOVmSfZ7a2",
 		deviceId: "device-1",
 		isOnline: true,
 		typingTo: "user-2",
@@ -74,12 +74,12 @@ export const presenceData: iPresence[] = [
 export const chatData: iChat[] = [
 	{
 		id: "chat-1",
-		users: ["user-1", "user-2"],
+		users: ["mQg4fp1624MxgkIkWpnOVmSfZ7a2", "user-2"],
 		lastUpdated: 1649175583648
 	},
 	{
 		id: "chat-2",
-		users: ["user-1", "user-2", "user-3"],
+		users: ["mQg4fp1624MxgkIkWpnOVmSfZ7a2", "user-2", "user-3"],
 		lastUpdated: 1649175583648
 	}
 ]
@@ -91,7 +91,7 @@ export const messageData: iMessage[] = [
 		media: null,
 		date: mybd - 3200000,
 		replyId: null,
-		userId: "user-1",
+		userId: "mQg4fp1624MxgkIkWpnOVmSfZ7a2",
 		chatId: "chat-1"
 	},
 	{
@@ -109,7 +109,7 @@ export const messageData: iMessage[] = [
 		media: "https://6.vikiplatform.com/image/a11230e2d98d4a73825a4c10c8c6feb0.jpg?x=b&a=0x0&s=460x268&e=t&f=t&cb=1",
 		date: mybd - 2400000,
 		replyId: null,
-		userId: "user-1",
+		userId: "mQg4fp1624MxgkIkWpnOVmSfZ7a2",
 		chatId: "chat-1"
 	},
 	{
@@ -123,11 +123,11 @@ export const messageData: iMessage[] = [
 	},
 	{
 		id: "message-5",
-		content: "Hi, my user id is user-1!",
+		content: "Hi, my user id is mQg4fp1624MxgkIkWpnOVmSfZ7a2!",
 		media: null,
 		date: mybd - 1600000,
 		replyId: null,
-		userId: "user-1",
+		userId: "mQg4fp1624MxgkIkWpnOVmSfZ7a2",
 		chatId: "chat-2"
 	},
 	{
@@ -154,7 +154,7 @@ export const statusData: iStatus[] = [
 	{
 		id: "status-1",
 		messageId: "message-1",
-		userId: "user-1",
+		userId: "mQg4fp1624MxgkIkWpnOVmSfZ7a2",
 		chatId: "chat-1",
 		state: 3
 	},
@@ -168,7 +168,7 @@ export const statusData: iStatus[] = [
 	{
 		id: "status-3",
 		messageId: "message-2",
-		userId: "user-1",
+		userId: "mQg4fp1624MxgkIkWpnOVmSfZ7a2",
 		chatId: "chat-1",
 		state: 3
 	},
@@ -182,7 +182,7 @@ export const statusData: iStatus[] = [
 	{
 		id: "status-5",
 		messageId: "message-3",
-		userId: "user-1",
+		userId: "mQg4fp1624MxgkIkWpnOVmSfZ7a2",
 		chatId: "chat-1",
 		state: 3
 	},
@@ -196,7 +196,7 @@ export const statusData: iStatus[] = [
 	{
 		id: "status-7",
 		messageId: "message-4",
-		userId: "user-1",
+		userId: "mQg4fp1624MxgkIkWpnOVmSfZ7a2",
 		chatId: "chat-1",
 		state: 1
 	},
@@ -210,7 +210,7 @@ export const statusData: iStatus[] = [
 	{
 		id: "status-9",
 		messageId: "message-5",
-		userId: "user-1",
+		userId: "mQg4fp1624MxgkIkWpnOVmSfZ7a2",
 		chatId: "chat-2",
 		state: 3
 	},
@@ -231,7 +231,7 @@ export const statusData: iStatus[] = [
 	{
 		id: "status-12",
 		messageId: "message-6",
-		userId: "user-1",
+		userId: "mQg4fp1624MxgkIkWpnOVmSfZ7a2",
 		chatId: "chat-2",
 		state: 2
 	},
@@ -252,7 +252,7 @@ export const statusData: iStatus[] = [
 	{
 		id: "status-15",
 		messageId: "message-7",
-		userId: "user-1",
+		userId: "mQg4fp1624MxgkIkWpnOVmSfZ7a2",
 		chatId: "chat-2",
 		state: 1
 	},
