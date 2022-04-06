@@ -1,28 +1,15 @@
-import { orderBy, where } from "firebase/firestore"
-import { motion } from "framer-motion"
-import { useContext } from "react"
-
-import ChatListItem from "../components/Chat/ChatListItem"
-import AuthContext from "../contexts/AuthContext"
-import useAppCollection from "../hooks/useAppCollection"
+import ChatList from "../components/Chat/ChatList"
 
 const Index = () => {
-	const user = useContext(AuthContext)!
-
-	const [chats] = useAppCollection(
-		"chats",
-		where("users", "array-contains", user.id),
-		orderBy("lastUpdated", "desc")
-	)
-
 	return (
-		<>
-			<motion.div style={{ width: "30%" }}>
-				{chats?.map(chat => (
-					<ChatListItem key={chat.id} chat={chat} />
-				))}
-			</motion.div>
-		</>
+		<div style={{ display: "flex", height: "100%" }}>
+			<div style={{ flex: 3, height: "100%" }}>
+				<ChatList />
+			</div>
+			<div style={{ flex: 7, height: "100%", background: "#181818" }}>
+
+			</div>
+		</div>
 	)
 }
 
