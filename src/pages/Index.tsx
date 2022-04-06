@@ -1,3 +1,4 @@
+import ChatContent from "../components/Chat/ChatContent"
 import ChatList from "../components/Chat/ChatList"
 
 const Index = () => {
@@ -7,7 +8,7 @@ const Index = () => {
 				<ChatList />
 			</div>
 			<div style={{ flex: 7, height: "100%", background: "#181818" }}>
-
+				<ChatContent />
 			</div>
 		</div>
 	)

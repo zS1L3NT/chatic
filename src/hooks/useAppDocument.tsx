@@ -5,7 +5,7 @@ import firebaseApp from "../firebaseApp"
 
 export default <C extends keyof iFirestoreCollections, T = iFirestoreCollections[C]>(
 	coll: C,
-	path?: string
+	path?: string | null
 ): [T, null] | [null, Error] | [null, null] => {
 	const firestore = getFirestore(firebaseApp)
 	const docRef = doc(firestore, coll, path || "-") as DocumentReference<T>
