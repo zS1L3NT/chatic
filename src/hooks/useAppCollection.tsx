@@ -16,7 +16,7 @@ const useAppCollection = <C extends keyof iFirestoreCollections, T = iFirestoreC
 
 	const [data, _, error] = useCollectionData(collectionQuery)
 
-	useDebugValue({ data, error })
+	useDebugValue([data, error])
 
 	return data ? [data, null] : error ? [null, error] : [null, null]
 }

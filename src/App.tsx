@@ -9,7 +9,7 @@ import Index from "./pages/Index"
 import Login from "./pages/Login"
 import theme from "./theme"
 
-const App = () => {
+const _App = () => {
 	const user = useContext(AuthContext)
 
 	return (
@@ -26,4 +26,4 @@ const App = () => {
 	)
 }
 
-export default App
+export default _App

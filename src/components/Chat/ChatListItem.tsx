@@ -18,7 +18,7 @@ interface Props {
 // TODO Context Menu Actions
 // TODO Sent message statuses
 
-const ChatListItem = (props: Props) => {
+const _ChatListItem = (props: Props) => {
 	const { chat } = props
 	const route = `#/${chat.id}`
 
@@ -78,4 +78,4 @@ const ChatListItem = (props: Props) => {
 	)
 }
 
-export default ChatListItem
+export default _ChatListItem

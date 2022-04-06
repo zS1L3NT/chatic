@@ -4,7 +4,7 @@ import { useDocumentData } from "react-firebase-hooks/firestore"
 
 import firebaseApp from "../firebaseApp"
 
-export default <C extends keyof iFirestoreCollections, T = iFirestoreCollections[C]>(
+const useAppDocument = <C extends keyof iFirestoreCollections, T = iFirestoreCollections[C]>(
 	coll: C,
 	path?: string | null
 ): [T, null] | [null, Error] | [null, null] => {
@@ -13,7 +13,9 @@ export default <C extends keyof iFirestoreCollections, T = iFirestoreCollections
 
 	const [data, _, error] = useDocumentData(docRef)
 
-	useDebugValue({ data, error })
+	useDebugValue([data, error])
 
 	return data ? [data, null] : error ? [null, error] : [null, null]
 }
+
+export default useAppDocument

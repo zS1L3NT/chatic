@@ -7,7 +7,7 @@ interface Props {
 	style?: React.CSSProperties
 }
 
-const SkeletonImage = (props: Props) => {
+const _SkeletonImage = (props: Props) => {
 	const { src, skeleton, component, style } = props
 
 	const [fade, setFade] = useState(false)
@@ -59,4 +59,4 @@ const SkeletonImage = (props: Props) => {
 	)
 }
 
-export default SkeletonImage
+export default _SkeletonImage

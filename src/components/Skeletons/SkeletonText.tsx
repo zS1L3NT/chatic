@@ -9,7 +9,7 @@ interface Props {
 	height?: string | number
 }
 
-const SkeletonText = (props: Props) => {
+const _SkeletonText = (props: Props) => {
 	const { children, variant, sx, width, height } = props
 
 	return children !== undefined && children !== null ? (
@@ -21,4 +21,4 @@ const SkeletonText = (props: Props) => {
 	)
 }
 
-export default SkeletonText
+export default _SkeletonText

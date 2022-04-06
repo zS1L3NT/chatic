@@ -7,7 +7,7 @@ import ChatListItem from "./ChatListItem"
 
 // TODO Pagination
 
-const ChatList = () => {
+const _ChatList = () => {
 	const user = useContext(AuthContext)!
 
 	const [chats] = useAppCollection(
@@ -25,4 +25,4 @@ const ChatList = () => {
 	)
 }
 
-export default ChatList
+export default _ChatList

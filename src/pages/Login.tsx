@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom"
 import AuthContext from "../contexts/AuthContext"
 import firebaseApp from "../firebaseApp"
 
-const Login = () => {
+const _Login = () => {
 	const auth = getAuth(firebaseApp)
 
 	const navigate = useNavigate()
@@ -28,4 +28,4 @@ const Login = () => {
 	)
 }
 
-export default Login
+export default _Login

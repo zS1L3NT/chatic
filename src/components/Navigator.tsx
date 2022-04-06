@@ -9,7 +9,7 @@ import {
 
 import AuthContext from "../contexts/AuthContext"
 
-const Navigator = () => {
+const _Navigator = () => {
 	const navigate = useNavigate()
 	const user = useContext(AuthContext)
 
@@ -83,4 +83,4 @@ const Navigator = () => {
 	)
 }
 
-export default Navigator
+export default _Navigator

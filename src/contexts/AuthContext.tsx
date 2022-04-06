@@ -7,13 +7,13 @@ import useAppDocument from "../hooks/useAppDocument"
 
 const AuthContext = createContext<iUser | null>(null)
 
-const AuthProvider = (props: PropsWithChildren<{}>) => {
+const _AuthProvider = (props: PropsWithChildren<{}>) => {
 	const auth = getAuth(firebaseApp)
 
 	const [user, setUser] = useState<iUser | null>(null)
 
-	const [authUser, _, authError] = useAuthState(auth)
-	const [dbUser, dbUserError] = useAppDocument("users", authUser?.uid)
+	const [authUser, _] = useAuthState(auth)
+	const [dbUser] = useAppDocument("users", authUser?.uid)
 
 	useEffect(() => {
 		setUser(dbUser)
@@ -22,5 +22,5 @@ const AuthProvider = (props: PropsWithChildren<{}>) => {
 	return <AuthContext.Provider value={user}>{props.children}</AuthContext.Provider>
 }
 
-export { AuthProvider }
+export { _AuthProvider as AuthProvider }
 export default AuthContext

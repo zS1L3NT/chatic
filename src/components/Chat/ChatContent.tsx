@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { useLocation } from "react-router-dom"
 import useAppDocument from "../../hooks/useAppDocument"
 
-const ChatContent = () => {
+const _ChatContent = () => {
 	const location = useLocation()
 	const [chatId, setChatId] = useState<string | null>()
 
@@ -19,4 +19,4 @@ const ChatContent = () => {
 	return <></>
 }
 
-export default ChatContent
+export default _ChatContent
