@@ -2,6 +2,7 @@ import { CSSProperties, useEffect, useState } from "react"
 import { useLocation } from "react-router-dom"
 
 import useAppDocument from "../../hooks/useAppDocument"
+import ChatContentToolbar from "./ChatContentToolbar"
 
 interface Props {
 	style?: CSSProperties
@@ -23,7 +24,11 @@ const _ChatContent = (props: Props) => {
 		}
 	}, [location.hash])
 
-	return <div style={style}></div>
+	return (
+		<div style={style}>
+			<ChatContentToolbar />
+		</div>
+	)
 }
 
 export default _ChatContent

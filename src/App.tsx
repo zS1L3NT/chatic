@@ -3,7 +3,6 @@ import { Navigate, Route, Routes } from "react-router-dom"
 
 import { CssBaseline, ThemeProvider } from "@mui/material"
 
-import Navigator from "./components/Navigator"
 import AuthContext from "./contexts/AuthContext"
 import Index from "./pages/Index"
 import Login from "./pages/Login"
@@ -15,7 +14,6 @@ const _App = () => {
 	return (
 		<ThemeProvider theme={theme}>
 			<CssBaseline />
-			{user && <Navigator />}
 			<main>
 				<Routes>
 					<Route path="/" element={user ? <Index /> : <Navigate to="/login" />} />

@@ -4,6 +4,7 @@ import { CSSProperties, useContext } from "react"
 import AuthContext from "../../contexts/AuthContext"
 import useAppCollection from "../../hooks/useAppCollection"
 import ChatListItem from "./ChatListItem"
+import ChatListToolbar from "./ChatListToolbar"
 
 // TODO Pagination
 
@@ -24,6 +25,7 @@ const _ChatList = (props: Props) => {
 
 	return (
 		<div style={style}>
+			<ChatListToolbar />
 			{chats?.map(chat => (
 				<ChatListItem key={chat.id} chat={chat} />
 			))}
