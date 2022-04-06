@@ -52,8 +52,12 @@ const ChatListItem = (props: Props) => {
 							justifyContent: "center",
 							pl: 2
 						}}>
-						<SkeletonText variant="h6">{otherUser?.username}</SkeletonText>
-						<SkeletonText variant="subtitle1">{messages?.[0]?.content}</SkeletonText>
+						<SkeletonText variant="body1" sx={{ fontWeight: "medium" }}>
+							{otherUser?.username}
+						</SkeletonText>
+						<SkeletonText variant="body2" sx={{ opacity: 0.75 }}>
+							{messages ? (messages[0] ? messages[0].content : "") : null}
+						</SkeletonText>
 					</Box>
 				</CardActionArea>
 			</Card>

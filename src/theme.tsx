@@ -33,7 +33,8 @@ export default createTheme({
 			defaultProps: {
 				textOverflow: "ellipsis",
 				overflow: "hidden",
-				whiteSpace: "nowrap"
+				whiteSpace: "nowrap",
+				fontFamily: "Roboto"
 			}
 		}
 	}

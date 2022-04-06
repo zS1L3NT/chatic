@@ -1,19 +1,20 @@
-import { Skeleton, Typography } from "@mui/material"
+import { Skeleton, SxProps, Theme, Typography } from "@mui/material"
 import { Variant } from "@mui/material/styles/createTypography"
 
 interface Props {
-	children?: string
+	children?: string | null
 	variant?: Variant
+	sx?: SxProps<Theme>
 	width?: string | number
 	height?: string | number
 }
 
 const SkeletonText = (props: Props) => {
-	const { children, variant, width, height } = props
+	const { children, variant, sx, width, height } = props
 
-	return children ? (
-		<Typography variant={variant} sx={{ width }}>
-			{children}
+	return children !== undefined && children !== null ? (
+		<Typography variant={variant} sx={{ width, ...sx }}>
+			{children || "\u200B"}
 		</Typography>
 	) : (
 		<Skeleton variant="text" width={width} height={height} />
