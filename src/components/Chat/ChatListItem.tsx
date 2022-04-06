@@ -6,6 +6,7 @@ import { useLocation, useNavigate } from "react-router-dom"
 import { Avatar, Box, Card, CardActionArea, Skeleton } from "@mui/material"
 
 import AuthContext from "../../contexts/AuthContext"
+import ChatSearchContext from "../../contexts/ChatSearchContext"
 import useAppCollection from "../../hooks/useAppCollection"
 import useAppDocument from "../../hooks/useAppDocument"
 import SkeletonImage from "../Skeletons/SkeletonImage"
@@ -25,6 +26,7 @@ const _ChatListItem = (props: Props) => {
 	const navigate = useNavigate()
 	const location = useLocation()
 	const user = useContext(AuthContext)!
+	const search = useContext(ChatSearchContext).search.trim().toLowerCase()
 	const isActive = useMemo(() => location.hash === route, [location])
 
 	const [otherUser] = useAppDocument("users", chat.users.filter(id => id !== user.id)[0])
@@ -40,6 +42,12 @@ const _ChatListItem = (props: Props) => {
 	}
 
 	return (
+		search && otherUser
+			? otherUser.username.toLowerCase().indexOf(search) >= 0
+				? true
+				: false
+			: true
+	) ? (
 		<motion.div layout>
 			<Card sx={{ backgroundColor: isActive ? "primary.dark" : "" }}>
 				<CardActionArea
@@ -75,7 +83,7 @@ const _ChatListItem = (props: Props) => {
 				</CardActionArea>
 			</Card>
 		</motion.div>
-	)
+	) : null
 }
 
 export default _ChatListItem
