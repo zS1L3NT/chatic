@@ -1,11 +1,12 @@
 import {
 	collection, CollectionReference, getFirestore, query, QueryConstraint
 } from "firebase/firestore"
+import { useDebugValue } from "react"
 import { useCollectionData } from "react-firebase-hooks/firestore"
 
 import firebaseApp from "../firebaseApp"
 
-export default <C extends keyof iFirestoreCollections, T = iFirestoreCollections[C]>(
+const useAppCollection = <C extends keyof iFirestoreCollections, T = iFirestoreCollections[C]>(
 	coll: C,
 	...constraints: QueryConstraint[]
 ): [T[], null] | [null, Error] | [null, null] => {
@@ -15,5 +16,9 @@ export default <C extends keyof iFirestoreCollections, T = iFirestoreCollections
 
 	const [data, _, error] = useCollectionData(collectionQuery)
 
+	useDebugValue({ data, error })
+
 	return data ? [data, null] : error ? [null, error] : [null, null]
 }
+
+export default useAppCollection

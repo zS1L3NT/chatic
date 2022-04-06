@@ -1,4 +1,5 @@
 import { doc, DocumentReference, getFirestore } from "firebase/firestore"
+import { useDebugValue } from "react"
 import { useDocumentData } from "react-firebase-hooks/firestore"
 
 import firebaseApp from "../firebaseApp"
@@ -11,6 +12,8 @@ export default <C extends keyof iFirestoreCollections, T = iFirestoreCollections
 	const docRef = doc(firestore, coll, path || "-") as DocumentReference<T>
 
 	const [data, _, error] = useDocumentData(docRef)
+
+	useDebugValue({ data, error })
 
 	return data ? [data, null] : error ? [null, error] : [null, null]
 }
