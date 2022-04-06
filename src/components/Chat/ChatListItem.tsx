@@ -1,6 +1,7 @@
 import { limit, orderBy, where } from "firebase/firestore"
 import { motion } from "framer-motion"
-import { useContext } from "react"
+import { useContext, useMemo } from "react"
+import { useLocation, useNavigate } from "react-router-dom"
 
 import { Avatar, Box, Card, CardActionArea, Skeleton } from "@mui/material"
 
@@ -16,8 +17,12 @@ interface Props {
 
 const ChatListItem = (props: Props) => {
 	const { chat } = props
+	const route = `#/${chat.id}`
 
+	const navigate = useNavigate()
+	const location = useLocation()
 	const user = useContext(AuthContext)!
+	const isActive = useMemo(() => location.hash === route, [location])
 
 	const [otherUser] = useAppDocument("users", chat.users.filter(id => id !== user.id)[0])
 	const [messages] = useAppCollection(
@@ -27,10 +32,15 @@ const ChatListItem = (props: Props) => {
 		limit(1)
 	)
 
+	const handleClick = () => {
+		navigate(isActive ? `/` : route, { replace: true })
+	}
+
 	return (
 		<motion.div layout>
-			<Card>
+			<Card sx={{ backgroundColor: isActive ? "primary.dark" : "" }}>
 				<CardActionArea
+					onClick={handleClick}
 					sx={{
 						height: 72,
 						display: "grid",
