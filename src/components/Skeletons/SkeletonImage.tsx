@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react"
+import { CSSProperties, useEffect, useState } from "react"
 
 interface Props {
 	src?: string
 	skeleton: JSX.Element
 	component: (url: string) => JSX.Element
-	style?: React.CSSProperties
+	style?: CSSProperties
 }
 
 const _SkeletonImage = (props: Props) => {
