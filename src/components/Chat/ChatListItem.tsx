@@ -15,6 +15,9 @@ interface Props {
 	chat: iChat
 }
 
+// TODO Context Menu Actions
+// TODO Sent message statuses
+
 const ChatListItem = (props: Props) => {
 	const { chat } = props
 	const route = `#/${chat.id}`
