@@ -1,8 +1,15 @@
-import { useEffect, useState } from "react"
+import { CSSProperties, useEffect, useState } from "react"
 import { useLocation } from "react-router-dom"
+
 import useAppDocument from "../../hooks/useAppDocument"
 
-const _ChatContent = () => {
+interface Props {
+	style?: CSSProperties
+}
+
+const _ChatContent = (props: Props) => {
+	const { style } = props
+
 	const location = useLocation()
 	const [chatId, setChatId] = useState<string | null>()
 
@@ -16,7 +23,7 @@ const _ChatContent = () => {
 		}
 	}, [location.hash])
 
-	return <></>
+	return <div style={style}></div>
 }
 
 export default _ChatContent

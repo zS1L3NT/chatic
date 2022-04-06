@@ -1,13 +1,19 @@
 import { orderBy, where } from "firebase/firestore"
-import { useContext } from "react"
-import AuthContext from "../../contexts/AuthContext"
+import { CSSProperties, useContext } from "react"
 
+import AuthContext from "../../contexts/AuthContext"
 import useAppCollection from "../../hooks/useAppCollection"
 import ChatListItem from "./ChatListItem"
 
 // TODO Pagination
 
-const _ChatList = () => {
+interface Props {
+	style?: CSSProperties
+}
+
+const _ChatList = (props: Props) => {
+	const { style } = props
+
 	const user = useContext(AuthContext)!
 
 	const [chats] = useAppCollection(
@@ -17,11 +23,11 @@ const _ChatList = () => {
 	)
 
 	return (
-		<>
+		<div style={style}>
 			{chats?.map(chat => (
 				<ChatListItem key={chat.id} chat={chat} />
 			))}
-		</>
+		</div>
 	)
 }
 
