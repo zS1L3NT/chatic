@@ -2,7 +2,17 @@ import { motion, useAnimation } from "framer-motion"
 import { useRef, useState } from "react"
 
 import { Close, MoreVert, Search } from "@mui/icons-material"
-import { AppBar, IconButton, TextField, Toolbar, Typography } from "@mui/material"
+import { AppBar, IconButton, TextField, TextFieldProps, Toolbar, Typography } from "@mui/material"
+import { styled } from "@mui/material/styles"
+
+const SearchBar = styled(TextField)<TextFieldProps>(({ theme }) => ({
+	"& .MuiInput-underline:hover:before": {
+		borderBottom: "1px solid white"
+	},
+	"& .MuiInput-underline:after": {
+		borderBottomColor: "white"
+	}
+}))
 
 const _ChatListToolbar = () => {
 	const textFieldRef = useRef<HTMLDivElement | null>(null)
@@ -84,11 +94,10 @@ const _ChatListToolbar = () => {
 					}}
 					animate={searchControls}
 					initial={{ y: 20, zIndex: -1, opacity: 0 }}>
-					<TextField
+					<SearchBar
 						sx={{ mt: 0.25, flexGrow: 1 }}
 						variant="standard"
-						placeholder="Search for chat"
-						color="primary"
+						placeholder="Search for chat..."
 						ref={textFieldRef}
 					/>
 					<IconButton onClick={handleCancel} edge="end">
