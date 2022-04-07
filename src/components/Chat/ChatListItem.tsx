@@ -1,11 +1,12 @@
 import { limit, orderBy, where } from "firebase/firestore"
 import { motion } from "framer-motion"
-import { Dispatch, SetStateAction, useContext, useEffect, useMemo } from "react"
+import { Dispatch, SetStateAction, useContext, useEffect } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
 
 import { Avatar, Box, Card, CardActionArea, Skeleton } from "@mui/material"
 
 import AuthContext from "../../contexts/AuthContext"
+import ChatContext from "../../contexts/ChatContext"
 import useAppCollection from "../../hooks/useAppCollection"
 import useAppDocument from "../../hooks/useAppDocument"
 import SkeletonImage from "../Skeletons/SkeletonImage"
@@ -26,9 +27,9 @@ const _ChatListItem = (props: Props) => {
 	const navigate = useNavigate()
 	const location = useLocation()
 	const user = useContext(AuthContext)!
-	const isActive = useMemo(() => location.hash === route, [location])
+	const { setChat, setReceiver } = useContext(ChatContext)
 
-	const [otherUser] = useAppDocument("users", chat.users.filter(id => id !== user.id)[0])
+	const [receiver] = useAppDocument("users", chat.users.filter(id => id !== user.id)[0])
 	const [messages] = useAppCollection(
 		"messages",
 		where("chatId", "==", chat.id),
@@ -37,20 +38,27 @@ const _ChatListItem = (props: Props) => {
 	)
 
 	const handleClick = () => {
-		navigate(isActive ? `/` : route, { replace: true })
+		navigate(location.hash === route ? `/` : route, { replace: true })
 	}
 
 	useEffect(() => {
 		setFilters(filters => ({
 			...filters,
 			[chat.id]: search =>
-				search && otherUser
-					? otherUser.username.toLowerCase().indexOf(search) >= 0
+				search && receiver
+					? receiver.username.toLowerCase().indexOf(search) >= 0
 						? true
 						: false
 					: true
 		}))
-	}, [otherUser])
+	}, [receiver])
+
+	useEffect(() => {
+		if (location.hash === route) {
+			setChat(chat)
+			setReceiver(receiver)
+		}
+	}, [chat, receiver, location.hash])
 
 	return (
 		<motion.div
@@ -58,7 +66,7 @@ const _ChatListItem = (props: Props) => {
 			animate={{ opacity: 1 }}
 			exit={{ opacity: 0 }}
 			layout>
-			<Card sx={{ backgroundColor: isActive ? "primary.dark" : "" }}>
+			<Card sx={{ backgroundColor: location.hash === route ? "primary.dark" : "" }}>
 				<CardActionArea
 					onClick={handleClick}
 					sx={{
@@ -69,7 +77,7 @@ const _ChatListItem = (props: Props) => {
 						px: 2
 					}}>
 					<SkeletonImage
-						src={otherUser?.photo}
+						src={receiver?.photo}
 						skeleton={<Skeleton variant="circular" sx={{ width: 56, height: 56 }} />}
 						component={url => <Avatar sx={{ width: 56, height: 56 }} src={url} />}
 					/>
@@ -83,7 +91,7 @@ const _ChatListItem = (props: Props) => {
 							pl: 2
 						}}>
 						<SkeletonText variant="body1" sx={{ fontWeight: "medium" }}>
-							{otherUser?.username}
+							{receiver?.username}
 						</SkeletonText>
 						<SkeletonText variant="body2" sx={{ opacity: 0.75 }}>
 							{messages ? (messages[0] ? messages[0].content : "") : null}

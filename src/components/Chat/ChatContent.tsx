@@ -1,6 +1,6 @@
-import { CSSProperties } from "react"
+import { CSSProperties, useContext } from "react"
 
-import useCurrentChat from "../../hooks/useCurrentChat"
+import ChatContext from "../../contexts/ChatContext"
 import ChatContentToolbar from "./ChatContentToolbar"
 
 interface Props {
@@ -10,13 +10,9 @@ interface Props {
 const _ChatContent = (props: Props) => {
 	const { style } = props
 
-	const chat = useCurrentChat()
+	const { chat } = useContext(ChatContext)
 
-	return (
-		<div style={style}>
-			{chat && <ChatContentToolbar />}
-		</div>
-	)
+	return <div style={style}>{chat && <ChatContentToolbar />}</div>
 }
 
 export default _ChatContent
