@@ -1,11 +1,9 @@
 import { motion, useAnimation } from "framer-motion"
-import { useContext, useRef } from "react"
+import { Dispatch, SetStateAction, useRef } from "react"
 
 import { Close, MoreVert, Search } from "@mui/icons-material"
 import { AppBar, IconButton, TextField, TextFieldProps, Toolbar, Typography } from "@mui/material"
 import { styled } from "@mui/material/styles"
-
-import ChatSearchContext from "../../contexts/ChatSearchContext"
 
 const SearchBar = styled(TextField)<TextFieldProps>(({ theme }) => ({
 	"& .MuiInput-underline:hover:before": {
@@ -16,9 +14,15 @@ const SearchBar = styled(TextField)<TextFieldProps>(({ theme }) => ({
 	}
 }))
 
-const _ChatListToolbar = () => {
+interface Props {
+	search: string
+	setSearch: Dispatch<SetStateAction<string>>
+}
+
+const _ChatListToolbar = (props: Props) => {
+	const { search, setSearch } = props
+
 	const textFieldRef = useRef<HTMLDivElement | null>(null)
-	const { search, setSearch } = useContext(ChatSearchContext)
 
 	const defaultControls = useAnimation()
 	const searchControls = useAnimation()

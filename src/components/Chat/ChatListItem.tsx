@@ -1,12 +1,11 @@
 import { limit, orderBy, where } from "firebase/firestore"
 import { motion } from "framer-motion"
-import { useContext, useMemo } from "react"
+import { Dispatch, SetStateAction, useContext, useEffect, useMemo } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
 
 import { Avatar, Box, Card, CardActionArea, Skeleton } from "@mui/material"
 
 import AuthContext from "../../contexts/AuthContext"
-import ChatSearchContext from "../../contexts/ChatSearchContext"
 import useAppCollection from "../../hooks/useAppCollection"
 import useAppDocument from "../../hooks/useAppDocument"
 import SkeletonImage from "../Skeletons/SkeletonImage"
@@ -14,19 +13,19 @@ import SkeletonText from "../Skeletons/SkeletonText"
 
 interface Props {
 	chat: iChat
+	setFilters: Dispatch<SetStateAction<Record<string, (search: string) => boolean>>>
 }
 
 // TODO Context Menu Actions
 // TODO Sent message statuses
 
 const _ChatListItem = (props: Props) => {
-	const { chat } = props
+	const { chat, setFilters } = props
 	const route = `#/${chat.id}`
 
 	const navigate = useNavigate()
 	const location = useLocation()
 	const user = useContext(AuthContext)!
-	const search = useContext(ChatSearchContext).search.trim().toLowerCase()
 	const isActive = useMemo(() => location.hash === route, [location])
 
 	const [otherUser] = useAppDocument("users", chat.users.filter(id => id !== user.id)[0])
@@ -41,14 +40,24 @@ const _ChatListItem = (props: Props) => {
 		navigate(isActive ? `/` : route, { replace: true })
 	}
 
+	useEffect(() => {
+		setFilters(filters => ({
+			...filters,
+			[chat.id]: search =>
+				search && otherUser
+					? otherUser.username.toLowerCase().indexOf(search) >= 0
+						? true
+						: false
+					: true
+		}))
+	}, [otherUser])
+
 	return (
-		search && otherUser
-			? otherUser.username.toLowerCase().indexOf(search) >= 0
-				? true
-				: false
-			: true
-	) ? (
-		<motion.div layout>
+		<motion.div
+			transition={{ duration: 0.25 }}
+			animate={{ opacity: 1 }}
+			exit={{ opacity: 0 }}
+			layout>
 			<Card sx={{ backgroundColor: isActive ? "primary.dark" : "" }}>
 				<CardActionArea
 					onClick={handleClick}
@@ -83,7 +92,7 @@ const _ChatListItem = (props: Props) => {
 				</CardActionArea>
 			</Card>
 		</motion.div>
-	) : null
+	)
 }
 
 export default _ChatListItem
