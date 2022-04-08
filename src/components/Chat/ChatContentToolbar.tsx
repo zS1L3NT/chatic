@@ -3,6 +3,7 @@ import { PropsWithChildren } from "react"
 import { MoreVert } from "@mui/icons-material"
 import { AppBar, Avatar, Box, IconButton, Toolbar } from "@mui/material"
 
+import getStatus from "../../functions/getStatus"
 import SkeletonImage from "../Skeletons/SkeletonImage"
 import SkeletonText from "../Skeletons/SkeletonText"
 
@@ -34,7 +35,7 @@ const _ChatContentToolbar = (
 					<SkeletonText
 						sx={{ fontWeight: "medium" }}
 						variant="body1"
-						textWidth={200}
+						textWidth="100%"
 						textHeight={24}
 						skeletonWidth={100}
 						skeletonHeight={20}>
@@ -43,11 +44,11 @@ const _ChatContentToolbar = (
 					<SkeletonText
 						sx={{ opacity: 0.75 }}
 						variant="body2"
-						textWidth={200}
+						textWidth="100%"
 						textHeight={20}
 						skeletonWidth={150}
 						skeletonHeight={16}>
-						Last Seen
+						{presence && getStatus(presence)}
 					</SkeletonText>
 				</Box>
 				<IconButton sx={{ width: 40 }} onClick={() => {}} edge="end">
