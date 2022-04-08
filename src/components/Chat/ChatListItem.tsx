@@ -1,9 +1,9 @@
 import { limit, orderBy, where } from "firebase/firestore"
-import { motion } from "framer-motion"
+import { motion, useAnimation } from "framer-motion"
 import { Dispatch, SetStateAction, useContext, useEffect } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
 
-import { Avatar, Box, Card, CardActionArea, Skeleton } from "@mui/material"
+import { Avatar, Box, Card, CardActionArea, Skeleton, useTheme } from "@mui/material"
 
 import AuthContext from "../../contexts/AuthContext"
 import ChatContext from "../../contexts/ChatContext"
@@ -29,6 +29,8 @@ const _ChatListItem = (props: Props) => {
 	const user = useContext(AuthContext)!
 	const { setChat, setReceiver, setPresence } = useContext(ChatContext)
 
+	const photoBorderControls = useAnimation()
+	const theme = useTheme()
 	const [receiver] = useAppDocument("users", chat.users.filter(id => id !== user.id)[0])
 	const [presences] = useAppCollection(
 		"presences",
@@ -68,6 +70,24 @@ const _ChatListItem = (props: Props) => {
 		}
 	}, [chat, receiver, location.hash])
 
+	useEffect(() => {
+		if (presences?.[0]?.isOnline) {
+			photoBorderControls.start({
+				backgroundColor: theme.palette.success.main,
+				transition: {
+					duration: 0.5
+				}
+			})
+		} else {
+			photoBorderControls.start({
+				backgroundColor: `rgba(0, 0, 0, 0)`,
+				transition: {
+					duration: 0.5
+				}
+			})
+		}
+	}, [presences, theme])
+
 	return (
 		<motion.div
 			transition={{ duration: 0.25 }}
@@ -80,7 +100,7 @@ const _ChatListItem = (props: Props) => {
 					sx={{
 						height: 72,
 						display: "grid",
-						gridTemplateColumns: "56px auto",
+						gridTemplateColumns: "58px auto",
 						justifyContent: "normal",
 						px: 2
 					}}>
@@ -89,6 +109,17 @@ const _ChatListItem = (props: Props) => {
 						skeleton={<Skeleton variant="circular" sx={{ width: 56, height: 56 }} />}
 						component={url => <Avatar sx={{ width: 56, height: 56 }} src={url} />}
 					/>
+					<motion.div
+						animate={photoBorderControls}
+						initial={{
+							position: "absolute",
+							backgroundColor: "transparent",
+							borderRadius: "50%",
+							width: 10,
+							height: 10,
+							marginLeft: 64,
+							bottom: 10
+						}}></motion.div>
 					<Box
 						sx={{
 							height: "100%",

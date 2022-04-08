@@ -8,7 +8,7 @@ import SkeletonImage from "../Skeletons/SkeletonImage"
 import SkeletonText from "../Skeletons/SkeletonText"
 
 const _ChatContentToolbar = () => {
-	const { receiver } = useContext(ChatContext)
+	const { receiver, presence } = useContext(ChatContext)
 
 	return (
 		<AppBar sx={{ bgcolor: "primary.main" }} position="relative">
@@ -29,7 +29,7 @@ const _ChatContentToolbar = () => {
 						{receiver?.username}
 					</SkeletonText>
 					<SkeletonText variant="body2" sx={{ opacity: 0.75 }}>
-						Last Seen Yesterday
+						Last Seen {presence?.lastSeen}
 					</SkeletonText>
 				</Box>
 				<IconButton sx={{ width: 40 }} onClick={() => {}} edge="end">
