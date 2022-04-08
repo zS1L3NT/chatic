@@ -2,7 +2,7 @@ import { motion, useAnimation } from "framer-motion"
 import { Dispatch, PropsWithChildren, SetStateAction, useEffect } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
 
-import { Avatar, Box, Card, CardActionArea, Skeleton, useTheme } from "@mui/material"
+import { Avatar, Box, Card, CardActionArea, useTheme } from "@mui/material"
 
 import useChatMessages from "../../hooks/useChatMessages"
 import useChatReceiver from "../../hooks/useChatReceiver"
@@ -83,8 +83,10 @@ const _ChatListItem = (
 					}}>
 					<SkeletonImage
 						src={receiver?.photo}
-						skeleton={<Skeleton variant="circular" sx={{ width: 56, height: 56 }} />}
-						component={url => <Avatar sx={{ width: 56, height: 56 }} src={url} />}
+						variant="circular"
+						width={56}
+						height={56}
+						component={[Avatar, src => ({ src })]}
 					/>
 					<motion.div
 						animate={photoBorderControls}

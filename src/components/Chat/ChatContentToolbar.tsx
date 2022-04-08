@@ -1,7 +1,7 @@
 import { PropsWithChildren } from "react"
 
 import { MoreVert } from "@mui/icons-material"
-import { AppBar, Avatar, Box, IconButton, Skeleton, Toolbar } from "@mui/material"
+import { AppBar, Avatar, Box, IconButton, Toolbar } from "@mui/material"
 
 import SkeletonImage from "../Skeletons/SkeletonImage"
 import SkeletonText from "../Skeletons/SkeletonText"
@@ -19,8 +19,10 @@ const _ChatContentToolbar = (
 			<Toolbar sx={{ display: "grid", gridTemplateColumns: "48px auto 28px" }}>
 				<SkeletonImage
 					src={receiver?.photo}
-					skeleton={<Skeleton variant="circular" style={{ width: 48, height: 48 }} />}
-					component={url => <Avatar src={url} style={{ width: 48, height: 48 }} />}
+					width={48}
+					height={48}
+					variant="circular"
+					component={[Avatar, src => ({ src })]}
 				/>
 				<Box
 					sx={{
