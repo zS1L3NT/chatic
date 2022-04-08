@@ -1,14 +1,16 @@
-import { useContext } from "react"
-
 import { MoreVert } from "@mui/icons-material"
 import { AppBar, Avatar, Box, IconButton, Skeleton, Toolbar } from "@mui/material"
 
-import ChatContext from "../../contexts/ChatContext"
 import SkeletonImage from "../Skeletons/SkeletonImage"
 import SkeletonText from "../Skeletons/SkeletonText"
 
-const _ChatContentToolbar = () => {
-	const { receiver, presence } = useContext(ChatContext)
+interface Props {
+	receiver: iUser | null
+	presence: iPresence | null
+}
+
+const _ChatContentToolbar = (props: Props) => {
+	const { receiver, presence } = props
 
 	return (
 		<AppBar sx={{ bgcolor: "primary.main" }} position="relative">

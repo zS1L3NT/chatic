@@ -1,6 +1,8 @@
-import { CSSProperties, useContext } from "react"
+import { CSSProperties } from "react"
 
-import ChatContext from "../../contexts/ChatContext"
+import useChatReceiver from "../../hooks/useChatReceiver"
+import useCurrentChat from "../../hooks/useCurrentChat"
+import useUserPresence from "../../hooks/useUserPresence"
 import ChatContentToolbar from "./ChatContentToolbar"
 
 interface Props {
@@ -10,9 +12,15 @@ interface Props {
 const _ChatContent = (props: Props) => {
 	const { style } = props
 
-	const { chat } = useContext(ChatContext)
+	const [chatId, chat] = useCurrentChat()
+	const receiver = useChatReceiver(chat)
+	const presence = useUserPresence(receiver?.id)
 
-	return <div style={style}>{chat && <ChatContentToolbar />}</div>
+	return (
+		<div style={style}>
+			{chatId && <ChatContentToolbar receiver={receiver} presence={presence} />}
+		</div>
+	)
 }
 
 export default _ChatContent

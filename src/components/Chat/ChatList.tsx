@@ -1,9 +1,7 @@
-import { orderBy, where } from "firebase/firestore"
 import { AnimatePresence } from "framer-motion"
-import { CSSProperties, useContext, useState } from "react"
+import { CSSProperties, useState } from "react"
 
-import AuthContext from "../../contexts/AuthContext"
-import useAppCollection from "../../hooks/useAppCollection"
+import useUserChats from "../../hooks/useUserChats"
 import ChatListItem from "./ChatListItem"
 import ChatListToolbar from "./ChatListToolbar"
 
@@ -16,15 +14,10 @@ interface Props {
 const _ChatList = (props: Props) => {
 	const { style } = props
 
-	const user = useContext(AuthContext)!
 	const [search, setSearch] = useState("")
 	const [filters, setFilters] = useState<Record<string, (search: string) => boolean>>({})
 
-	const [chats] = useAppCollection(
-		"chats",
-		where("users", "array-contains", user.id),
-		orderBy("lastUpdated", "desc")
-	)
+	const chats = useUserChats(10)
 
 	return (
 		<div style={style}>

@@ -1,14 +1,12 @@
-import { limit, orderBy, where } from "firebase/firestore"
 import { motion, useAnimation } from "framer-motion"
-import { Dispatch, SetStateAction, useContext, useEffect } from "react"
+import { Dispatch, SetStateAction, useEffect } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
 
 import { Avatar, Box, Card, CardActionArea, Skeleton, useTheme } from "@mui/material"
 
-import AuthContext from "../../contexts/AuthContext"
-import ChatContext from "../../contexts/ChatContext"
-import useAppCollection from "../../hooks/useAppCollection"
-import useAppDocument from "../../hooks/useAppDocument"
+import useChatMessages from "../../hooks/useChatMessages"
+import useChatReceiver from "../../hooks/useChatReceiver"
+import useUserPresence from "../../hooks/useUserPresence"
 import SkeletonImage from "../Skeletons/SkeletonImage"
 import SkeletonText from "../Skeletons/SkeletonText"
 
@@ -26,25 +24,12 @@ const _ChatListItem = (props: Props) => {
 
 	const navigate = useNavigate()
 	const location = useLocation()
-	const user = useContext(AuthContext)!
-	const { setChat, setReceiver, setPresence } = useContext(ChatContext)
 
 	const photoBorderControls = useAnimation()
 	const theme = useTheme()
-	const [receiver] = useAppDocument("users", chat.users.filter(id => id !== user.id)[0])
-	const [presences] = useAppCollection(
-		"presences",
-		where("userId", "==", receiver?.id || "-"),
-		orderBy("isOnline", "desc"),
-		orderBy("lastSeen", "desc"),
-		limit(1)
-	)
-	const [messages] = useAppCollection(
-		"messages",
-		where("chatId", "==", chat.id),
-		orderBy("date", "desc"),
-		limit(1)
-	)
+	const receiver = useChatReceiver(chat)
+	const presence = useUserPresence(receiver?.id)
+	const latestMessage = useChatMessages(chat.id, 1)?.[0]
 
 	const handleClick = () => {
 		navigate(location.hash === route ? `/` : route, { replace: true })
@@ -63,15 +48,7 @@ const _ChatListItem = (props: Props) => {
 	}, [receiver])
 
 	useEffect(() => {
-		if (location.hash === route) {
-			setChat(chat)
-			setReceiver(receiver)
-			setPresence(presences?.[0] || null)
-		}
-	}, [chat, receiver, location.hash])
-
-	useEffect(() => {
-		if (presences?.[0]?.isOnline) {
+		if (presence?.isOnline) {
 			photoBorderControls.start({
 				backgroundColor: theme.palette.success.main,
 				transition: {
@@ -86,7 +63,7 @@ const _ChatListItem = (props: Props) => {
 				}
 			})
 		}
-	}, [presences, theme])
+	}, [presence, theme])
 
 	return (
 		<motion.div
@@ -133,7 +110,7 @@ const _ChatListItem = (props: Props) => {
 							{receiver?.username}
 						</SkeletonText>
 						<SkeletonText variant="body2" sx={{ opacity: 0.75 }}>
-							{messages ? (messages[0] ? messages[0].content : "") : null}
+							{latestMessage ? latestMessage.content || "" : null}
 						</SkeletonText>
 					</Box>
 				</CardActionArea>

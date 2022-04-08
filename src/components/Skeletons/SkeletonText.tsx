@@ -1,8 +1,9 @@
+import { PropsWithChildren } from "react"
+
 import { Skeleton, SxProps, Theme, Typography } from "@mui/material"
 import { Variant } from "@mui/material/styles/createTypography"
 
-interface Props {
-	children?: string | null
+interface Props extends PropsWithChildren<{}> {
 	variant?: Variant
 	sx?: SxProps<Theme>
 	width?: string | number

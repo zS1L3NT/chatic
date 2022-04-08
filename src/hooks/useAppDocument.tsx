@@ -6,14 +6,14 @@ import firebaseApp from "../firebaseApp"
 
 const useAppDocument = <C extends keyof iFirestoreCollections, T = iFirestoreCollections[C]>(
 	coll: C,
-	path?: string | null
+	path: string | null | undefined
 ): [T, null] | [null, Error] | [null, null] => {
 	const firestore = getFirestore(firebaseApp)
 	const docRef = doc(firestore, coll, path || "-") as DocumentReference<T>
 
 	const [data, _, error] = useDocumentData(docRef)
 
-	useDebugValue([data, error])
+	useDebugValue([data || null, error || null])
 
 	return data ? [data, null] : error ? [null, error] : [null, null]
 }
