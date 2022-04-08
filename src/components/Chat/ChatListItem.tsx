@@ -27,9 +27,16 @@ const _ChatListItem = (props: Props) => {
 	const navigate = useNavigate()
 	const location = useLocation()
 	const user = useContext(AuthContext)!
-	const { setChat, setReceiver } = useContext(ChatContext)
+	const { setChat, setReceiver, setPresence } = useContext(ChatContext)
 
 	const [receiver] = useAppDocument("users", chat.users.filter(id => id !== user.id)[0])
+	const [presences] = useAppCollection(
+		"presences",
+		where("userId", "==", receiver?.id || "-"),
+		orderBy("isOnline", "desc"),
+		orderBy("lastSeen", "desc"),
+		limit(1)
+	)
 	const [messages] = useAppCollection(
 		"messages",
 		where("chatId", "==", chat.id),
@@ -57,6 +64,7 @@ const _ChatListItem = (props: Props) => {
 		if (location.hash === route) {
 			setChat(chat)
 			setReceiver(receiver)
+			setPresence(presences?.[0] || null)
 		}
 	}, [chat, receiver, location.hash])
 
