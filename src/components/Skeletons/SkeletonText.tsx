@@ -3,14 +3,14 @@ import { PropsWithChildren } from "react"
 import { Skeleton, SxProps, Theme, Typography } from "@mui/material"
 import { Variant } from "@mui/material/styles/createTypography"
 
-interface Props extends PropsWithChildren<{}> {
-	variant?: Variant
-	sx?: SxProps<Theme>
-	width?: string | number
-	height?: string | number
-}
-
-const _SkeletonText = (props: Props) => {
+const _SkeletonText = (
+	props: PropsWithChildren<{
+		variant?: Variant
+		sx?: SxProps<Theme>
+		width?: string | number
+		height?: string | number
+	}>
+) => {
 	const { children, variant, sx, width, height } = props
 
 	return children !== undefined && children !== null ? (

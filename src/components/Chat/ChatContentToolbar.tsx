@@ -1,15 +1,17 @@
+import { PropsWithChildren } from "react"
+
 import { MoreVert } from "@mui/icons-material"
 import { AppBar, Avatar, Box, IconButton, Skeleton, Toolbar } from "@mui/material"
 
 import SkeletonImage from "../Skeletons/SkeletonImage"
 import SkeletonText from "../Skeletons/SkeletonText"
 
-interface Props {
-	receiver: iUser | null
-	presence: iPresence | null
-}
-
-const _ChatContentToolbar = (props: Props) => {
+const _ChatContentToolbar = (
+	props: PropsWithChildren<{
+		receiver: iUser | null
+		presence: iPresence | null
+	}>
+) => {
 	const { receiver, presence } = props
 
 	return (

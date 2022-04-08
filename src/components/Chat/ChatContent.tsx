@@ -1,15 +1,15 @@
-import { CSSProperties } from "react"
+import { CSSProperties, PropsWithChildren } from "react"
 
 import useChatReceiver from "../../hooks/useChatReceiver"
 import useCurrentChat from "../../hooks/useCurrentChat"
 import useUserPresence from "../../hooks/useUserPresence"
 import ChatContentToolbar from "./ChatContentToolbar"
 
-interface Props {
-	style?: CSSProperties
-}
-
-const _ChatContent = (props: Props) => {
+const _ChatContent = (
+	props: PropsWithChildren<{
+		style?: CSSProperties
+	}>
+) => {
 	const { style } = props
 
 	const [chatId, chat] = useCurrentChat()

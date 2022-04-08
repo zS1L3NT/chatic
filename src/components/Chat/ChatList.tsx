@@ -1,5 +1,5 @@
 import { AnimatePresence } from "framer-motion"
-import { CSSProperties, useState } from "react"
+import { CSSProperties, PropsWithChildren, useState } from "react"
 
 import useUserChats from "../../hooks/useUserChats"
 import ChatListItem from "./ChatListItem"
@@ -7,11 +7,11 @@ import ChatListToolbar from "./ChatListToolbar"
 
 // TODO Pagination
 
-interface Props {
-	style?: CSSProperties
-}
-
-const _ChatList = (props: Props) => {
+const _ChatList = (
+	props: PropsWithChildren<{
+		style?: CSSProperties
+	}>
+) => {
 	const { style } = props
 
 	const [search, setSearch] = useState("")

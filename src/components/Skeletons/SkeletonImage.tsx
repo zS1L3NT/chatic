@@ -1,13 +1,13 @@
-import { CSSProperties, useEffect, useState } from "react"
+import { CSSProperties, PropsWithChildren, useEffect, useState } from "react"
 
-interface Props {
-	src?: string
-	skeleton: JSX.Element
-	component: (url: string) => JSX.Element
-	style?: CSSProperties
-}
-
-const _SkeletonImage = (props: Props) => {
+const _SkeletonImage = (
+	props: PropsWithChildren<{
+		src?: string
+		skeleton: JSX.Element
+		component: (url: string) => JSX.Element
+		style?: CSSProperties
+	}>
+) => {
 	const { src, skeleton, component, style } = props
 
 	const [fade, setFade] = useState(false)

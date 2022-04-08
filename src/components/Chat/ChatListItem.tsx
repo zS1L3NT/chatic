@@ -1,5 +1,5 @@
 import { motion, useAnimation } from "framer-motion"
-import { Dispatch, SetStateAction, useEffect } from "react"
+import { Dispatch, PropsWithChildren, SetStateAction, useEffect } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
 
 import { Avatar, Box, Card, CardActionArea, Skeleton, useTheme } from "@mui/material"
@@ -10,15 +10,15 @@ import useUserPresence from "../../hooks/useUserPresence"
 import SkeletonImage from "../Skeletons/SkeletonImage"
 import SkeletonText from "../Skeletons/SkeletonText"
 
-interface Props {
-	chat: iChat
-	setFilters: Dispatch<SetStateAction<Record<string, (search: string) => boolean>>>
-}
-
 // TODO Context Menu Actions
 // TODO Sent message statuses
 
-const _ChatListItem = (props: Props) => {
+const _ChatListItem = (
+	props: PropsWithChildren<{
+		chat: iChat
+		setFilters: Dispatch<SetStateAction<Record<string, (search: string) => boolean>>>
+	}>
+) => {
 	const { chat, setFilters } = props
 	const route = `#/${chat.id}`
 

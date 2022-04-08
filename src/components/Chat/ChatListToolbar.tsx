@@ -1,5 +1,5 @@
 import { motion, useAnimation } from "framer-motion"
-import { Dispatch, SetStateAction, useRef } from "react"
+import { Dispatch, PropsWithChildren, SetStateAction, useRef } from "react"
 
 import { Close, MoreVert, Search } from "@mui/icons-material"
 import { AppBar, IconButton, TextField, TextFieldProps, Toolbar, Typography } from "@mui/material"
@@ -14,12 +14,12 @@ const SearchBar = styled(TextField)<TextFieldProps>(({ theme }) => ({
 	}
 }))
 
-interface Props {
-	search: string
-	setSearch: Dispatch<SetStateAction<string>>
-}
-
-const _ChatListToolbar = (props: Props) => {
+const _ChatListToolbar = (
+	props: PropsWithChildren<{
+		search: string
+		setSearch: Dispatch<SetStateAction<string>>
+	}>
+) => {
 	const { search, setSearch } = props
 
 	const textFieldRef = useRef<HTMLDivElement | null>(null)
