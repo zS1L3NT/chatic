@@ -29,11 +29,23 @@ const _ChatContentToolbar = (
 						justifyContent: "center",
 						px: 2
 					}}>
-					<SkeletonText variant="body1" sx={{ fontWeight: "medium" }}>
+					<SkeletonText
+						sx={{ fontWeight: "medium" }}
+						variant="body1"
+						textWidth={200}
+						textHeight={24}
+						skeletonWidth={100}
+						skeletonHeight={20}>
 						{receiver?.username}
 					</SkeletonText>
-					<SkeletonText variant="body2" sx={{ opacity: 0.75 }}>
-						Last Seen {presence?.lastSeen}
+					<SkeletonText
+						sx={{ opacity: 0.75 }}
+						variant="body2"
+						textWidth={200}
+						textHeight={20}
+						skeletonWidth={150}
+						skeletonHeight={16}>
+						Last Seen
 					</SkeletonText>
 				</Box>
 				<IconButton sx={{ width: 40 }} onClick={() => {}} edge="end">
