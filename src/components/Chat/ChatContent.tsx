@@ -1,3 +1,4 @@
+import { AnimatePresence } from "framer-motion"
 import { CSSProperties, PropsWithChildren } from "react"
 
 import useChatReceiver from "../../hooks/useChatReceiver"
@@ -18,7 +19,9 @@ const _ChatContent = (
 
 	return (
 		<div style={style}>
-			{chatId && <ChatContentToolbar receiver={receiver} presence={presence} />}
+			<AnimatePresence>
+				{chatId && <ChatContentToolbar receiver={receiver} presence={presence} />}
+			</AnimatePresence>
 		</div>
 	)
 }
