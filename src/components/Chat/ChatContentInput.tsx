@@ -1,5 +1,4 @@
 import { collection, CollectionReference, doc, getFirestore, setDoc } from "firebase/firestore"
-import { motion } from "framer-motion"
 import { ChangeEvent, KeyboardEvent, PropsWithChildren, useContext, useRef, useState } from "react"
 
 import { Card, styled } from "@mui/material"
@@ -101,15 +100,7 @@ const _ChatContentInput = (props: PropsWithChildren<{}>) => {
 	}
 
 	return (
-		<motion.div
-			style={{
-				padding: 16,
-				paddingTop: 8
-			}}
-			transition={{ duration: 0.2 }}
-			initial={{ opacity: 0 }}
-			animate={{ opacity: 1 }}
-			exit={{ opacity: 0 }}>
+		<div style={{ padding: 16, paddingTop: 8 }}>
 			<TextAreaWrapper onClick={handleClick}>
 				<TextArea
 					ref={inputRef}
@@ -119,7 +110,7 @@ const _ChatContentInput = (props: PropsWithChildren<{}>) => {
 					placeholder="Type a message..."
 				/>
 			</TextAreaWrapper>
-		</motion.div>
+		</div>
 	)
 }
 
