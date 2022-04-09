@@ -1,9 +1,11 @@
-import { AnimatePresence } from "framer-motion"
+import { AnimatePresence, motion } from "framer-motion"
 import { CSSProperties, PropsWithChildren } from "react"
 
+import useChatMessages from "../../hooks/useChatMessages"
 import useChatReceiver from "../../hooks/useChatReceiver"
 import useCurrentChat from "../../hooks/useCurrentChat"
 import useUserPresence from "../../hooks/useUserPresence"
+import ChatContentInput from "./ChatContentInput"
 import ChatContentToolbar from "./ChatContentToolbar"
 
 const _ChatContent = (
@@ -16,11 +18,23 @@ const _ChatContent = (
 	const [chatId, chat] = useCurrentChat()
 	const receiver = useChatReceiver(chat)
 	const presence = useUserPresence(receiver?.id)
+	const messages = useChatMessages(chatId, 50)
 
 	return (
 		<div style={style}>
 			<AnimatePresence>
-				{chatId && <ChatContentToolbar receiver={receiver} presence={presence} />}
+				{chatId && (
+					<div
+						style={{
+							display: "flex",
+							flexDirection: "column",
+							height: "100%"
+						}}>
+						<ChatContentToolbar key="toolbar" receiver={receiver} presence={presence} />
+						<motion.div style={{ flexGrow: 1 }}>Messages go here</motion.div>
+						<ChatContentInput key="input" />
+					</div>
+				)}
 			</AnimatePresence>
 		</div>
 	)

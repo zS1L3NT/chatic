@@ -5,14 +5,14 @@ import { Close, MoreVert, Search } from "@mui/icons-material"
 import { AppBar, IconButton, TextField, TextFieldProps, Toolbar, Typography } from "@mui/material"
 import { styled } from "@mui/material/styles"
 
-const SearchBar = styled(TextField)<TextFieldProps>(({ theme }) => ({
+const SearchBar = styled(TextField)<TextFieldProps>({
 	"& .MuiInput-underline:hover:before": {
 		borderBottom: "1px solid white"
 	},
-	"& .MuiInput-underline:after": {
+	".MuiInput-underline:after": {
 		borderBottomColor: "white"
 	}
-}))
+})
 
 const _ChatListToolbar = (
 	props: PropsWithChildren<{
