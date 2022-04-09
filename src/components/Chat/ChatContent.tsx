@@ -1,9 +1,10 @@
 import { AnimatePresence } from "framer-motion"
 import { CSSProperties, PropsWithChildren } from "react"
+import useAppDocument from "../../hooks/useAppDocument"
 
 import useChatMessages from "../../hooks/useChatMessages"
 import useChatReceiver from "../../hooks/useChatReceiver"
-import useCurrentChat from "../../hooks/useCurrentChat"
+import useCurrentChatId from "../../hooks/useCurrentChatId"
 import useUserPresence from "../../hooks/useUserPresence"
 import ChatContentInput from "./ChatContentInput"
 import ChatContentMessages from "./ChatContentMessages"
@@ -16,7 +17,8 @@ const _ChatContent = (
 ) => {
 	const { style } = props
 
-	const [chatId, chat] = useCurrentChat()
+	const chatId = useCurrentChatId()
+	const [chat] = useAppDocument("chats", chatId)
 	const receiver = useChatReceiver(chat)
 	const presence = useUserPresence(receiver?.id)
 
@@ -31,7 +33,7 @@ const _ChatContent = (
 							height: "100%"
 						}}>
 						<ChatContentToolbar key="toolbar" receiver={receiver} presence={presence} />
-						<ChatContentMessages key="messages" chatId={chatId} />
+						<ChatContentMessages key="messages" />
 						<ChatContentInput key="input" />
 					</div>
 				)}

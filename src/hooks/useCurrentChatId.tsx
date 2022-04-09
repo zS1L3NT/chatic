@@ -1,13 +1,9 @@
 import { useEffect, useState } from "react"
 import { useLocation } from "react-router-dom"
 
-import useAppDocument from "./useAppDocument"
-
-const useCurrentChat = (): [string | null, iChat | null] => {
+const useCurrentChatId = (): string | null => {
 	const location = useLocation()
 	const [chatId, setChatId] = useState<string | null>(null)
-
-	const [chat] = useAppDocument("chats", chatId)
 
 	useEffect(() => {
 		if (location.hash.startsWith("#/")) {
@@ -17,7 +13,7 @@ const useCurrentChat = (): [string | null, iChat | null] => {
 		}
 	}, [location.hash])
 
-	return [chatId, chat]
+	return chatId
 }
 
-export default useCurrentChat
+export default useCurrentChatId

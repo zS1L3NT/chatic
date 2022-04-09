@@ -3,18 +3,14 @@ import { PropsWithChildren, useContext } from "react"
 
 import AuthContext from "../../contexts/AuthContext"
 import useChatMessages from "../../hooks/useChatMessages"
+import useCurrentChatId from "../../hooks/useCurrentChatId"
 import MessageReceived from "./MessageReceived"
 import MessageSent from "./MessageSent"
 
-const _ChatContentMessages = (
-	props: PropsWithChildren<{
-		chatId: string | null
-	}>
-) => {
-	const { chatId } = props
-
+const _ChatContentMessages = (props: PropsWithChildren<{}>) => {
 	const user = useContext(AuthContext)!
 
+	const chatId = useCurrentChatId()!
 	const messages = useChatMessages(chatId, 50)
 
 	return (
@@ -24,7 +20,7 @@ const _ChatContentMessages = (
 			initial={{ opacity: 0 }}
 			animate={{ opacity: 1 }}
 			exit={{ opacity: 0 }}>
-			{messages?.map(message =>
+			{messages?.reverse().map(message =>
 				message.userId === user.id ? (
 					<MessageSent key={message.chatId + "-" + message.id} message={message} />
 				) : (

@@ -1,7 +1,12 @@
+import { collection, CollectionReference, doc, getFirestore, setDoc } from "firebase/firestore"
 import { motion } from "framer-motion"
-import { PropsWithChildren, useRef } from "react"
+import { ChangeEvent, KeyboardEvent, PropsWithChildren, useContext, useRef, useState } from "react"
 
 import { Card, styled } from "@mui/material"
+
+import AuthContext from "../../contexts/AuthContext"
+import firebaseApp from "../../firebaseApp"
+import useCurrentChatId from "../../hooks/useCurrentChatId"
 
 const TextAreaWrapper = styled(Card)(({ theme }) => ({
 	width: "100%",
@@ -49,14 +54,45 @@ const TextArea = styled(`textarea`)(({ theme }) => ({
 }))
 
 const _ChatContentInput = (props: PropsWithChildren<{}>) => {
-	const inputRef = useRef<HTMLTextAreaElement>(null)
+	const firestore = getFirestore(firebaseApp)
 
-	const handleInput = () => {
+	const user = useContext(AuthContext)!
+	const inputRef = useRef<HTMLTextAreaElement>(null)
+	const [message, setMessage] = useState("")
+	const [sending, setSending] = useState(false)
+
+	const chatId = useCurrentChatId()!
+
+	const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
 		const input = inputRef.current
 		if (input) {
-			input.style.height = "20px"
-			input.style.height = input.scrollHeight + "px"
-			input.parentElement!.style.height = input.scrollHeight + 28 + "px"
+			if (sending) {
+				setSending(false)
+			} else {
+				setMessage(e.target.value)
+				input.style.height = "20px"
+				input.style.height = input.scrollHeight + "px"
+				input.parentElement!.style.height = input.scrollHeight + 28 + "px"
+			}
+		}
+	}
+
+	const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
+		if (e.code === "Enter" && !e.shiftKey) {
+			setSending(true)
+			setMessage("")
+
+			const messagesColl = collection(firestore, "messages") as CollectionReference<iMessage>
+			const messageDoc = doc(messagesColl)
+			setDoc(messageDoc, {
+				id: messageDoc.id,
+				content: message,
+				media: null,
+				date: Date.now(),
+				replyId: null,
+				userId: user.id,
+				chatId
+			})
 		}
 	}
 
@@ -75,7 +111,13 @@ const _ChatContentInput = (props: PropsWithChildren<{}>) => {
 			animate={{ opacity: 1 }}
 			exit={{ opacity: 0 }}>
 			<TextAreaWrapper onClick={handleClick}>
-				<TextArea ref={inputRef} onInput={handleInput} placeholder="Type a message..." />
+				<TextArea
+					ref={inputRef}
+					value={message}
+					onChange={handleChange}
+					onKeyDown={handleKeyDown}
+					placeholder="Type a message..."
+				/>
 			</TextAreaWrapper>
 		</motion.div>
 	)
