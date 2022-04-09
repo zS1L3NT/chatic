@@ -31,7 +31,7 @@ const _SkeletonText = (
 							width: textWidth,
 							height: textHeight
 						}}
-						transition={{ duration: 0.5 }}
+						transition={{ duration: 0.2 }}
 						initial={{ opacity: 0 }}
 						animate={{ opacity: 1 }}
 						exit={{ opacity: 0 }}>
@@ -53,7 +53,7 @@ const _SkeletonText = (
 							width: skeletonWidth,
 							height: skeletonHeight
 						}}
-						transition={{ duration: 0.5 }}
+						transition={{ duration: 0.2 }}
 						animate={{ opacity: 1 }}
 						exit={{ opacity: 0 }}>
 						<Skeleton

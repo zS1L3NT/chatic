@@ -60,7 +60,7 @@ const _SkeletonImage = <P,>(
 					<motion.span
 						key="image"
 						style={{ position: "absolute", width, height }}
-						transition={{ duration: 0.5 }}
+						transition={{ duration: 0.2 }}
 						initial={{ opacity: 0 }}
 						animate={{ opacity: 1 }}
 						exit={{ opacity: 0 }}>
@@ -70,7 +70,7 @@ const _SkeletonImage = <P,>(
 					<motion.span
 						key="skeleton"
 						style={{ position: "absolute", width, height }}
-						transition={{ duration: 0.5 }}
+						transition={{ duration: 0.2 }}
 						animate={{ opacity: 1 }}
 						exit={{ opacity: 0 }}>
 						<Skeleton variant={variant} sx={{ width, height }} />
