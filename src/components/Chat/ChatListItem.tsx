@@ -1,5 +1,5 @@
-import { motion, useAnimation } from "framer-motion"
-import { Dispatch, PropsWithChildren, SetStateAction, useEffect } from "react"
+import { motion } from "framer-motion"
+import { Dispatch, PropsWithChildren, SetStateAction, useEffect, useState } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
 
 import { Avatar, Box, Card, CardActionArea, useTheme } from "@mui/material"
@@ -7,6 +7,7 @@ import { Avatar, Box, Card, CardActionArea, useTheme } from "@mui/material"
 import useChatMessages from "../../hooks/useChatMessages"
 import useChatReceiver from "../../hooks/useChatReceiver"
 import useUserPresence from "../../hooks/useUserPresence"
+import Dot from "../Dot"
 import SkeletonImage from "../Skeletons/SkeletonImage"
 import SkeletonText from "../Skeletons/SkeletonText"
 
@@ -24,8 +25,8 @@ const _ChatListItem = (
 
 	const navigate = useNavigate()
 	const location = useLocation()
+	const [dotColor, setDotColor] = useState<string | null>(null)
 
-	const photoBorderControls = useAnimation()
 	const theme = useTheme()
 	const receiver = useChatReceiver(chat)
 	const presence = useUserPresence(receiver?.id)
@@ -48,21 +49,9 @@ const _ChatListItem = (
 	}, [receiver])
 
 	useEffect(() => {
-		if (presence?.isOnline) {
-			photoBorderControls.start({
-				backgroundColor: theme.palette.success.main,
-				transition: {
-					duration: 0.5
-				}
-			})
-		} else {
-			photoBorderControls.start({
-				backgroundColor: `rgba(0, 0, 0, 0)`,
-				transition: {
-					duration: 0.5
-				}
-			})
-		}
+		setDotColor(
+			presence ? (presence.isOnline ? theme.palette.success.main : "rgba(0, 0, 0, 0)") : null
+		)
 	}, [presence, theme])
 
 	return (
@@ -88,17 +77,15 @@ const _ChatListItem = (
 						height={56}
 						component={[Avatar, src => ({ src })]}
 					/>
-					<motion.div
-						animate={photoBorderControls}
-						initial={{
+					<Dot
+						style={{
 							position: "absolute",
-							backgroundColor: "transparent",
-							borderRadius: "50%",
-							width: 10,
-							height: 10,
 							marginLeft: 64,
-							bottom: 10
-						}}></motion.div>
+							bottom: 8
+						}}
+						size={10}
+						color={dotColor}
+					/>
 					<Box
 						sx={{
 							height: "100%",
