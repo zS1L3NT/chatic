@@ -1,15 +1,10 @@
-import firebaseApp from "./firebaseApp"
-import util from "util"
-import {
-	chatData,
-	friendshipData,
-	handshakeData,
-	messageData,
-	presenceData,
-	statusData,
-	userData
-} from "./data"
 import { CollectionReference, getFirestore } from "firebase-admin/firestore"
+import util from "util"
+
+import {
+	chatData, friendshipData, handshakeData, messageData, presenceData, userData
+} from "./data"
+import firebaseApp from "./firebaseApp"
 
 const firestore = getFirestore(firebaseApp)
 
@@ -28,7 +23,6 @@ const handshakes = getCollection("handshakes")
 const presences = getCollection("presences")
 const chats = getCollection("chats")
 const messages = getCollection("messages")
-const statuses = getCollection("statuses")
 
 const migrateCollection = async <
 	T extends keyof iFirestoreCollections,
@@ -78,8 +72,7 @@ const migrate = async () => {
 		...(await migrateCollection("handshakes", handshakes, handshakeData)),
 		...(await migrateCollection("presences", presences, presenceData)),
 		...(await migrateCollection("chats", chats, chatData)),
-		...(await migrateCollection("messages", messages, messageData)),
-		...(await migrateCollection("statuses", statuses, statusData))
+		...(await migrateCollection("messages", messages, messageData))
 	]
 
 	Promise.allSettled(promises).then(results => {

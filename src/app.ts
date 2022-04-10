@@ -1,16 +1,17 @@
-import firebaseApp from "./firebaseApp"
 import { getFirestore } from "firebase-admin/firestore"
+
+import firebaseApp from "./firebaseApp"
 
 const firestore = getFirestore(firebaseApp)
 
-firestore.collection("statuses").onSnapshot(snaps =>
+firestore.collection("messages").onSnapshot(snaps =>
 	snaps.docChanges().forEach(change => {
-		const status = change.doc.data() as iStatus
+		const message = change.doc.data() as iMessage
 
-		if (status.state === 0) {
-			console.log(`Changing state of ${status.id}`)
-			firestore.collection("statuses").doc(status.id).update({
-				state: 3
+		if (message.status === 0) {
+			console.log(`Changing state of ${message.id}`)
+			firestore.collection("messages").doc(message.id).update({
+				state: 1
 			})
 		}
 	})

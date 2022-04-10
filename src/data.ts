@@ -92,7 +92,8 @@ export const messageData: iMessage[] = [
 		date: mybd - 3200000,
 		replyId: null,
 		userId: "mQg4fp1624MxgkIkWpnOVmSfZ7a2",
-		chatId: "chat-1"
+		chatId: "chat-1",
+		status: 3
 	},
 	{
 		id: "message-2",
@@ -101,7 +102,8 @@ export const messageData: iMessage[] = [
 		date: mybd - 2800000,
 		replyId: "message-1",
 		userId: "user-2",
-		chatId: "chat-1"
+		chatId: "chat-1",
+		status: 1
 	},
 	{
 		id: "message-3",
@@ -110,7 +112,8 @@ export const messageData: iMessage[] = [
 		date: mybd - 2400000,
 		replyId: null,
 		userId: "mQg4fp1624MxgkIkWpnOVmSfZ7a2",
-		chatId: "chat-1"
+		chatId: "chat-1",
+		status: 3
 	},
 	{
 		id: "message-4",
@@ -119,7 +122,8 @@ export const messageData: iMessage[] = [
 		date: mybd - 2000000,
 		replyId: "message-3",
 		userId: "user-2",
-		chatId: "chat-1"
+		chatId: "chat-1",
+		status: 3
 	},
 	{
 		id: "message-5",
@@ -128,7 +132,8 @@ export const messageData: iMessage[] = [
 		date: mybd - 1600000,
 		replyId: null,
 		userId: "mQg4fp1624MxgkIkWpnOVmSfZ7a2",
-		chatId: "chat-2"
+		chatId: "chat-2",
+		status: 3
 	},
 	{
 		id: "message-6",
@@ -137,107 +142,7 @@ export const messageData: iMessage[] = [
 		date: mybd - 800000,
 		replyId: "message-6",
 		userId: "user-3",
-		chatId: "chat-2"
-	}
-]
-
-export const statusData: iStatus[] = [
-	{
-		id: "status-1",
-		messageId: "message-1",
-		userId: "mQg4fp1624MxgkIkWpnOVmSfZ7a2",
-		chatId: "chat-1",
-		state: 3
-	},
-	{
-		id: "status-2",
-		messageId: "message-1",
-		userId: "user-2",
-		chatId: "chat-1",
-		state: 3
-	},
-	{
-		id: "status-3",
-		messageId: "message-2",
-		userId: "mQg4fp1624MxgkIkWpnOVmSfZ7a2",
-		chatId: "chat-1",
-		state: 3
-	},
-	{
-		id: "status-4",
-		messageId: "message-2",
-		userId: "user-2",
-		chatId: "chat-1",
-		state: 3
-	},
-	{
-		id: "status-5",
-		messageId: "message-3",
-		userId: "mQg4fp1624MxgkIkWpnOVmSfZ7a2",
-		chatId: "chat-1",
-		state: 3
-	},
-	{
-		id: "status-6",
-		messageId: "message-3",
-		userId: "user-2",
-		chatId: "chat-1",
-		state: 3
-	},
-	{
-		id: "status-7",
-		messageId: "message-4",
-		userId: "mQg4fp1624MxgkIkWpnOVmSfZ7a2",
-		chatId: "chat-1",
-		state: 1
-	},
-	{
-		id: "status-8",
-		messageId: "message-4",
-		userId: "user-2",
-		chatId: "chat-1",
-		state: 3
-	},
-	{
-		id: "status-9",
-		messageId: "message-5",
-		userId: "mQg4fp1624MxgkIkWpnOVmSfZ7a2",
 		chatId: "chat-2",
-		state: 3
-	},
-	{
-		id: "status-10",
-		messageId: "message-5",
-		userId: "user-3",
-		chatId: "chat-2",
-		state: 3
-	},
-	{
-		id: "status-11",
-		messageId: "message-6",
-		userId: "mQg4fp1624MxgkIkWpnOVmSfZ7a2",
-		chatId: "chat-2",
-		state: 2
-	},
-	{
-		id: "status-12",
-		messageId: "message-6",
-		userId: "user-3",
-		chatId: "chat-2",
-		state: 3
-	},
-	{
-		id: "status-13",
-		messageId: "message-7",
-		userId: "mQg4fp1624MxgkIkWpnOVmSfZ7a2",
-		chatId: "chat-2",
-		state: 1
-	},
-	{
-		id: "status-14",
-		messageId: "message-7",
-		userId: "user-3",
-		chatId: "chat-2",
-		state: 1
+		status: 1
 	}
 ]
