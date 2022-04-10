@@ -1,3 +1,4 @@
+import { AnimatePresence } from "framer-motion"
 import { CSSProperties, PropsWithChildren } from "react"
 
 import useAppDocument from "../../hooks/useAppDocument"
@@ -22,18 +23,20 @@ const _ChatContent = (
 
 	return (
 		<div style={style}>
-			{chatId && (
-				<div
-					style={{
-						display: "flex",
-						flexDirection: "column",
-						height: "100%"
-					}}>
-					<ChatContentToolbar key="toolbar" receiver={receiver} presence={presence} />
-					<ChatContentMessages key="messages" />
-					<ChatContentInput key="input" />
-				</div>
-			)}
+			<AnimatePresence>
+				{chatId && (
+					<div
+						style={{
+							display: "flex",
+							flexDirection: "column",
+							height: "100%"
+						}}>
+						<ChatContentToolbar key="toolbar" receiver={receiver} presence={presence} />
+						<ChatContentMessages key="messages" />
+						<ChatContentInput key="input" />
+					</div>
+				)}
+			</AnimatePresence>
 		</div>
 	)
 }
