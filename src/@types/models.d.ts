@@ -42,12 +42,5 @@ declare interface iMessage {
 	replyId: string | null
 	userId: string
 	chatId: string
-}
-
-declare interface iStatus {
-	id: string
-	userId: string
-	messageId: string
-	chatId: string
-	state: 0 | 1 | 2 | 3
+	status: 0 | 1 | 2 | 3
 }

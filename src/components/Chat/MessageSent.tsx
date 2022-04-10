@@ -4,7 +4,6 @@ import { PropsWithChildren } from "react"
 
 import { Card } from "@mui/material"
 
-import useMessageStatus from "../../hooks/useMessageStatus"
 import Dot from "../Dot"
 
 const _MessageSent = (
@@ -16,14 +15,10 @@ const _MessageSent = (
 ) => {
 	const { message, isStartBlock, isEndBlock } = props
 
-	const status = useMessageStatus(message.id)
-
 	const getColor = () => {
-		if (!status || !status.state) {
-			return null
-		}
-
-		switch (status.state) {
+		switch (message.status) {
+			case 0:
+				return null
 			case 1:
 				return "rgb(255, 0, 0)"
 			case 2:

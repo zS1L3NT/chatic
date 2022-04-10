@@ -5,5 +5,4 @@ declare interface iFirestoreCollections {
 	presences: iPresence
 	chats: iChat
 	messages: iMessage
-	statuses: iStatus
 }

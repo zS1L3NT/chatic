@@ -91,7 +91,8 @@ const _ChatContentInput = (props: PropsWithChildren<{}>) => {
 				date: Date.now(),
 				replyId: null,
 				userId: user.id,
-				chatId
+				chatId,
+				status: 0
 			})
 		}
 	}
