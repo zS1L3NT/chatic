@@ -2,8 +2,9 @@ import { motion } from "framer-motion"
 import { DateTime } from "luxon"
 import { PropsWithChildren } from "react"
 
-import { Card, useTheme } from "@mui/material"
+import { Card } from "@mui/material"
 
+import useMessageStatus from "../../hooks/useMessageStatus"
 import Dot from "../Dot"
 
 const _MessageSent = (
@@ -15,7 +16,22 @@ const _MessageSent = (
 ) => {
 	const { message, isStartBlock, isEndBlock } = props
 
-	const theme = useTheme()
+	const status = useMessageStatus(message.id)
+
+	const getColor = () => {
+		if (!status || !status.state) {
+			return null
+		}
+
+		switch (status.state) {
+			case 1:
+				return "rgb(255, 0, 0)"
+			case 2:
+				return "rgb(255, 255, 0)"
+			case 3:
+				return "rgb(0, 255, 0)"
+		}
+	}
 
 	return (
 		<motion.div
@@ -51,11 +67,7 @@ const _MessageSent = (
 						}}>
 						{DateTime.fromMillis(message.date).toFormat("hh:mma").toLowerCase()}
 					</span>
-					<Dot
-						style={{ marginLeft: 8, marginBottom: 6 }}
-						size={8}
-						color={theme.palette.success.main}
-					/>
+					<Dot style={{ marginLeft: 8, marginBottom: 6 }} size={8} color={getColor()} />
 				</div>
 			</Card>
 		</motion.div>
