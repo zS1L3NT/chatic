@@ -16,7 +16,7 @@ const _Login = () => {
 
 	useEffect(() => {
 		if (user) {
-			navigate("/")
+			navigate("/chat")
 		}
 	}, [user])
 

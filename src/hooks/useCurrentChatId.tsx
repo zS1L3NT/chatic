@@ -6,12 +6,12 @@ const useCurrentChatId = (): string | null => {
 	const [chatId, setChatId] = useState<string | null>(null)
 
 	useEffect(() => {
-		if (location.hash.startsWith("#/")) {
-			setChatId(location.hash.slice(2))
+		if (location.pathname.startsWith("/chat/")) {
+			setChatId(location.pathname.slice(6))
 		} else {
 			setChatId(null)
 		}
-	}, [location.hash])
+	}, [location.pathname])
 
 	return chatId
 }

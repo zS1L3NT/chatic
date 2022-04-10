@@ -21,7 +21,7 @@ const _ChatListItem = (
 	}>
 ) => {
 	const { chat, setFilters } = props
-	const route = `#/${chat.id}`
+	const route = `/chat/${chat.id}`
 
 	const navigate = useNavigate()
 	const location = useLocation()
@@ -33,7 +33,7 @@ const _ChatListItem = (
 	const latestMessage = useChatMessages(chat.id, 1)?.[0]
 
 	const handleClick = () => {
-		navigate(location.hash === route ? `/` : route, { replace: true })
+		navigate(location.pathname === route ? `/chat` : route, { replace: true })
 	}
 
 	useEffect(() => {
@@ -60,7 +60,7 @@ const _ChatListItem = (
 			animate={{ opacity: 1 }}
 			exit={{ opacity: 0 }}
 			layout>
-			<Card sx={{ backgroundColor: location.hash === route ? "primary.dark" : "" }}>
+			<Card sx={{ backgroundColor: location.pathname === route ? "primary.dark" : "" }}>
 				<CardActionArea
 					onClick={handleClick}
 					sx={{

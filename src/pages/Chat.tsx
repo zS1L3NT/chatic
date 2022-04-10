@@ -1,7 +1,7 @@
 import ChatContent from "../components/Chat/ChatContent"
 import ChatList from "../components/Chat/ChatList"
 
-const _Index = () => {
+const _Chat = () => {
 	return (
 		<div style={{ display: "flex", height: "100%" }}>
 			<ChatList style={{ flex: 3, height: "100%" }} />
@@ -10,4 +10,4 @@ const _Index = () => {
 	)
 }
 
-export default _Index
+export default _Chat
