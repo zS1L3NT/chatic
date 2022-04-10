@@ -29,7 +29,8 @@ const _ChatContent = (
 						style={{
 							display: "flex",
 							flexDirection: "column",
-							height: "100%"
+							height: "100%",
+							overflow: "hidden"
 						}}>
 						<ChatContentToolbar key="toolbar" receiver={receiver} presence={presence} />
 						<ChatContentMessages key="messages" />

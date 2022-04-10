@@ -104,9 +104,9 @@ const _ChatContentInput = (props: PropsWithChildren<{}>) => {
 		<motion.div
 			style={{ padding: 16, paddingTop: 8 }}
 			transition={{ duration: 0.2 }}
-			initial={{ opacity: 0 }}
-			animate={{ opacity: 1 }}
-			exit={{ opacity: 0 }}>
+			initial={{ opacity: 0, y: 20 }}
+			animate={{ opacity: 1, y: 0 }}
+			exit={{ opacity: 0, y: 20 }}>
 			<TextAreaWrapper onClick={handleClick}>
 				<TextArea
 					ref={inputRef}
