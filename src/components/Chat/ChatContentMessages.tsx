@@ -12,7 +12,6 @@ const _ChatContentMessages = (props: PropsWithChildren<{}>) => {
 
 	const chatId = useCurrentChatId()!
 	const messages = useChatMessages(chatId, 50)
-	const reversedMessages = messages ? Array.from(messages).reverse() : null
 
 	return (
 		<div
@@ -33,23 +32,25 @@ const _ChatContentMessages = (props: PropsWithChildren<{}>) => {
 					initial={{ opacity: 0 }}
 					animate={{ opacity: 1 }}
 					exit={{ opacity: 0 }}>
-					{reversedMessages?.map((message, i) =>
-						message.userId === user.id ? (
-							<MessageSent
-								key={message.chatId + "-" + message.id}
-								message={message}
-								isStartBlock={reversedMessages[i - 1]?.userId !== user.id}
-								isEndBlock={reversedMessages[i + 1]?.userId !== user.id}
-							/>
-						) : (
-							<MessageReceived
-								key={message.chatId + "-" + message.id}
-								message={message}
-								isStartBlock={reversedMessages[i - 1]?.userId !== user.id}
-								isEndBlock={reversedMessages[i + 1]?.userId !== user.id}
-							/>
-						)
-					)}
+					<AnimatePresence>
+						{messages?.map((message, i) =>
+							message.userId === user.id ? (
+								<MessageSent
+									key={message.chatId + "-" + message.id}
+									message={message}
+									isStartBlock={messages[i - 1]?.userId !== user.id}
+									isEndBlock={messages[i + 1]?.userId !== user.id}
+								/>
+							) : (
+								<MessageReceived
+									key={message.chatId + "-" + message.id}
+									message={message}
+									isStartBlock={messages[i - 1]?.userId === user.id}
+									isEndBlock={messages[i + 1]?.userId === user.id}
+								/>
+							)
+						)}
+					</AnimatePresence>
 				</motion.div>
 			</AnimatePresence>
 		</div>

@@ -18,7 +18,8 @@ const _MessageReceived = (
 			transition={{ duration: 0.2 }}
 			initial={{ opacity: 0, x: -20 }}
 			animate={{ opacity: 1, x: 0 }}
-			exit={{ opacity: 0, x: -20 }}>
+			exit={{ opacity: 0, x: -20 }}
+			layout>
 			<Card
 				sx={{
 					width: "fit-content",

@@ -13,7 +13,7 @@ const useChatMessages = (chatId: string | null | undefined, max: number) => {
 
 	useDebugValue(messages)
 
-	return messages
+	return messages ? Array.from(messages).reverse() : null
 }
 
 export default useChatMessages
