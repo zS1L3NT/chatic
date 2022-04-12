@@ -41,7 +41,7 @@ const _ChatListItem = (
 			...filters,
 			[chat.id]: search =>
 				search && receiver
-					? receiver.username.toLowerCase().indexOf(search) >= 0
+					? receiver.username.toLowerCase().indexOf(search.toLowerCase()) >= 0
 						? true
 						: false
 					: true
