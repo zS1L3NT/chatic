@@ -7,26 +7,24 @@ import { Card } from "@mui/material"
 const _MessageReceived = (
 	props: PropsWithChildren<{
 		message: iMessage
-		isStartBlock: boolean
-		isEndBlock: boolean
 	}>
 ) => {
-	const { message, isStartBlock, isEndBlock } = props
+	const { message } = props
 
 	return (
 		<motion.div
+			style={{ display: "flex" }}
 			transition={{ duration: 0.2 }}
 			initial={{ opacity: 0, x: -20 }}
 			animate={{ opacity: 1, x: 0 }}
 			exit={{ opacity: 0, x: -20 }}
-			layout>
+			layout="position">
 			<Card
 				sx={{
 					width: "fit-content",
 					maxWidth: "60%",
 					mx: 2,
-					mt: isStartBlock ? 1.5 : 0.5,
-					mb: isEndBlock ? 1.5 : 0.5,
+					my: 0.75,
 					px: 2,
 					py: 1
 				}}>

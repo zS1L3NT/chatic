@@ -66,23 +66,15 @@ const _ChatContentMessages = (props: PropsWithChildren<{}>) => {
 					exit={{ opacity: 0 }}>
 					<Scrollable>
 						<AnimatePresence>
+							<div key="header" style={{ height: 12 }} />
 							{messages?.map((message, i) =>
 								message.userId === user.id ? (
-									<MessageSent
-										key={message.chatId + "-" + message.id}
-										message={message}
-										isStartBlock={messages[i - 1]?.userId !== user.id}
-										isEndBlock={messages[i + 1]?.userId !== user.id}
-									/>
+									<MessageSent key={message.id} message={message} />
 								) : (
-									<MessageReceived
-										key={message.chatId + "-" + message.id}
-										message={message}
-										isStartBlock={messages[i - 1]?.userId === user.id}
-										isEndBlock={messages[i + 1]?.userId === user.id}
-									/>
+									<MessageReceived key={message.id} message={message} />
 								)
 							)}
+							<div key="footer" style={{ height: 12 }} />
 						</AnimatePresence>
 					</Scrollable>
 				</motion.div>

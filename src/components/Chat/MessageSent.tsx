@@ -9,11 +9,9 @@ import Dot from "../Dot"
 const _MessageSent = (
 	props: PropsWithChildren<{
 		message: iMessage
-		isStartBlock: boolean
-		isEndBlock: boolean
 	}>
 ) => {
-	const { message, isStartBlock, isEndBlock } = props
+	const { message } = props
 
 	const getColor = () => {
 		switch (message.status) {
@@ -35,15 +33,14 @@ const _MessageSent = (
 			initial={{ opacity: 0, x: 20 }}
 			animate={{ opacity: 1, x: 0 }}
 			exit={{ opacity: 0, x: 20 }}
-			layout>
+			layout="position">
 			<Card
 				sx={{
 					width: "fit-content",
 					maxWidth: "60%",
 					ml: "auto",
 					mr: 2,
-					mt: isStartBlock ? 1.5 : 0.5,
-					mb: isEndBlock ? 1.5 : 0.5,
+					my: 0.75,
 					px: 2,
 					py: 1
 				}}>
