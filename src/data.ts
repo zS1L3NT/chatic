@@ -85,104 +85,96 @@ export const chatData: iChat[] = [
 ]
 
 export const messageData: iMessage[] = [
+	...Array(80)
+		.fill(0)
+		.map((_, i) => ({
+			id: `message-${i}`,
+			content: `Message ${i} content`,
+			media: null,
+			date: mybd + i * 3 * 60 * 1000,
+			replyId: null,
+			userId: +`${i}`.at(-1)! < 5 ? "user-1" : "user-2",
+			chatId: "chat-1",
+			status: 3 as 3
+		})),
 	{
-		id: "message-1",
+		id: "message-101",
 		content: "Hello!",
 		media: null,
 		date: mybd - 3200000,
 		replyId: null,
 		userId: "user-1",
-		chatId: "chat-1",
+		chatId: "chat-2",
 		status: 3
 	},
 	{
-		id: "message-2",
+		id: "message-102",
 		content: "Hi!!!",
 		media: null,
 		date: mybd - 2800000,
-		replyId: "message-1",
-		userId: "user-2",
-		chatId: "chat-1",
+		replyId: "message-101",
+		userId: "user-3",
+		chatId: "chat-2",
 		status: 1
 	},
 	{
-		id: "message-3",
+		id: "message-103",
 		content: "Have a landscape picture of IU :D",
 		media: "https://6.vikiplatform.com/image/a11230e2d98d4a73825a4c10c8c6feb0.jpg?x=b&a=0x0&s=460x268&e=t&f=t&cb=1",
 		date: mybd - 2400000,
 		replyId: null,
 		userId: "user-1",
-		chatId: "chat-1",
+		chatId: "chat-2",
 		status: 3
 	},
 	{
-		id: "message-4",
+		id: "message-104",
 		content: "Thanks, have a portait picture of IU back :)",
 		media: "https://popslider.com/wp-content/uploads/2020/08/IU.jpg",
 		date: mybd - 2000000,
-		replyId: "message-3",
-		userId: "user-2",
-		chatId: "chat-1",
+		replyId: "message-103",
+		userId: "user-3",
+		chatId: "chat-2",
 		status: 3
 	},
 	{
-		id: "message-5",
+		id: "message-105",
 		content: "Oh wow that looks nice",
 		media: null,
 		date: mybd - 1800000,
 		replyId: null,
 		userId: "user-1",
-		chatId: "chat-1",
+		chatId: "chat-2",
 		status: 3
 	},
 	{
-		id: "message-6",
+		id: "message-106",
 		content: "Thanks ahh",
 		media: null,
 		date: mybd - 1600000,
-		replyId: "message-3",
+		replyId: "message-103",
 		userId: "user-1",
-		chatId: "chat-1",
+		chatId: "chat-2",
 		status: 3
 	},
 	{
-		id: "message-7",
+		id: "message-107",
 		content: "No issue",
 		media: null,
 		date: mybd - 1400000,
 		replyId: null,
-		userId: "user-2",
-		chatId: "chat-1",
+		userId: "user-3",
+		chatId: "chat-2",
 		status: 3
 	},
 	{
-		id: "message-8",
+		id: "message-108",
 		content: "Any day bro",
 		media: null,
 		date: mybd - 1200000,
 		replyId: "message-3",
-		userId: "user-2",
-		chatId: "chat-1",
-		status: 3
-	},
-	{
-		id: "message-9",
-		content: "Hi, my user id is user-1!",
-		media: null,
-		date: mybd - 1600000,
-		replyId: null,
-		userId: "user-1",
-		chatId: "chat-2",
-		status: 3
-	},
-	{
-		id: "message-10",
-		content: "Hi, my user id is user-3!",
-		media: null,
-		date: mybd - 800000,
-		replyId: "message-6",
 		userId: "user-3",
 		chatId: "chat-2",
-		status: 1
+		status: 3
 	}
 ]
