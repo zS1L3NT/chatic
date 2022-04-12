@@ -127,6 +127,46 @@ export const messageData: iMessage[] = [
 	},
 	{
 		id: "message-5",
+		content: "Oh wow that looks nice",
+		media: null,
+		date: mybd - 1800000,
+		replyId: null,
+		userId: "mQg4fp1624MxgkIkWpnOVmSfZ7a2",
+		chatId: "chat-1",
+		status: 3
+	},
+	{
+		id: "message-6",
+		content: "Thanks ahh",
+		media: null,
+		date: mybd - 1600000,
+		replyId: "message-3",
+		userId: "mQg4fp1624MxgkIkWpnOVmSfZ7a2",
+		chatId: "chat-1",
+		status: 3
+	},
+	{
+		id: "message-7",
+		content: "No issue",
+		media: null,
+		date: mybd - 1400000,
+		replyId: null,
+		userId: "user-2",
+		chatId: "chat-1",
+		status: 3
+	},
+	{
+		id: "message-8",
+		content: "Any day bro",
+		media: null,
+		date: mybd - 1200000,
+		replyId: "message-3",
+		userId: "user-2",
+		chatId: "chat-1",
+		status: 3
+	},
+	{
+		id: "message-9",
 		content: "Hi, my user id is mQg4fp1624MxgkIkWpnOVmSfZ7a2!",
 		media: null,
 		date: mybd - 1600000,
@@ -136,7 +176,7 @@ export const messageData: iMessage[] = [
 		status: 3
 	},
 	{
-		id: "message-6",
+		id: "message-10",
 		content: "Hi, my user id is user-3!",
 		media: null,
 		date: mybd - 800000,
