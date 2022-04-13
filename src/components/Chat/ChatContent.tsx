@@ -6,7 +6,7 @@ import useChatReceiver from "../../hooks/useChatReceiver"
 import useCurrentChatId from "../../hooks/useCurrentChatId"
 import useUserPresence from "../../hooks/useUserPresence"
 import ChatContentInput from "./ChatContentInput"
-import ChatContentMessages from "./ChatContentMessages"
+import ChatContentScrollable from "./ChatContentScrollable"
 import ChatContentToolbar from "./ChatContentToolbar"
 
 const _ChatContent = (
@@ -33,7 +33,7 @@ const _ChatContent = (
 							overflow: "hidden"
 						}}>
 						<ChatContentToolbar key="toolbar" receiver={receiver} presence={presence} />
-						<ChatContentMessages key="messages" />
+						<ChatContentScrollable key="messages" />
 						<ChatContentInput key="input" />
 					</div>
 				)}
