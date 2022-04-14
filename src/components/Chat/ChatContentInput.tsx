@@ -1,6 +1,8 @@
 import { collection, CollectionReference, doc, getFirestore, setDoc } from "firebase/firestore"
 import { motion } from "framer-motion"
-import { ChangeEvent, KeyboardEvent, PropsWithChildren, useContext, useRef, useState } from "react"
+import {
+	ChangeEvent, KeyboardEvent, PropsWithChildren, useContext, useEffect, useRef, useState
+} from "react"
 
 import { Card, styled } from "@mui/material"
 
@@ -62,6 +64,12 @@ const _ChatContentInput = (props: PropsWithChildren<{}>) => {
 	const [sending, setSending] = useState(false)
 
 	const chatId = useCurrentChatId()!
+
+	useEffect(() => {
+		if (chatId && inputRef.current) {
+			inputRef.current.focus()
+		}
+	}, [chatId, inputRef])
 
 	const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
 		const input = inputRef.current
