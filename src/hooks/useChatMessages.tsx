@@ -1,9 +1,12 @@
 import { limit, orderBy, where } from "firebase/firestore"
-import { useDebugValue } from "react"
+import { useDebugValue, useEffect, useState } from "react"
 
 import useAppCollection from "./useAppCollection"
 
 const useChatMessages = (chatId: string | null | undefined, max: number) => {
+	const [maxChanged, setMaxChanged] = useState(false)
+	const [cache, setCache] = useState<iMessage[] | null>(null)
+
 	const [messages] = useAppCollection(
 		"messages",
 		where("chatId", "==", chatId || "-"),
@@ -11,9 +14,21 @@ const useChatMessages = (chatId: string | null | undefined, max: number) => {
 		limit(max)
 	)
 
-	useDebugValue(messages)
+	useDebugValue(cache)
 
-	return messages ? Array.from(messages).reverse() : null
+	useEffect(() => {
+		setMaxChanged(true)
+	}, [max])
+
+	useEffect(() => {
+		if (!maxChanged) {
+			setCache(messages)
+		} else if (messages !== null) {
+			setMaxChanged(false)
+		}
+	}, [messages, maxChanged])
+
+	return cache ? [...cache].reverse() : null
 }
 
 export default useChatMessages
