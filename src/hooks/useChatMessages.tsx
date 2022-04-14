@@ -23,7 +23,7 @@ const useChatMessages = (chatId: string | null | undefined) => {
 	}, [chatId, dbMessages])
 
 	return chatId && messages[chatId]
-		? Object.values(messages[chatId]!).sort((a, b) => a.date - b.date)
+		? Object.values(messages[chatId]!).sort((a, b) => b.date - a.date)
 		: null
 }
 
