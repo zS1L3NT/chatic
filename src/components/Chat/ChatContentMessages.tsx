@@ -2,7 +2,7 @@ import {
 	collection, CollectionReference, getDocs, getFirestore, limit, orderBy, query, startAfter, where
 } from "firebase/firestore"
 import { AnimatePresence, motion } from "framer-motion"
-import { PropsWithChildren, useContext } from "react"
+import { PropsWithChildren, useContext, useEffect, useState } from "react"
 import InfiniteScroll from "react-infinite-scroll-component"
 
 import { styled } from "@mui/material"
@@ -43,9 +43,16 @@ const InfiniteScrollWrapper = styled(motion.div)(({ theme }) => ({
 const _ChatContentMessages = (props: PropsWithChildren<{}>) => {
 	const { setChatMessages } = useContext(ChatsContext)
 	const user = useContext(AuthContext)!
+	const [hasMore, setHasMore] = useState(true)
 
 	const chatId = useCurrentChatId()!
 	const messages = useChatMessages(chatId)
+
+	useEffect(() => {
+		if (messages && messages.length < 40) {
+			setHasMore(false)
+		}
+	}, [messages])
 
 	const loadMore = async () => {
 		const firestore = getFirestore(firebaseApp)
@@ -58,6 +65,9 @@ const _ChatContentMessages = (props: PropsWithChildren<{}>) => {
 			limit(20)
 		)
 		const snap = await getDocs(queryRef)
+		if (snap.docs.length === 0) {
+			setHasMore(false)
+		}
 		setChatMessages(
 			chatId,
 			snap.docs.map(doc => doc.data())
@@ -88,7 +98,7 @@ const _ChatContentMessages = (props: PropsWithChildren<{}>) => {
 							flexDirection: "column-reverse"
 						}}
 						inverse={true}
-						hasMore={true}
+						hasMore={hasMore}
 						loader={<h4>Loading</h4>}
 						scrollableTarget="infinite-scroll">
 						<AnimatePresence>
