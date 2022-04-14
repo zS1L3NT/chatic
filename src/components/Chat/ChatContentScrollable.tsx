@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from "framer-motion"
-import { PropsWithChildren } from "react"
+import { PropsWithChildren, useRef } from "react"
 import ScrollToBottom from "react-scroll-to-bottom"
 
 import { styled } from "@mui/material"
@@ -14,8 +14,8 @@ const Scrollable = styled(ScrollToBottom)(({ theme }) => ({
 	"& > div": {
 		width: "100%",
 		height: "100%",
-		overflowX: "hidden",
-		overflowY: "scroll",
+		overflow: "hidden scroll",
+		overflowAnchor: "auto",
 
 		"&::-webkit-scrollbar": {
 			width: 15
@@ -38,6 +38,10 @@ const Scrollable = styled(ScrollToBottom)(({ theme }) => ({
 
 const _ChatContentScrollable = (props: PropsWithChildren<{}>) => {
 	const chatId = useCurrentChatId()!
+	const motionDiv = useRef<HTMLDivElement>(null)
+
+	const getParent = () =>
+		(motionDiv.current?.children.item(0)?.children.item(0) as HTMLDivElement) || null
 
 	return (
 		<div
@@ -49,6 +53,7 @@ const _ChatContentScrollable = (props: PropsWithChildren<{}>) => {
 			<AnimatePresence exitBeforeEnter>
 				<motion.div
 					key={chatId}
+					ref={motionDiv}
 					style={{
 						position: "absolute",
 						width: "100%",
@@ -59,7 +64,7 @@ const _ChatContentScrollable = (props: PropsWithChildren<{}>) => {
 					animate={{ opacity: 1 }}
 					exit={{ opacity: 0 }}>
 					<Scrollable>
-						<ChatContentMessages />
+						<ChatContentMessages getParent={getParent} />
 					</Scrollable>
 				</motion.div>
 			</AnimatePresence>

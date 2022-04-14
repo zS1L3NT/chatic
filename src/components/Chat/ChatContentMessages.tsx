@@ -7,11 +7,22 @@ import useCurrentChatId from "../../hooks/useCurrentChatId"
 import MessageReceived from "./MessageReceived"
 import MessageSent from "./MessageSent"
 
-const _ChatContentMessages = (props: PropsWithChildren<{}>) => {
+const _ChatContentMessages = (
+	props: PropsWithChildren<{
+		getParent: () => HTMLDivElement | null
+	}>
+) => {
+	const { getParent } = props
+
 	const user = useContext(AuthContext)!
 
 	const chatId = useCurrentChatId()!
 	const messages = useChatMessages(chatId, 50)
+
+	const parent = getParent()
+	if (parent && parent.scrollTop < 1) {
+		parent.scrollTo({ top: 1, behavior: "smooth" })
+	}
 
 	return (
 		<AnimatePresence>
