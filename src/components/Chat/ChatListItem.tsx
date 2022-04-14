@@ -30,7 +30,7 @@ const _ChatListItem = (
 	const theme = useTheme()
 	const receiver = useChatReceiver(chat)
 	const presence = useUserPresence(receiver?.id)
-	const latestMessage = useChatMessages(chat.id, 1)?.[0]
+	// const latestMessage = useChatMessages(chat.id, 1)?.[0]
 
 	const handleClick = () => {
 		navigate(location.pathname === route ? `/chat` : route, { replace: true })
@@ -111,7 +111,7 @@ const _ChatListItem = (
 							textHeight={20}
 							skeletonWidth={150}
 							skeletonHeight={16}>
-							{latestMessage ? latestMessage.content || "" : null}
+							{/* {latestMessage ? latestMessage.content || "" : null} */}
 						</SkeletonText>
 					</Box>
 				</CardActionArea>
