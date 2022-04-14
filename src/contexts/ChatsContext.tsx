@@ -23,10 +23,12 @@ const _ChatsProvider = (props: PropsWithChildren<{}>) => {
 			...messages,
 			[chatId]: {
 				...messages[chatId],
-				...chatMessages.reduce<Record<string, iMessage>>(
-					(acc, message) => ({ ...acc, [message.id]: message }),
-					{}
-				)
+				...chatMessages
+					.filter(message => message.chatId === chatId)
+					.reduce<Record<string, iMessage>>(
+						(acc, message) => ({ ...acc, [message.id]: message }),
+						{}
+					)
 			}
 		}))
 	}
