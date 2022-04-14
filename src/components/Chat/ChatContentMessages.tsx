@@ -5,7 +5,7 @@ import { AnimatePresence, motion } from "framer-motion"
 import { PropsWithChildren, useContext, useEffect, useState } from "react"
 import InfiniteScroll from "react-infinite-scroll-component"
 
-import { styled } from "@mui/material"
+import { Box, CircularProgress, styled } from "@mui/material"
 
 import AuthContext from "../../contexts/AuthContext"
 import ChatsContext from "../../contexts/ChatsContext"
@@ -99,7 +99,17 @@ const _ChatContentMessages = (props: PropsWithChildren<{}>) => {
 						}}
 						inverse={true}
 						hasMore={hasMore}
-						loader={<h4>Loading</h4>}
+						loader={
+							<Box
+								sx={{
+									width: "100%",
+									display: "flex",
+									justifyContent: "center",
+									my: 1.5
+								}}>
+								<CircularProgress />
+							</Box>
+						}
 						scrollableTarget="infinite-scroll">
 						<AnimatePresence>
 							{messages?.map(message =>
