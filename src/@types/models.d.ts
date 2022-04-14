@@ -36,7 +36,7 @@ declare interface iChat {
 
 declare interface iMessage {
 	id: string
-	content: string
+	content: string | null
 	media: string | null
 	date: number
 	replyId: string | null
