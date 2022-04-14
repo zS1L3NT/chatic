@@ -1,34 +1,30 @@
 import { limit, orderBy, where } from "firebase/firestore"
-import { useDebugValue, useEffect, useState } from "react"
+import { useContext, useDebugValue, useEffect } from "react"
 
+import ChatsContext from "../contexts/ChatsContext"
 import useAppCollection from "./useAppCollection"
 
-const useChatMessages = (chatId: string | null | undefined, max: number) => {
-	const [maxChanged, setMaxChanged] = useState(false)
-	const [cache, setCache] = useState<iMessage[] | null>(null)
+const useChatMessages = (chatId: string | null | undefined) => {
+	const { messages, setChatMessages } = useContext(ChatsContext)
 
-	const [messages] = useAppCollection(
+	const [dbMessages] = useAppCollection(
 		"messages",
 		where("chatId", "==", chatId || "-"),
 		orderBy("date", "desc"),
-		limit(max)
+		limit(40)
 	)
 
-	useDebugValue(cache)
+	useDebugValue(messages)
 
 	useEffect(() => {
-		setMaxChanged(true)
-	}, [max])
-
-	useEffect(() => {
-		if (!maxChanged) {
-			setCache(messages)
-		} else if (messages !== null) {
-			setMaxChanged(false)
+		if (chatId && dbMessages) {
+			setChatMessages(chatId, dbMessages)
 		}
-	}, [messages, maxChanged])
+	}, [chatId, dbMessages])
 
-	return cache ? [...cache].reverse() : null
+	return chatId && messages[chatId]
+		? Object.values(messages[chatId]!).sort((a, b) => a.date - b.date)
+		: null
 }
 
 export default useChatMessages
