@@ -5,7 +5,9 @@ import {
 } from "react"
 
 import { Clear, Edit, Reply } from "@mui/icons-material"
-import { Box, Card, Divider, styled, Typography, useTheme } from "@mui/material"
+import {
+	Box, Card, Divider, IconButton, styled, Tooltip, Typography, useTheme
+} from "@mui/material"
 
 import AuthContext from "../../contexts/AuthContext"
 import ChatsContext from "../../contexts/ChatsContext"
@@ -118,6 +120,12 @@ const _ChatContentInput = (
 		}
 	}
 
+	const handleClosePopup = () => {
+		if (!chatId) return
+
+		setChatInput(chatId, { text: "", type: "send", messageId: "" })
+	}
+
 	const handleClick = () => {
 		inputRef.current?.focus()
 	}
@@ -180,7 +188,11 @@ const _ChatContentInput = (
 								{messages[chatId || ""]?.[chatInput.messageId]?.content}
 							</Typography>
 						</Box>
-						<Clear sx={{ mx: 1, my: "auto" }} fontSize="small" />
+						<Tooltip title={`Clear message ${chatInput.type}`}>
+							<IconButton sx={{ mx: 0.5, my: "auto" }} onClick={handleClosePopup}>
+								<Clear fontSize="small" />
+							</IconButton>
+						</Tooltip>
 					</motion.div>
 					<Divider />
 				</motion.div>
