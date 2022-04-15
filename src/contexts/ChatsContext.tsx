@@ -3,8 +3,8 @@ import { createContext, PropsWithChildren, useState } from "react"
 interface iChatsData {
 	messages: Record<string, Record<string, iMessage>>
 	setChatMessages: (chatId: string, messages: iMessage[]) => void
-	inputs: Record<string, string>
-	setChatInput: (chatId: string, input: string) => void
+	inputs: Record<string, { text: string; type: "send" | "reply" | "edit"; messageId: string }>
+	setChatInput: (chatId: string, input: iChatsData["inputs"][string]) => void
 }
 
 const ChatsContext = createContext<iChatsData>({
@@ -33,8 +33,11 @@ const _ChatsProvider = (props: PropsWithChildren<{}>) => {
 		}))
 	}
 
-	const setChatInput = (chatId: string, input: string) => {
-		setInputs(inputs => ({ ...inputs, [chatId]: input }))
+	const setChatInput = (chatId: string, input: iChatsData["inputs"][string]) => {
+		setInputs(inputs => ({
+			...inputs,
+			[chatId]: input
+		}))
 	}
 
 	return (

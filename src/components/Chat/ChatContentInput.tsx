@@ -7,6 +7,7 @@ import {
 import { Card, styled } from "@mui/material"
 
 import AuthContext from "../../contexts/AuthContext"
+import ChatsContext from "../../contexts/ChatsContext"
 import firebaseApp from "../../firebaseApp"
 import useCurrentChatId from "../../hooks/useCurrentChatId"
 
@@ -57,10 +58,12 @@ const TextArea = styled(`textarea`)(({ theme }) => ({
 
 const _ChatContentInput = (props: PropsWithChildren<{}>) => {
 	const firestore = getFirestore(firebaseApp)
+	const messagesColl = collection(firestore, "messages") as CollectionReference<iMessage>
 
 	const user = useContext(AuthContext)!
+	const { inputs, setChatInput } = useContext(ChatsContext)
 	const inputRef = useRef<HTMLTextAreaElement>(null)
-	const [message, setMessage] = useState("")
+	const [messageId, setMessageId] = useState(doc(messagesColl).id)
 	const [sending, setSending] = useState(false)
 
 	const chatId = useCurrentChatId()!
@@ -77,7 +80,7 @@ const _ChatContentInput = (props: PropsWithChildren<{}>) => {
 			if (sending) {
 				setSending(false)
 			} else {
-				setMessage(e.target.value)
+				setChatInput(chatId, { text: e.target.value, type: "send", messageId })
 				input.style.height = "20px"
 				input.style.height = input.scrollHeight + "px"
 				input.parentElement!.style.height = input.scrollHeight + 28 + "px"
@@ -88,13 +91,12 @@ const _ChatContentInput = (props: PropsWithChildren<{}>) => {
 	const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
 		if (e.code === "Enter" && !e.shiftKey) {
 			setSending(true)
-			setMessage("")
 
-			const messagesColl = collection(firestore, "messages") as CollectionReference<iMessage>
-			const messageDoc = doc(messagesColl)
-			setDoc(messageDoc, {
-				id: messageDoc.id,
-				content: message,
+			setMessageId(doc(messagesColl).id)
+			setChatInput(chatId, { text: "", type: "send", messageId: "" })
+			setDoc(doc(messagesColl, messageId), {
+				id: messageId,
+				content: inputs[chatId]!.text,
 				media: null,
 				date: Date.now(),
 				replyId: null,
@@ -119,7 +121,7 @@ const _ChatContentInput = (props: PropsWithChildren<{}>) => {
 			<TextAreaWrapper onClick={handleClick}>
 				<TextArea
 					ref={inputRef}
-					value={message}
+					value={inputs[chatId]?.text}
 					onChange={handleChange}
 					onKeyDown={handleKeyDown}
 					placeholder="Type a message..."
