@@ -112,9 +112,9 @@ const _ChatContentMessages = (props: PropsWithChildren<{}>) => {
 						}
 						scrollableTarget="infinite-scroll">
 						<AnimatePresence>
-							{messages?.map(message =>
+							{messages?.map((message, i) =>
 								message.userId === user.id ? (
-									<MessageSent key={message.id} message={message} />
+									<MessageSent key={message.id} message={message} editable={i < 40} />
 								) : (
 									<MessageReceived key={message.id} message={message} />
 								)

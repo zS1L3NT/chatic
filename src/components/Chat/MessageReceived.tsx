@@ -1,8 +1,9 @@
 import { motion } from "framer-motion"
 import { DateTime } from "luxon"
-import { PropsWithChildren } from "react"
+import { PropsWithChildren, useState } from "react"
 
-import { Card } from "@mui/material"
+import { ContentCopy, Reply } from "@mui/icons-material"
+import { Card, Divider, ListItemIcon, ListItemText, Menu, MenuItem, MenuList } from "@mui/material"
 
 const _MessageReceived = (
 	props: PropsWithChildren<{
@@ -10,6 +11,19 @@ const _MessageReceived = (
 	}>
 ) => {
 	const { message } = props
+
+	const [contextMenu, setContextMenu] = useState<{ left: number; top: number }>()
+
+	const handleOpen = (event: React.MouseEvent) => {
+		event.preventDefault()
+		setContextMenu(
+			!contextMenu ? { left: event.clientX - 2, top: event.clientY - 4 } : undefined
+		)
+	}
+
+	const handleClose = () => {
+		setContextMenu(undefined)
+	}
 
 	return (
 		<motion.div
@@ -27,7 +41,8 @@ const _MessageReceived = (
 					my: 0.75,
 					px: 2,
 					py: 1
-				}}>
+				}}
+				onContextMenu={handleOpen}>
 				{message.content}
 				<div
 					style={{
@@ -46,6 +61,31 @@ const _MessageReceived = (
 					</span>
 				</div>
 			</Card>
+			<Menu
+				PaperProps={{ style: { width: 200 } }}
+				BackdropProps={{
+					onContextMenu: e => e.preventDefault()
+				}}
+				open={!!contextMenu}
+				onClose={handleClose}
+				anchorReference="anchorPosition"
+				anchorPosition={contextMenu}>
+				<MenuList>
+					<MenuItem>
+						<ListItemIcon>
+							<Reply fontSize="small" />
+						</ListItemIcon>
+						<ListItemText>Reply</ListItemText>
+					</MenuItem>
+					<Divider />
+					<MenuItem>
+						<ListItemIcon>
+							<ContentCopy fontSize="small" />
+						</ListItemIcon>
+						<ListItemText>Copy Text</ListItemText>
+					</MenuItem>
+				</MenuList>
+			</Menu>
 		</motion.div>
 	)
 }

@@ -1,17 +1,34 @@
 import { motion } from "framer-motion"
 import { DateTime } from "luxon"
-import { PropsWithChildren } from "react"
+import { PropsWithChildren, useState } from "react"
 
-import { Card } from "@mui/material"
+import { ContentCopy, Delete, Edit, Reply } from "@mui/icons-material"
+import {
+	Card, Divider, ListItemIcon, ListItemText, Menu, MenuItem, MenuList, Tooltip
+} from "@mui/material"
 
 import Dot from "../Dot"
 
 const _MessageSent = (
 	props: PropsWithChildren<{
 		message: iMessage
+		editable: boolean
 	}>
 ) => {
-	const { message } = props
+	const { message, editable } = props
+
+	const [contextMenu, setContextMenu] = useState<{ left: number; top: number }>()
+
+	const handleOpen = (event: React.MouseEvent) => {
+		event.preventDefault()
+		setContextMenu(
+			!contextMenu ? { left: event.clientX - 2, top: event.clientY - 4 } : undefined
+		)
+	}
+
+	const handleClose = () => {
+		setContextMenu(undefined)
+	}
 
 	const getColor = () => {
 		switch (message.status) {
@@ -25,6 +42,15 @@ const _MessageSent = (
 				return "rgb(0, 255, 0)"
 		}
 	}
+
+	const EditableWrapper = (props: PropsWithChildren<{ title: string }>) =>
+		editable ? (
+			<>{props.children}</>
+		) : (
+			<Tooltip title={props.title} placement="left" arrow>
+				{props.children as JSX.Element}
+			</Tooltip>
+		)
 
 	return (
 		<motion.div
@@ -43,7 +69,8 @@ const _MessageSent = (
 					my: 0.75,
 					px: 2,
 					py: 1
-				}}>
+				}}
+				onContextMenu={handleOpen}>
 				{message.content}
 				<div
 					style={{
@@ -63,6 +90,47 @@ const _MessageSent = (
 					<Dot style={{ marginLeft: 8, marginBottom: 6 }} size={8} color={getColor()} />
 				</div>
 			</Card>
+			<Menu
+				PaperProps={{ style: { width: 200 } }}
+				BackdropProps={{
+					onContextMenu: e => e.preventDefault()
+				}}
+				open={!!contextMenu}
+				onClose={handleClose}
+				anchorReference="anchorPosition"
+				anchorPosition={contextMenu}>
+				<MenuList>
+					<MenuItem>
+						<ListItemIcon>
+							<Reply fontSize="small" />
+						</ListItemIcon>
+						<ListItemText>Reply</ListItemText>
+					</MenuItem>
+					<EditableWrapper title="Message is too old to be edited!">
+						<MenuItem sx={{ pointerEvents: "auto!important" }} disabled={!editable}>
+							<ListItemIcon>
+								<Edit fontSize="small" />
+							</ListItemIcon>
+							<ListItemText>Edit</ListItemText>
+						</MenuItem>
+					</EditableWrapper>
+					<EditableWrapper title="Message is too old to be deleted!">
+						<MenuItem sx={{ pointerEvents: "auto!important" }} disabled={!editable}>
+							<ListItemIcon>
+								<Delete fontSize="small" />
+							</ListItemIcon>
+							<ListItemText>Delete</ListItemText>
+						</MenuItem>
+					</EditableWrapper>
+					<Divider />
+					<MenuItem>
+						<ListItemIcon>
+							<ContentCopy fontSize="small" />
+						</ListItemIcon>
+						<ListItemText>Copy Text</ListItemText>
+					</MenuItem>
+				</MenuList>
+			</Menu>
 		</motion.div>
 	)
 }
