@@ -1,4 +1,4 @@
-import { collection, CollectionReference, doc, getFirestore, setDoc } from "firebase/firestore"
+import { doc, setDoc } from "firebase/firestore"
 import { motion } from "framer-motion"
 import {
 	ChangeEvent, KeyboardEvent, PropsWithChildren, useContext, useEffect, useRef, useState
@@ -8,7 +8,7 @@ import { Card, styled } from "@mui/material"
 
 import AuthContext from "../../contexts/AuthContext"
 import ChatsContext from "../../contexts/ChatsContext"
-import firebaseApp from "../../firebaseApp"
+import { messagesColl } from "../../firebase"
 import useCurrentChatId from "../../hooks/useCurrentChatId"
 
 const TextAreaWrapper = styled(Card)(({ theme }) => ({
@@ -57,9 +57,6 @@ const TextArea = styled(`textarea`)(({ theme }) => ({
 }))
 
 const _ChatContentInput = (props: PropsWithChildren<{}>) => {
-	const firestore = getFirestore(firebaseApp)
-	const messagesColl = collection(firestore, "messages") as CollectionReference<iMessage>
-
 	const user = useContext(AuthContext)!
 	const { getChatInput, setChatInput } = useContext(ChatsContext)
 	const inputRef = useRef<HTMLTextAreaElement>(null)

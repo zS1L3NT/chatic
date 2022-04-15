@@ -1,15 +1,12 @@
-import { doc, DocumentReference, getFirestore } from "firebase/firestore"
+import { CollectionReference, doc } from "firebase/firestore"
 import { useDebugValue } from "react"
 import { useDocumentData } from "react-firebase-hooks/firestore"
 
-import firebaseApp from "../firebaseApp"
-
-const useAppDocument = <C extends keyof iFirestoreCollections, T = iFirestoreCollections[C]>(
-	coll: C,
+const useAppDocument = <T extends Record<string, any>>(
+	collRef: CollectionReference<T>,
 	path: string | null | undefined
 ): [T, null] | [null, Error] | [null, null] => {
-	const firestore = getFirestore(firebaseApp)
-	const docRef = doc(firestore, coll, path || "-") as DocumentReference<T>
+	const docRef = doc(collRef, path || "-")
 
 	const [data, _, error] = useDocumentData(docRef)
 

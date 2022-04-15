@@ -1,6 +1,7 @@
 import { AnimatePresence } from "framer-motion"
 import { CSSProperties, PropsWithChildren } from "react"
 
+import { chatsColl } from "../../firebase"
 import useAppDocument from "../../hooks/useAppDocument"
 import useChatReceiver from "../../hooks/useChatReceiver"
 import useCurrentChatId from "../../hooks/useCurrentChatId"
@@ -17,7 +18,7 @@ const _ChatContent = (
 	const { style } = props
 
 	const chatId = useCurrentChatId()
-	const [chat] = useAppDocument("chats", chatId)
+	const [chat] = useAppDocument(chatsColl, chatId)
 	const receiver = useChatReceiver(chat)
 	const presence = useUserPresence(receiver?.id)
 

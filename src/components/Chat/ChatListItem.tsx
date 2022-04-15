@@ -4,7 +4,6 @@ import { useLocation, useNavigate } from "react-router-dom"
 
 import { Avatar, Box, Card, CardActionArea, useTheme } from "@mui/material"
 
-import useChatMessages from "../../hooks/useChatMessages"
 import useChatReceiver from "../../hooks/useChatReceiver"
 import useUserPresence from "../../hooks/useUserPresence"
 import Dot from "../Dot"

@@ -1,6 +1,4 @@
-import {
-	collection, CollectionReference, getDocs, getFirestore, limit, orderBy, query, startAfter, where
-} from "firebase/firestore"
+import { getDocs, limit, orderBy, query, startAfter, where } from "firebase/firestore"
 import { AnimatePresence, motion } from "framer-motion"
 import { PropsWithChildren, useContext, useEffect, useState } from "react"
 import InfiniteScroll from "react-infinite-scroll-component"
@@ -9,7 +7,7 @@ import { Box, CircularProgress, styled } from "@mui/material"
 
 import AuthContext from "../../contexts/AuthContext"
 import ChatsContext from "../../contexts/ChatsContext"
-import firebaseApp from "../../firebaseApp"
+import { messagesColl } from "../../firebase"
 import useChatMessages from "../../hooks/useChatMessages"
 import useCurrentChatId from "../../hooks/useCurrentChatId"
 import MessageReceived from "./MessageReceived"
@@ -57,10 +55,8 @@ const _ChatContentMessages = (props: PropsWithChildren<{}>) => {
 	const loadMore = async () => {
 		if (!chatId) return
 
-		const firestore = getFirestore(firebaseApp)
-		const collRef = collection(firestore, "messages") as CollectionReference<iMessage>
 		const queryRef = query(
-			collRef,
+			messagesColl,
 			where("chatId", "==", chatId || "-"),
 			orderBy("date", "desc"),
 			startAfter(messages!.at(-1)!.date),
