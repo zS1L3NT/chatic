@@ -61,18 +61,20 @@ const _ChatContentInput = (props: PropsWithChildren<{}>) => {
 	const messagesColl = collection(firestore, "messages") as CollectionReference<iMessage>
 
 	const user = useContext(AuthContext)!
-	const { inputs, setChatInput } = useContext(ChatsContext)
+	const { getChatInput, setChatInput } = useContext(ChatsContext)
 	const inputRef = useRef<HTMLTextAreaElement>(null)
 	const [messageId, setMessageId] = useState(doc(messagesColl).id)
 	const [sending, setSending] = useState(false)
 
 	const chatId = useCurrentChatId()!
 
+	const chatInput = getChatInput(chatId)
+
 	useEffect(() => {
 		if (chatId && inputRef.current) {
 			inputRef.current.focus()
 		}
-	}, [chatId, inputRef])
+	}, [chatId, inputRef, chatInput])
 
 	const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
 		const input = inputRef.current
@@ -96,7 +98,7 @@ const _ChatContentInput = (props: PropsWithChildren<{}>) => {
 			setChatInput(chatId, { text: "", type: "send", messageId: "" })
 			setDoc(doc(messagesColl, messageId), {
 				id: messageId,
-				content: inputs[chatId]!.text,
+				content: chatInput.text,
 				media: null,
 				date: Date.now(),
 				replyId: null,
@@ -118,10 +120,15 @@ const _ChatContentInput = (props: PropsWithChildren<{}>) => {
 			initial={{ opacity: 0, y: 20 }}
 			animate={{ opacity: 1, y: 0 }}
 			exit={{ opacity: 0, y: 20 }}>
-			<TextAreaWrapper onClick={handleClick}>
+			<TextAreaWrapper
+				sx={{
+					borderTopLeftRadius: chatInput.type !== "send" ? 0 : 10,
+					borderTopRightRadius: chatInput.type !== "send" ? 0 : 10
+				}}
+				onClick={handleClick}>
 				<TextArea
 					ref={inputRef}
-					value={inputs[chatId]?.text}
+					value={chatInput.text}
 					onChange={handleChange}
 					onKeyDown={handleKeyDown}
 					placeholder="Type a message..."

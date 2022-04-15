@@ -1,22 +1,28 @@
 import { createContext, PropsWithChildren, useState } from "react"
 
+interface iChatInput {
+	text: string
+	type: "send" | "reply" | "edit"
+	messageId: string
+}
+
 interface iChatsData {
 	messages: Record<string, Record<string, iMessage>>
 	setChatMessages: (chatId: string, messages: iMessage[]) => void
-	inputs: Record<string, { text: string; type: "send" | "reply" | "edit"; messageId: string }>
-	setChatInput: (chatId: string, input: iChatsData["inputs"][string]) => void
+	getChatInput: (chatId: string | null | undefined) => iChatInput
+	setChatInput: (chatId: string, input: iChatInput) => void
 }
 
 const ChatsContext = createContext<iChatsData>({
 	messages: {},
 	setChatMessages: () => {},
-	inputs: {},
+	getChatInput: () => ({ text: "", type: "send", messageId: "" }),
 	setChatInput: () => {}
 })
 
 const _ChatsProvider = (props: PropsWithChildren<{}>) => {
 	const [messages, setMessages] = useState<iChatsData["messages"]>({})
-	const [inputs, setInputs] = useState<iChatsData["inputs"]>({})
+	const [inputs, setInputs] = useState<Record<string, iChatInput>>({})
 
 	const setChatMessages = (chatId: string, chatMessages: iMessage[]) => {
 		setMessages(messages => ({
@@ -33,7 +39,15 @@ const _ChatsProvider = (props: PropsWithChildren<{}>) => {
 		}))
 	}
 
-	const setChatInput = (chatId: string, input: iChatsData["inputs"][string]) => {
+	const getChatInput = (chatId: string | null | undefined) => {
+		const chatInput: iChatInput = { text: "", type: "send", messageId: "" }
+		if (typeof chatId !== "string" || !inputs[chatId]) {
+			return chatInput
+		}
+		return inputs[chatId]!
+	}
+
+	const setChatInput = (chatId: string, input: iChatInput) => {
 		setInputs(inputs => ({
 			...inputs,
 			[chatId]: input
@@ -41,7 +55,7 @@ const _ChatsProvider = (props: PropsWithChildren<{}>) => {
 	}
 
 	return (
-		<ChatsContext.Provider value={{ messages, setChatMessages, inputs, setChatInput }}>
+		<ChatsContext.Provider value={{ messages, setChatMessages, getChatInput, setChatInput }}>
 			{props.children}
 		</ChatsContext.Provider>
 	)

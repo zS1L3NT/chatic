@@ -1,9 +1,11 @@
 import { motion } from "framer-motion"
 import { DateTime } from "luxon"
-import { PropsWithChildren, useState } from "react"
+import { PropsWithChildren, useContext, useState } from "react"
 
 import { ContentCopy, Reply } from "@mui/icons-material"
 import { Card, Divider, ListItemIcon, ListItemText, Menu, MenuItem, MenuList } from "@mui/material"
+import ChatsContext from "../../contexts/ChatsContext"
+import useCurrentChatId from "../../hooks/useCurrentChatId"
 
 const _MessageReceived = (
 	props: PropsWithChildren<{
@@ -12,7 +14,10 @@ const _MessageReceived = (
 ) => {
 	const { message } = props
 
+	const { setChatInput } = useContext(ChatsContext)
 	const [contextMenu, setContextMenu] = useState<{ left: number; top: number }>()
+
+	const chatId = useCurrentChatId()!
 
 	const handleOpen = (event: React.MouseEvent) => {
 		event.preventDefault()
@@ -23,6 +28,15 @@ const _MessageReceived = (
 
 	const handleClose = () => {
 		setContextMenu(undefined)
+	}
+
+	const handleClickReply = () => {
+		setContextMenu(undefined)
+		setChatInput(chatId, {
+			text: "",
+			type: "reply",
+			messageId: message.id
+		})
 	}
 
 	return (
@@ -71,7 +85,7 @@ const _MessageReceived = (
 				anchorReference="anchorPosition"
 				anchorPosition={contextMenu}>
 				<MenuList>
-					<MenuItem>
+					<MenuItem onClick={handleClickReply}>
 						<ListItemIcon>
 							<Reply fontSize="small" />
 						</ListItemIcon>

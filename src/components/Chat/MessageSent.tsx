@@ -1,12 +1,14 @@
 import { motion } from "framer-motion"
 import { DateTime } from "luxon"
-import { PropsWithChildren, useState } from "react"
+import { PropsWithChildren, useContext, useState } from "react"
 
 import { ContentCopy, Delete, Edit, Reply } from "@mui/icons-material"
 import {
 	Card, Divider, ListItemIcon, ListItemText, Menu, MenuItem, MenuList, Tooltip
 } from "@mui/material"
 
+import ChatsContext from "../../contexts/ChatsContext"
+import useCurrentChatId from "../../hooks/useCurrentChatId"
 import Dot from "../Dot"
 
 const _MessageSent = (
@@ -17,7 +19,10 @@ const _MessageSent = (
 ) => {
 	const { message, editable } = props
 
+	const { setChatInput } = useContext(ChatsContext)
 	const [contextMenu, setContextMenu] = useState<{ left: number; top: number }>()
+
+	const chatId = useCurrentChatId()!
 
 	const handleOpen = (event: React.MouseEvent) => {
 		event.preventDefault()
@@ -28,6 +33,24 @@ const _MessageSent = (
 
 	const handleClose = () => {
 		setContextMenu(undefined)
+	}
+
+	const handleClickReply = () => {
+		setContextMenu(undefined)
+		setChatInput(chatId, {
+			text: "",
+			type: "reply",
+			messageId: message.id
+		})
+	}
+
+	const handleClickEdit = () => {
+		setContextMenu(undefined)
+		setChatInput(chatId, {
+			text: message.content!,
+			type: "edit",
+			messageId: message.id
+		})
 	}
 
 	const getColor = () => {
@@ -100,14 +123,17 @@ const _MessageSent = (
 				anchorReference="anchorPosition"
 				anchorPosition={contextMenu}>
 				<MenuList>
-					<MenuItem>
+					<MenuItem onClick={handleClickReply}>
 						<ListItemIcon>
 							<Reply fontSize="small" />
 						</ListItemIcon>
 						<ListItemText>Reply</ListItemText>
 					</MenuItem>
 					<EditableWrapper title="Message is too old to be edited!">
-						<MenuItem sx={{ pointerEvents: "auto!important" }} disabled={!editable}>
+						<MenuItem
+							sx={{ pointerEvents: "auto!important" }}
+							disabled={!editable}
+							onClick={handleClickEdit}>
 							<ListItemIcon>
 								<Edit fontSize="small" />
 							</ListItemIcon>
