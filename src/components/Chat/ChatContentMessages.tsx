@@ -45,7 +45,7 @@ const _ChatContentMessages = (props: PropsWithChildren<{}>) => {
 	const user = useContext(AuthContext)!
 	const [hasMore, setHasMore] = useState(true)
 
-	const chatId = useCurrentChatId()!
+	const chatId = useCurrentChatId()
 	const messages = useChatMessages(chatId)
 
 	useEffect(() => {
@@ -55,6 +55,8 @@ const _ChatContentMessages = (props: PropsWithChildren<{}>) => {
 	}, [messages])
 
 	const loadMore = async () => {
+		if (!chatId) return
+
 		const firestore = getFirestore(firebaseApp)
 		const collRef = collection(firestore, "messages") as CollectionReference<iMessage>
 		const queryRef = query(
@@ -114,7 +116,11 @@ const _ChatContentMessages = (props: PropsWithChildren<{}>) => {
 						<AnimatePresence>
 							{messages?.map((message, i) =>
 								message.userId === user.id ? (
-									<MessageSent key={message.id} message={message} editable={i < 40} />
+									<MessageSent
+										key={message.id}
+										message={message}
+										editable={i < 40}
+									/>
 								) : (
 									<MessageReceived key={message.id} message={message} />
 								)

@@ -66,7 +66,7 @@ const _ChatContentInput = (props: PropsWithChildren<{}>) => {
 	const [messageId, setMessageId] = useState(doc(messagesColl).id)
 	const [sending, setSending] = useState(false)
 
-	const chatId = useCurrentChatId()!
+	const chatId = useCurrentChatId()
 
 	const chatInput = getChatInput(chatId)
 
@@ -77,6 +77,8 @@ const _ChatContentInput = (props: PropsWithChildren<{}>) => {
 	}, [chatId, inputRef, chatInput])
 
 	const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+		if (!chatId) return
+
 		const input = inputRef.current
 		if (input) {
 			if (sending) {
@@ -91,6 +93,8 @@ const _ChatContentInput = (props: PropsWithChildren<{}>) => {
 	}
 
 	const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
+		if (!chatId) return
+
 		if (e.code === "Enter" && !e.shiftKey) {
 			setSending(true)
 

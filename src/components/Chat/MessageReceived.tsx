@@ -17,7 +17,7 @@ const _MessageReceived = (
 	const { setChatInput } = useContext(ChatsContext)
 	const [contextMenu, setContextMenu] = useState<{ left: number; top: number }>()
 
-	const chatId = useCurrentChatId()!
+	const chatId = useCurrentChatId()
 
 	const handleOpen = (event: React.MouseEvent) => {
 		event.preventDefault()
@@ -31,6 +31,8 @@ const _MessageReceived = (
 	}
 
 	const handleClickReply = () => {
+		if (!chatId) return
+		
 		setContextMenu(undefined)
 		setChatInput(chatId, {
 			text: "",
