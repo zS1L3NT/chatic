@@ -35,7 +35,7 @@ const _ChatContent = (
 						}}>
 						<ChatContentToolbar key="toolbar" receiver={receiver} presence={presence} />
 						<ChatContentMessages key="messages" />
-						<ChatContentInput key="input" />
+						<ChatContentInput key="input" receiver={receiver} />
 					</div>
 				)}
 			</AnimatePresence>

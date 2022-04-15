@@ -4,7 +4,8 @@ import {
 	ChangeEvent, KeyboardEvent, PropsWithChildren, useContext, useEffect, useRef, useState
 } from "react"
 
-import { Card, styled } from "@mui/material"
+import { Clear, Edit, Reply } from "@mui/icons-material"
+import { Box, Card, Divider, styled, Typography, useTheme } from "@mui/material"
 
 import AuthContext from "../../contexts/AuthContext"
 import ChatsContext from "../../contexts/ChatsContext"
@@ -56,13 +57,20 @@ const TextArea = styled(`textarea`)(({ theme }) => ({
 	}
 }))
 
-const _ChatContentInput = (props: PropsWithChildren<{}>) => {
+const _ChatContentInput = (
+	props: PropsWithChildren<{
+		receiver: iUser | null
+	}>
+) => {
+	const { receiver } = props
+
 	const user = useContext(AuthContext)!
-	const { getChatInput, setChatInput } = useContext(ChatsContext)
+	const { messages, getChatInput, setChatInput } = useContext(ChatsContext)
 	const inputRef = useRef<HTMLTextAreaElement>(null)
 	const [messageId, setMessageId] = useState(doc(messagesColl).id)
 	const [sending, setSending] = useState(false)
 
+	const theme = useTheme()
 	const chatId = useCurrentChatId()
 
 	const chatInput = getChatInput(chatId)
@@ -81,7 +89,7 @@ const _ChatContentInput = (props: PropsWithChildren<{}>) => {
 			if (sending) {
 				setSending(false)
 			} else {
-				setChatInput(chatId, { text: e.target.value, type: "send", messageId })
+				setChatInput(chatId, { ...chatInput, text: e.target.value })
 				input.style.height = "20px"
 				input.style.height = input.scrollHeight + "px"
 				input.parentElement!.style.height = input.scrollHeight + 28 + "px"
@@ -114,6 +122,25 @@ const _ChatContentInput = (props: PropsWithChildren<{}>) => {
 		inputRef.current?.focus()
 	}
 
+	const getPopupTitle = () => {
+		if (!chatId) return
+
+		if (chatInput.type === "reply") {
+			const userId = messages[chatId]?.[chatInput.messageId]?.userId
+			if (userId) {
+				if (user.id === userId) {
+					return `Replying to ${user.username}`
+				} else {
+					return `Replying to ${receiver?.username || "???"}`
+				}
+			} else {
+				return "Replying to ???"
+			}
+		} else {
+			return `Editing a message`
+		}
+	}
+
 	return (
 		<motion.div
 			style={{ padding: 16, paddingTop: 8 }}
@@ -121,6 +148,43 @@ const _ChatContentInput = (props: PropsWithChildren<{}>) => {
 			initial={{ opacity: 0, y: 20 }}
 			animate={{ opacity: 1, y: 0 }}
 			exit={{ opacity: 0, y: 20 }}>
+			{chatInput.type !== "send" && (
+				<motion.div
+					style={{
+						background: theme.palette.background.default,
+						borderTopLeftRadius: 10,
+						borderTopRightRadius: 10
+					}}
+					transition={{ duration: 0.2 }}
+					initial={{ height: 0 }}
+					animate={{ height: 54 }}
+					exit={{ height: 0 }}>
+					<motion.div
+						style={{
+							display: "flex",
+							padding: 6
+						}}
+						transition={{ delay: 0.1, duration: 0.1 }}
+						initial={{ opacity: 0 }}
+						animate={{ opacity: 1 }}>
+						{chatInput.type === "reply" ? (
+							<Reply sx={{ mx: 1.25, my: "auto" }} />
+						) : (
+							<Edit sx={{ mx: 1.25, my: "auto" }} />
+						)}
+						<Box style={{ flexGrow: 1 }}>
+							<Typography variant="subtitle2" sx={{ color: "primary.light" }}>
+								{getPopupTitle()}
+							</Typography>
+							<Typography variant="body2">
+								{messages[chatId || ""]?.[chatInput.messageId]?.content}
+							</Typography>
+						</Box>
+						<Clear sx={{ mx: 1, my: "auto" }} fontSize="small" />
+					</motion.div>
+					<Divider />
+				</motion.div>
+			)}
 			<TextAreaWrapper
 				sx={{
 					borderTopLeftRadius: chatInput.type !== "send" ? 0 : 10,
