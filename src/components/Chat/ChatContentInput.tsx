@@ -1,4 +1,4 @@
-import { doc, setDoc } from "firebase/firestore"
+import { doc, setDoc, updateDoc } from "firebase/firestore"
 import { motion } from "framer-motion"
 import {
 	ChangeEvent, KeyboardEvent, PropsWithChildren, useContext, useEffect, useRef, useState
@@ -102,21 +102,28 @@ const _ChatContentInput = (
 	const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
 		if (!chatId) return
 
-		if (e.code === "Enter" && !e.shiftKey) {
+		if (e.code === "Enter" && !e.shiftKey && chatInput.text.trim().length > 0) {
 			setSending(true)
 
 			setMessageId(doc(messagesColl).id)
 			setChatInput(chatId, { text: "", type: "send", messageId: "" })
-			setDoc(doc(messagesColl, messageId), {
-				id: messageId,
-				content: chatInput.text,
-				media: null,
-				date: Date.now(),
-				replyId: null,
-				userId: user.id,
-				chatId,
-				status: 0
-			})
+
+			if (chatInput.type === "edit") {
+				updateDoc(doc(messagesColl, chatInput.messageId), {
+					content: chatInput.text
+				})
+			} else {
+				setDoc(doc(messagesColl, messageId), {
+					id: messageId,
+					content: chatInput.text,
+					media: null,
+					date: Date.now(),
+					replyId: chatInput.type === "reply" ? chatInput.messageId : null,
+					userId: user.id,
+					chatId,
+					status: 0
+				})
+			}
 		}
 	}
 
