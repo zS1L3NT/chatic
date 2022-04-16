@@ -7,22 +7,30 @@ interface iChatInput {
 }
 
 interface iChatsData {
-	messages: Record<string, Record<string, iMessage>>
+	getChatMessages: (chatId: string | null | undefined) => Record<string, iMessage>
 	setChatMessages: (chatId: string, messages: iMessage[]) => void
 	getChatInput: (chatId: string | null | undefined) => iChatInput
 	setChatInput: (chatId: string, input: iChatInput) => void
 }
 
 const ChatsContext = createContext<iChatsData>({
-	messages: {},
+	getChatMessages: () => ({}),
 	setChatMessages: () => {},
 	getChatInput: () => ({ text: "", type: "send", messageId: "" }),
 	setChatInput: () => {}
 })
 
 const _ChatsProvider = (props: PropsWithChildren<{}>) => {
-	const [messages, setMessages] = useState<iChatsData["messages"]>({})
+	const [messages, setMessages] = useState<Record<string, Record<string, iMessage>>>({})
 	const [inputs, setInputs] = useState<Record<string, iChatInput>>({})
+
+	const getChatMessages = (chatId: string | null | undefined) => {
+		const chatMessages = {}
+		if (typeof chatId !== "string" || !messages[chatId]) {
+			return chatMessages
+		}
+		return messages[chatId]!
+	}
 
 	const setChatMessages = (chatId: string, chatMessages: iMessage[]) => {
 		setMessages(messages => ({
@@ -55,7 +63,13 @@ const _ChatsProvider = (props: PropsWithChildren<{}>) => {
 	}
 
 	return (
-		<ChatsContext.Provider value={{ messages, setChatMessages, getChatInput, setChatInput }}>
+		<ChatsContext.Provider
+			value={{
+				getChatMessages,
+				setChatMessages,
+				getChatInput,
+				setChatInput
+			}}>
 			{props.children}
 		</ChatsContext.Provider>
 	)

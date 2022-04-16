@@ -6,7 +6,7 @@ import { messagesColl } from "../firebase"
 import useAppCollection from "./useAppCollection"
 
 const useChatMessages = (chatId: string | null | undefined) => {
-	const { messages, setChatMessages } = useContext(ChatsContext)
+	const { getChatMessages, setChatMessages } = useContext(ChatsContext)
 
 	const [dbMessages] = useAppCollection(
 		messagesColl,
@@ -15,7 +15,9 @@ const useChatMessages = (chatId: string | null | undefined) => {
 		limit(40)
 	)
 
-	useDebugValue(messages)
+	const chatMessages = getChatMessages(chatId)
+
+	useDebugValue(chatMessages)
 
 	useEffect(() => {
 		if (chatId && dbMessages) {
@@ -23,9 +25,7 @@ const useChatMessages = (chatId: string | null | undefined) => {
 		}
 	}, [chatId, dbMessages])
 
-	return chatId && messages[chatId]
-		? Object.values(messages[chatId]!).sort((a, b) => b.date - a.date)
-		: null
+	return chatId ? Object.values(chatMessages).sort((a, b) => b.date - a.date) : null
 }
 
 export default useChatMessages

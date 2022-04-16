@@ -67,7 +67,7 @@ const _ChatContentInput = (
 	const { receiver } = props
 
 	const user = useContext(AuthContext)!
-	const { messages, getChatInput, setChatInput } = useContext(ChatsContext)
+	const { getChatMessages, getChatInput, setChatInput } = useContext(ChatsContext)
 	const inputRef = useRef<HTMLTextAreaElement>(null)
 	const [messageId, setMessageId] = useState(doc(messagesColl).id)
 	const [sending, setSending] = useState(false)
@@ -75,6 +75,7 @@ const _ChatContentInput = (
 	const theme = useTheme()
 	const chatId = useCurrentChatId()
 
+	const chatMessages = getChatMessages(chatId)
 	const chatInput = getChatInput(chatId)
 
 	useEffect(() => {
@@ -144,7 +145,7 @@ const _ChatContentInput = (
 		if (!chatId) return
 
 		if (chatInput.type === "reply") {
-			const userId = messages[chatId]?.[chatInput.messageId]?.userId
+			const userId = chatMessages[chatInput.messageId]?.userId
 			if (userId) {
 				if (user.id === userId) {
 					return `Replying to ${user.username}`
@@ -193,7 +194,7 @@ const _ChatContentInput = (
 									{getPopupTitle()}
 								</Typography>
 								<Typography variant="body2">
-									{messages[chatId || ""]?.[chatInput.messageId]?.content}
+									{chatMessages[chatInput.messageId]?.content}
 								</Typography>
 							</Box>
 							<Tooltip title={`Clear message ${chatInput.type}`}>
