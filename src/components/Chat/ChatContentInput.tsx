@@ -1,5 +1,5 @@
 import { doc, setDoc, updateDoc } from "firebase/firestore"
-import { motion } from "framer-motion"
+import { AnimatePresence, motion } from "framer-motion"
 import {
 	ChangeEvent, KeyboardEvent, PropsWithChildren, useContext, useEffect, useRef, useState
 } from "react"
@@ -108,22 +108,25 @@ const _ChatContentInput = (
 			setMessageId(doc(messagesColl).id)
 			setChatInput(chatId, { text: "", type: "send", messageId: "" })
 
-			if (chatInput.type === "edit") {
-				updateDoc(doc(messagesColl, chatInput.messageId), {
-					content: chatInput.text
-				})
-			} else {
-				setDoc(doc(messagesColl, messageId), {
-					id: messageId,
-					content: chatInput.text,
-					media: null,
-					date: Date.now(),
-					replyId: chatInput.type === "reply" ? chatInput.messageId : null,
-					userId: user.id,
-					chatId,
-					status: 0
-				})
-			}
+			// Firestore calls lagged animations, delayed to prevent lag
+			setTimeout(() => {
+				if (chatInput.type === "edit") {
+					updateDoc(doc(messagesColl, chatInput.messageId), {
+						content: chatInput.text.trim()
+					})
+				} else {
+					setDoc(doc(messagesColl, messageId), {
+						id: messageId,
+						content: chatInput.text.trim(),
+						media: null,
+						date: Date.now(),
+						replyId: chatInput.type === "reply" ? chatInput.messageId : null,
+						userId: user.id,
+						chatId,
+						status: 0
+					})
+				}
+			}, 200)
 		}
 	}
 
@@ -163,47 +166,47 @@ const _ChatContentInput = (
 			initial={{ opacity: 0, y: 20 }}
 			animate={{ opacity: 1, y: 0 }}
 			exit={{ opacity: 0, y: 20 }}>
-			{chatInput.type !== "send" && (
-				<motion.div
-					style={{
-						background: theme.palette.background.default,
-						borderTopLeftRadius: 10,
-						borderTopRightRadius: 10
-					}}
-					transition={{ duration: 0.2 }}
-					initial={{ height: 0 }}
-					animate={{ height: 54 }}
-					exit={{ height: 0 }}>
+			<AnimatePresence>
+				{chatInput.type !== "send" && (
 					<motion.div
 						style={{
-							display: "flex",
-							padding: 6
+							background: theme.palette.background.default,
+							borderTopLeftRadius: 10,
+							borderTopRightRadius: 10
 						}}
-						transition={{ delay: 0.1, duration: 0.1 }}
-						initial={{ opacity: 0 }}
-						animate={{ opacity: 1 }}>
-						{chatInput.type === "reply" ? (
-							<Reply sx={{ mx: 1.25, my: "auto" }} />
-						) : (
-							<Edit sx={{ mx: 1.25, my: "auto" }} />
-						)}
-						<Box style={{ flexGrow: 1 }}>
-							<Typography variant="subtitle2" sx={{ color: "primary.light" }}>
-								{getPopupTitle()}
-							</Typography>
-							<Typography variant="body2">
-								{messages[chatId || ""]?.[chatInput.messageId]?.content}
-							</Typography>
-						</Box>
-						<Tooltip title={`Clear message ${chatInput.type}`}>
-							<IconButton sx={{ mx: 0.5, my: "auto" }} onClick={handleClosePopup}>
-								<Clear fontSize="small" />
-							</IconButton>
-						</Tooltip>
+						transition={{ duration: 0.2 }}
+						initial={{ height: 0, opacity: 0 }}
+						animate={{ height: 54, opacity: 1 }}
+						exit={{ height: 0, opacity: 0 }}>
+						<div
+							style={{
+								display: "flex",
+								padding: 6
+							}}>
+							{chatInput.type === "reply" ? (
+								<Reply sx={{ mx: 1.25, my: "auto" }} />
+							) : (
+								<Edit sx={{ mx: 1.25, my: "auto" }} />
+							)}
+							<Box style={{ flexGrow: 1 }}>
+								<Typography variant="subtitle2" sx={{ color: "primary.light" }}>
+									{getPopupTitle()}
+								</Typography>
+								<Typography variant="body2">
+									{messages[chatId || ""]?.[chatInput.messageId]?.content}
+								</Typography>
+							</Box>
+							<Tooltip title={`Clear message ${chatInput.type}`}>
+								<IconButton sx={{ mx: 0.5, my: "auto" }} onClick={handleClosePopup}>
+									<Clear fontSize="small" />
+								</IconButton>
+							</Tooltip>
+						</div>
+						<Divider />
 					</motion.div>
-					<Divider />
-				</motion.div>
-			)}
+				)}
+			</AnimatePresence>
+
 			<TextAreaWrapper
 				sx={{
 					borderTopLeftRadius: chatInput.type !== "send" ? 0 : 10,
