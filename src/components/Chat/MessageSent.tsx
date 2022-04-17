@@ -1,5 +1,6 @@
 import { motion } from "framer-motion"
 import { DateTime } from "luxon"
+import { useSnackbar } from "notistack"
 import { PropsWithChildren, useContext, useState } from "react"
 
 import { ContentCopy, Delete, Edit, Reply } from "@mui/icons-material"
@@ -24,6 +25,7 @@ const _MessageSent = (
 	const [contextMenu, setContextMenu] = useState<{ left: number; top: number }>()
 	const [deleteMessageDialogOpen, setDeleteMessageDialogOpen] = useState(false)
 
+	const { enqueueSnackbar } = useSnackbar()
 	const chatId = useCurrentChatId()
 
 	const handleOpen = (event: React.MouseEvent) => {
@@ -64,6 +66,23 @@ const _MessageSent = (
 
 		setContextMenu(undefined)
 		setDeleteMessageDialogOpen(true)
+	}
+
+	const handleClickCopyText = async () => {
+		if (!chatId) return
+
+		setContextMenu(undefined)
+		if ("clipboard" in navigator) {
+			try {
+				await navigator.clipboard.writeText(message.content)
+				enqueueSnackbar("Copied text to clipboard", { variant: "success" })
+			} catch (err) {
+				console.error(err)
+				enqueueSnackbar("Error copying text to clipboard", { variant: "error" })
+			}
+		} else {
+			enqueueSnackbar("Clipboard unavailable on your browser", { variant: "error" })
+		}
 	}
 
 	const getColor = () => {
@@ -170,7 +189,7 @@ const _MessageSent = (
 							</MenuItem>
 						</EditableWrapper>
 						<Divider />
-						<MenuItem>
+						<MenuItem onClick={handleClickCopyText}>
 							<ListItemIcon>
 								<ContentCopy fontSize="small" />
 							</ListItemIcon>

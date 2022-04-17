@@ -1,9 +1,11 @@
 import { motion } from "framer-motion"
 import { DateTime } from "luxon"
+import { useSnackbar } from "notistack"
 import { PropsWithChildren, useContext, useState } from "react"
 
 import { ContentCopy, Reply } from "@mui/icons-material"
 import { Card, Divider, ListItemIcon, ListItemText, Menu, MenuItem, MenuList } from "@mui/material"
+
 import ChatsContext from "../../contexts/ChatsContext"
 import useCurrentChatId from "../../hooks/useCurrentChatId"
 
@@ -17,6 +19,7 @@ const _MessageReceived = (
 	const { setChatInput } = useContext(ChatsContext)
 	const [contextMenu, setContextMenu] = useState<{ left: number; top: number }>()
 
+	const { enqueueSnackbar } = useSnackbar()
 	const chatId = useCurrentChatId()
 
 	const handleOpen = (event: React.MouseEvent) => {
@@ -32,13 +35,30 @@ const _MessageReceived = (
 
 	const handleClickReply = () => {
 		if (!chatId) return
-		
+
 		setContextMenu(undefined)
 		setChatInput(chatId, {
 			text: "",
 			type: "reply",
 			messageId: message.id
 		})
+	}
+
+	const handleClickCopyText = async () => {
+		if (!chatId) return
+
+		setContextMenu(undefined)
+		if ("clipboard" in navigator) {
+			try {
+				await navigator.clipboard.writeText(message.content)
+				enqueueSnackbar("Copied text to clipboard", { variant: "success" })
+			} catch (err) {
+				console.error(err)
+				enqueueSnackbar("Error copying text to clipboard", { variant: "error" })
+			}
+		} else {
+			enqueueSnackbar("Clipboard unavailable on your browser", { variant: "error" })
+		}
 	}
 
 	return (
@@ -94,7 +114,7 @@ const _MessageReceived = (
 						<ListItemText>Reply</ListItemText>
 					</MenuItem>
 					<Divider />
-					<MenuItem>
+					<MenuItem onClick={handleClickCopyText}>
 						<ListItemIcon>
 							<ContentCopy fontSize="small" />
 						</ListItemIcon>
