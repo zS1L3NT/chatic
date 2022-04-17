@@ -13,6 +13,7 @@ specifiers:
   firebase: ^9.6.10
   framer-motion: ^6.2.8
   luxon: ^2.3.1
+  notistack: ^2.0.4
   react: ^17.0.2
   react-dom: ^17.0.2
   react-firebase-hooks: ^5.0.3
@@ -29,6 +30,7 @@ dependencies:
   firebase: 9.6.10
   framer-motion: 6.2.8_react-dom@17.0.2+react@17.0.2
   luxon: 2.3.1
+  notistack: 2.0.4_761c8e5d5cc806e883175eab1d8ba931
   react: 17.0.2
   react-dom: 17.0.2_react@17.0.2
   react-firebase-hooks: 5.0.3_firebase@9.6.10+react@17.0.2
@@ -1878,6 +1880,29 @@ packages:
   /node-releases/2.0.2:
     resolution: {integrity: sha512-XxYDdcQ6eKqp/YjI+tb2C5WM2LgjnZrfYg4vgQt49EK268b6gYCHsBLrK2qvJo4FmCtqmKezb0WZFK4fkrZNsg==}
     dev: true
+
+  /notistack/2.0.4_761c8e5d5cc806e883175eab1d8ba931:
+    resolution: {integrity: sha512-kOJmKvTG91ElMzi4aHu82BDe1liQ0zMrBp+TnWJptgowDsTbeTKbZmsRqJNIj145BmlOtZsEE9xjcrN46zVo3w==}
+    peerDependencies:
+      '@emotion/react': ^11.4.1
+      '@emotion/styled': ^11.3.0
+      '@mui/material': ^5.0.0
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+      react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
+    peerDependenciesMeta:
+      '@emotion/react':
+        optional: true
+      '@emotion/styled':
+        optional: true
+    dependencies:
+      '@emotion/react': 11.8.2_c1cf67fb40c16c390126f300fc197413
+      '@emotion/styled': 11.8.1_9e1aa84c2920c31b9f962a733ba5a2b4
+      '@mui/material': 5.5.3_9595c0fe4bca5fc99bf42a66077e39bf
+      clsx: 1.1.1
+      hoist-non-react-statics: 3.3.2
+      react: 17.0.2
+      react-dom: 17.0.2_react@17.0.2
+    dev: false
 
   /object-assign/4.1.1:
     resolution: {integrity: sha1-IQmtx5ZYh8/AXLvUQsrIv7s2CGM=}

@@ -6,7 +6,7 @@ interface iChatInput {
 	messageId: string
 }
 
-interface iChatsData {
+interface iChatsContextData {
 	getChatMessages: (chatId: string | null | undefined) => Record<string, iMessage>
 	setChatMessages: (chatId: string, messages: iMessage[]) => void
 	removeChatMessages: (chatId: string, messageIds: string[]) => void
@@ -14,7 +14,7 @@ interface iChatsData {
 	setChatInput: (chatId: string, input: iChatInput) => void
 }
 
-const ChatsContext = createContext<iChatsData>({
+const ChatsContext = createContext<iChatsContextData>({
 	getChatMessages: () => ({}),
 	setChatMessages: () => {},
 	removeChatMessages: () => {},

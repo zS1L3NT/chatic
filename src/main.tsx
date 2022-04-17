@@ -1,4 +1,5 @@
-import React, { StrictMode } from "react"
+import { SnackbarProvider } from "notistack"
+import { StrictMode } from "react"
 import ReactDOM from "react-dom"
 import { BrowserRouter } from "react-router-dom"
 
@@ -9,7 +10,9 @@ ReactDOM.render(
 	<StrictMode>
 		<BrowserRouter>
 			<AuthProvider>
-				<App />
+				<SnackbarProvider maxSnack={5}>
+					<App />
+				</SnackbarProvider>
 			</AuthProvider>
 		</BrowserRouter>
 	</StrictMode>,
