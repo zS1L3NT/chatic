@@ -10,6 +10,7 @@ import {
 import ChatsContext from "../../contexts/ChatsContext"
 import useCurrentChatId from "../../hooks/useCurrentChatId"
 import Dot from "../Dot"
+import DeleteMessageDialog from "../Popups/DeleteMessageDialog"
 
 const _MessageSent = (
 	props: PropsWithChildren<{
@@ -21,6 +22,7 @@ const _MessageSent = (
 
 	const { setChatInput } = useContext(ChatsContext)
 	const [contextMenu, setContextMenu] = useState<{ left: number; top: number }>()
+	const [deleteMessageDialogOpen, setDeleteMessageDialogOpen] = useState(false)
 
 	const chatId = useCurrentChatId()
 
@@ -48,13 +50,20 @@ const _MessageSent = (
 
 	const handleClickEdit = () => {
 		if (!chatId) return
-		
+
 		setContextMenu(undefined)
 		setChatInput(chatId, {
 			text: message.content!,
 			type: "edit",
 			messageId: message.id
 		})
+	}
+
+	const handleClickDelete = () => {
+		if (!chatId) return
+
+		setContextMenu(undefined)
+		setDeleteMessageDialogOpen(true)
 	}
 
 	const getColor = () => {
@@ -80,88 +89,102 @@ const _MessageSent = (
 		)
 
 	return (
-		<motion.div
-			style={{ display: "flex" }}
-			transition={{ duration: 0.2 }}
-			initial={{ opacity: 0, x: 20 }}
-			animate={{ opacity: 1, x: 0 }}
-			exit={{ opacity: 0, x: 20 }}
-			layout="position">
-			<Card
-				sx={{
-					width: "fit-content",
-					maxWidth: "60%",
-					ml: "auto",
-					mr: 2,
-					my: 0.75,
-					px: 2,
-					py: 1
-				}}
-				onContextMenu={handleOpen}>
-				{message.content}
-				<div
-					style={{
-						display: "flex",
-						alignItems: "flex-end",
-						float: "right",
-						height: 24
-					}}>
-					<span
+		<>
+			<motion.div
+				style={{ display: "flex" }}
+				transition={{ duration: 0.2 }}
+				initial={{ opacity: 0, x: 20 }}
+				animate={{ opacity: 1, x: 0 }}
+				exit={{ opacity: 0, x: 20 }}
+				layout="position">
+				<Card
+					sx={{
+						width: "fit-content",
+						maxWidth: "60%",
+						ml: "auto",
+						mr: 2,
+						my: 0.75,
+						px: 2,
+						py: 1
+					}}
+					onContextMenu={handleOpen}>
+					{message.content}
+					<div
 						style={{
-							marginLeft: 8,
-							opacity: 0.5,
-							fontSize: 14
+							display: "flex",
+							alignItems: "flex-end",
+							float: "right",
+							height: 24
 						}}>
-						{DateTime.fromMillis(message.date).toFormat("hh:mma").toLowerCase()}
-					</span>
-					<Dot style={{ marginLeft: 8, marginBottom: 6 }} size={8} color={getColor()} />
-				</div>
-			</Card>
-			<Menu
-				PaperProps={{ style: { width: 200 } }}
-				BackdropProps={{
-					onContextMenu: e => e.preventDefault()
-				}}
-				open={!!contextMenu}
-				onClose={handleClose}
-				anchorReference="anchorPosition"
-				anchorPosition={contextMenu}>
-				<MenuList>
-					<MenuItem onClick={handleClickReply}>
-						<ListItemIcon>
-							<Reply fontSize="small" />
-						</ListItemIcon>
-						<ListItemText>Reply</ListItemText>
-					</MenuItem>
-					<EditableWrapper title="Message is too old to be edited!">
-						<MenuItem
-							sx={{ pointerEvents: "auto!important" }}
-							disabled={!editable}
-							onClick={handleClickEdit}>
+						<span
+							style={{
+								marginLeft: 8,
+								opacity: 0.5,
+								fontSize: 14
+							}}>
+							{DateTime.fromMillis(message.date).toFormat("hh:mma").toLowerCase()}
+						</span>
+						<Dot
+							style={{ marginLeft: 8, marginBottom: 6 }}
+							size={8}
+							color={getColor()}
+						/>
+					</div>
+				</Card>
+				<Menu
+					PaperProps={{ style: { width: 200 } }}
+					BackdropProps={{
+						onContextMenu: e => e.preventDefault()
+					}}
+					open={!!contextMenu}
+					onClose={handleClose}
+					anchorReference="anchorPosition"
+					anchorPosition={contextMenu}>
+					<MenuList>
+						<MenuItem onClick={handleClickReply}>
 							<ListItemIcon>
-								<Edit fontSize="small" />
+								<Reply fontSize="small" />
 							</ListItemIcon>
-							<ListItemText>Edit</ListItemText>
+							<ListItemText>Reply</ListItemText>
 						</MenuItem>
-					</EditableWrapper>
-					<EditableWrapper title="Message is too old to be deleted!">
-						<MenuItem sx={{ pointerEvents: "auto!important" }} disabled={!editable}>
+						<EditableWrapper title="Message is too old to be edited!">
+							<MenuItem
+								sx={{ pointerEvents: "auto!important" }}
+								disabled={!editable}
+								onClick={handleClickEdit}>
+								<ListItemIcon>
+									<Edit fontSize="small" />
+								</ListItemIcon>
+								<ListItemText>Edit</ListItemText>
+							</MenuItem>
+						</EditableWrapper>
+						<EditableWrapper title="Message is too old to be deleted!">
+							<MenuItem
+								sx={{ pointerEvents: "auto!important" }}
+								disabled={!editable}
+								onClick={handleClickDelete}>
+								<ListItemIcon>
+									<Delete fontSize="small" />
+								</ListItemIcon>
+								<ListItemText>Delete</ListItemText>
+							</MenuItem>
+						</EditableWrapper>
+						<Divider />
+						<MenuItem>
 							<ListItemIcon>
-								<Delete fontSize="small" />
+								<ContentCopy fontSize="small" />
 							</ListItemIcon>
-							<ListItemText>Delete</ListItemText>
+							<ListItemText>Copy Text</ListItemText>
 						</MenuItem>
-					</EditableWrapper>
-					<Divider />
-					<MenuItem>
-						<ListItemIcon>
-							<ContentCopy fontSize="small" />
-						</ListItemIcon>
-						<ListItemText>Copy Text</ListItemText>
-					</MenuItem>
-				</MenuList>
-			</Menu>
-		</motion.div>
+					</MenuList>
+				</Menu>
+			</motion.div>
+			<DeleteMessageDialog
+				messageId={message.id}
+				open={deleteMessageDialogOpen}
+				setOpen={setDeleteMessageDialogOpen}
+			/>
+		</>
 	)
 }
 

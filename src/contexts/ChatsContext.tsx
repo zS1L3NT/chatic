@@ -9,6 +9,7 @@ interface iChatInput {
 interface iChatsData {
 	getChatMessages: (chatId: string | null | undefined) => Record<string, iMessage>
 	setChatMessages: (chatId: string, messages: iMessage[]) => void
+	removeChatMessages: (chatId: string, messageIds: string[]) => void
 	getChatInput: (chatId: string | null | undefined) => iChatInput
 	setChatInput: (chatId: string, input: iChatInput) => void
 }
@@ -16,6 +17,7 @@ interface iChatsData {
 const ChatsContext = createContext<iChatsData>({
 	getChatMessages: () => ({}),
 	setChatMessages: () => {},
+	removeChatMessages: () => {},
 	getChatInput: () => ({ text: "", type: "send", messageId: "" }),
 	setChatInput: () => {}
 })
@@ -47,6 +49,17 @@ const _ChatsProvider = (props: PropsWithChildren<{}>) => {
 		}))
 	}
 
+	const removeChatMessages = (chatId: string, messageIds: string[]) => {
+		setMessages(messages => ({
+			...messages,
+			[chatId]: {
+				...Object.keys(messages[chatId] || {})
+					.filter(key => !messageIds.includes(key))
+					.reduce((obj, key) => ({ ...obj, [key]: messages[chatId]![key] }), {})
+			}
+		}))
+	}
+
 	const getChatInput = (chatId: string | null | undefined) => {
 		const chatInput: iChatInput = { text: "", type: "send", messageId: "" }
 		if (typeof chatId !== "string" || !inputs[chatId]) {
@@ -67,6 +80,7 @@ const _ChatsProvider = (props: PropsWithChildren<{}>) => {
 			value={{
 				getChatMessages,
 				setChatMessages,
+				removeChatMessages,
 				getChatInput,
 				setChatInput
 			}}>

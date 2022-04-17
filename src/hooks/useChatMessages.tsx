@@ -6,7 +6,7 @@ import { messagesColl } from "../firebase"
 import useAppCollection from "./useAppCollection"
 
 const useChatMessages = (chatId: string | null | undefined) => {
-	const { getChatMessages, setChatMessages } = useContext(ChatsContext)
+	const { getChatMessages, setChatMessages, removeChatMessages } = useContext(ChatsContext)
 
 	const [dbMessages] = useAppCollection(
 		messagesColl,
@@ -21,7 +21,14 @@ const useChatMessages = (chatId: string | null | undefined) => {
 
 	useEffect(() => {
 		if (chatId && dbMessages) {
-			setChatMessages(chatId, dbMessages)
+			removeChatMessages(
+				chatId,
+				dbMessages.filter(message => message.content === null).map(message => message.id)
+			)
+			setChatMessages(
+				chatId,
+				dbMessages.filter(message => message.content !== null)
+			)
 		}
 	}, [chatId, dbMessages])
 
