@@ -85,7 +85,7 @@ export const chatData: iChat[] = [
 ]
 
 export const messageData: iMessage[] = [
-	...Array(80)
+	...Array(100)
 		.fill(0)
 		.map((_, i) => ({
 			id: `message-${i}`,
