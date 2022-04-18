@@ -10,6 +10,7 @@ specifiers:
   '@types/react': ^17.0.33
   '@types/react-dom': ^17.0.10
   '@vitejs/plugin-react': ^1.0.7
+  fast-deep-equal: ^3.1.3
   firebase: ^9.6.10
   framer-motion: ^6.2.8
   luxon: ^2.3.1
@@ -27,6 +28,7 @@ dependencies:
   '@emotion/styled': 11.8.1_9e1aa84c2920c31b9f962a733ba5a2b4
   '@mui/icons-material': 5.5.1_2ff24fea9ff73993f15b5a5382bc372f
   '@mui/material': 5.5.3_9595c0fe4bca5fc99bf42a66077e39bf
+  fast-deep-equal: 3.1.3
   firebase: 9.6.10
   framer-motion: 6.2.8_react-dom@17.0.2+react@17.0.2
   luxon: 2.3.1
@@ -1609,6 +1611,10 @@ packages:
   /estree-walker/2.0.2:
     resolution: {integrity: sha512-Rfkk/Mp/DL7JVje3u18FxFujQlTNR2q6QfMSMB7AvCBx91NGj/ba3kCfza0f6dVDbw7YlRf/nDrn7pQrCCyQ/w==}
     dev: true
+
+  /fast-deep-equal/3.1.3:
+    resolution: {integrity: sha512-f3qQ9oQy9j2AhBe/H9VC91wLmKBCCU/gDOnKNAYG5hswO7BLKj09Hc5HYNz9cGI++xlpDCIgDaitVs03ATR84Q==}
+    dev: false
 
   /faye-websocket/0.11.4:
     resolution: {integrity: sha512-CzbClwlXAuiRQAlUyfqPgvPoNKTckTPGfwZV4ZdAhVcP2lh9KUxJg2b5GkE7XbjKQ3YJnQ9z6D9ntLAlB+tP8g==}
