@@ -1,10 +1,11 @@
-import { AnimatePresence, motion } from "framer-motion"
+import { AnimatePresence, motion, MotionStyle } from "framer-motion"
 import { PropsWithChildren, useEffect, useState } from "react"
 
 import { Skeleton } from "@mui/material"
 
 const _SkeletonImage = <P,>(
 	props: PropsWithChildren<{
+		style?: MotionStyle
 		src: string | null | undefined
 		width: string | number
 		height: string | number
@@ -13,6 +14,7 @@ const _SkeletonImage = <P,>(
 	}>
 ) => {
 	const {
+		style,
 		src,
 		width,
 		height,
@@ -54,7 +56,7 @@ const _SkeletonImage = <P,>(
 	}, [src])
 
 	return (
-		<motion.div style={{ position: "relative", width, height }}>
+		<motion.div style={{ position: "relative", width, height, ...style }}>
 			<AnimatePresence exitBeforeEnter>
 				{!!image ? (
 					<motion.span
