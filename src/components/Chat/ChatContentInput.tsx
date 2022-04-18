@@ -211,7 +211,7 @@ const _ChatContentInput = (
 				sx={{
 					position: "relative",
 					display: "flex",
-					paddingLeft: 1.5,
+					paddingLeft: 1,
 
 					borderTopLeftRadius: input.type !== "send" ? 0 : 10,
 					borderTopRightRadius: input.type !== "send" ? 0 : 10
@@ -229,7 +229,7 @@ const _ChatContentInput = (
 				</div>
 				<TextArea
 					ref={inputRef}
-					sx={{ ml: 6 }}
+					sx={{ ml: 5 }}
 					value={input.text}
 					onChange={handleChange}
 					onKeyDown={handleKeyDown}
