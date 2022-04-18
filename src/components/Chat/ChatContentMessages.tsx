@@ -10,6 +10,7 @@ import ChatsContext from "../../contexts/ChatsContext"
 import { messagesColl } from "../../firebase"
 import useChatMessages from "../../hooks/useChatMessages"
 import useCurrentChatId from "../../hooks/useCurrentChatId"
+import useOnUpdate from "../../hooks/useOnUpdate"
 import MessageReceived from "./MessageReceived"
 import MessageSent from "./MessageSent"
 
@@ -44,11 +45,11 @@ const _ChatContentMessages = (props: PropsWithChildren<{}>) => {
 	const [hasMore, setHasMore] = useState(true)
 
 	const chatId = useCurrentChatId()
-	const messages = useChatMessages(chatId)
+	const messages = useOnUpdate(useChatMessages(chatId))
 
 	useEffect(() => {
-		if (messages && messages.length < 40) {
-			setHasMore(false)
+		if (messages) {
+			setHasMore(messages.length >= 40)
 		}
 	}, [messages])
 
