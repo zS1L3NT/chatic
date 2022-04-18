@@ -17,7 +17,7 @@ const useChatMessages = (chatId: string | null | undefined) => {
 	)
 
 	const dispatch = useAppDispatch()
-	const chatMessages = useOnUpdate(useAppSelector(state => state.messages[chatId!]))
+	const chatMessages = useAppSelector(state => state.messages[chatId!])
 
 	useDebugValue(chatMessages)
 
@@ -44,9 +44,9 @@ const useChatMessages = (chatId: string | null | undefined) => {
 		}
 	}, [chatId, dbMessages])
 
-	return chatId && chatMessages
-		? Object.values(chatMessages).sort((a, b) => b.date - a.date)
-		: null
+	return useOnUpdate(
+		chatId && chatMessages ? Object.values(chatMessages).sort((a, b) => b.date - a.date) : null
+	)
 }
 
 export default useChatMessages

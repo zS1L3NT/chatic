@@ -1,5 +1,6 @@
-import { TypedUseSelectorHook, useSelector } from "react-redux"
+import equal from "fast-deep-equal/es6/react"
+import { useSelector } from "react-redux"
 
 import { RootState } from "../store"
 
-export default useSelector as TypedUseSelectorHook<RootState>
+export default <T,>(selector: (state: RootState) => T) => useSelector(selector, equal)

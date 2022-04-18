@@ -10,7 +10,6 @@ import useAppDispatch from "../../hooks/useAppDispatch"
 import useAppSelector from "../../hooks/useAppSelector"
 import useChatMessages from "../../hooks/useChatMessages"
 import useCurrentChatId from "../../hooks/useCurrentChatId"
-import useOnUpdate from "../../hooks/useOnUpdate"
 import { set_messages } from "../../slices/MessagesSlice"
 import MessageReceived from "./MessageReceived"
 import MessageSent from "./MessageSent"
@@ -44,7 +43,7 @@ const _ChatContentMessages = (props: PropsWithChildren<{}>) => {
 	const [hasMore, setHasMore] = useState(true)
 
 	const chatId = useCurrentChatId()
-	const messages = useOnUpdate(useChatMessages(chatId))
+	const messages = useChatMessages(chatId)
 
 	const dispatch = useAppDispatch()
 	const user = useAppSelector(state => state.auth)!

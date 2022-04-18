@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react"
 import { useLocation } from "react-router-dom"
 
+import useOnUpdate from "./useOnUpdate"
+
 const useCurrentChatId = (): string | null => {
 	const location = useLocation()
 	const [chatId, setChatId] = useState<string | null>(null)
@@ -13,7 +15,7 @@ const useCurrentChatId = (): string | null => {
 		}
 	}, [location.pathname])
 
-	return chatId
+	return useOnUpdate(chatId)
 }
 
 export default useCurrentChatId

@@ -3,6 +3,7 @@ import { useDebugValue } from "react"
 
 import { presencesColl } from "../firebase"
 import useAppCollection from "./useAppCollection"
+import useOnUpdate from "./useOnUpdate"
 
 const useUserPresence = (userId: string | null | undefined) => {
 	const [presences] = useAppCollection(
@@ -15,7 +16,7 @@ const useUserPresence = (userId: string | null | undefined) => {
 
 	useDebugValue(presences?.[0] || null)
 
-	return presences?.[0] || null
+	return useOnUpdate(presences?.[0] || null)
 }
 
 export default useUserPresence
