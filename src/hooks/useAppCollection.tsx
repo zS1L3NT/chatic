@@ -2,6 +2,8 @@ import { CollectionReference, query, QueryConstraint } from "firebase/firestore"
 import { useDebugValue } from "react"
 import { useCollectionData } from "react-firebase-hooks/firestore"
 
+import useOnUpdate from "./useOnUpdate"
+
 const useAppCollection = <T extends Record<string, any>>(
 	collRef: CollectionReference<T>,
 	...constraints: QueryConstraint[]
@@ -12,7 +14,7 @@ const useAppCollection = <T extends Record<string, any>>(
 
 	useDebugValue([data, error])
 
-	return data ? [data, null] : error ? [null, error] : [null, null]
+	return useOnUpdate(data ? [data, null] : error ? [null, error] : [null, null])
 }
 
 export default useAppCollection

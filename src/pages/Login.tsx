@@ -1,16 +1,17 @@
 import { signOut } from "firebase/auth"
-import { useContext, useEffect } from "react"
+import { useEffect } from "react"
 import { useSignInWithGoogle } from "react-firebase-hooks/auth"
 import { useNavigate } from "react-router-dom"
 
-import AuthContext from "../contexts/AuthContext"
 import { auth } from "../firebase"
+import useAppSelector from "../hooks/useAppSelector"
 
 const _Login = () => {
 	const navigate = useNavigate()
-	const user = useContext(AuthContext)
 
 	const [signInWithGoogle] = useSignInWithGoogle(auth)
+
+	const user = useAppSelector(state => state.auth)
 
 	useEffect(() => {
 		if (user) {

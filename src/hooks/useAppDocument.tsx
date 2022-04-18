@@ -2,6 +2,8 @@ import { CollectionReference, doc } from "firebase/firestore"
 import { useDebugValue } from "react"
 import { useDocumentData } from "react-firebase-hooks/firestore"
 
+import useOnUpdate from "./useOnUpdate"
+
 const useAppDocument = <T extends Record<string, any>>(
 	collRef: CollectionReference<T>,
 	path: string | null | undefined
@@ -12,7 +14,7 @@ const useAppDocument = <T extends Record<string, any>>(
 
 	useDebugValue([data || null, error || null])
 
-	return data ? [data, null] : error ? [null, error] : [null, null]
+	return useOnUpdate(data ? [data, null] : error ? [null, error] : [null, null])
 }
 
 export default useAppDocument

@@ -1,15 +1,16 @@
 import { motion } from "framer-motion"
 import { DateTime } from "luxon"
 import { useSnackbar } from "notistack"
-import { PropsWithChildren, useContext, useState } from "react"
+import { PropsWithChildren, useState } from "react"
 
 import { ContentCopy, Delete, Edit, Reply } from "@mui/icons-material"
 import {
 	Card, Divider, ListItemIcon, ListItemText, Menu, MenuItem, MenuList, Tooltip
 } from "@mui/material"
 
-import ChatsContext from "../../contexts/ChatsContext"
+import useAppDispatch from "../../hooks/useAppDispatch"
 import useCurrentChatId from "../../hooks/useCurrentChatId"
+import { set_input } from "../../slices/InputsSlice"
 import Dot from "../Dot"
 import DeleteMessageDialog from "../Popups/DeleteMessageDialog"
 
@@ -21,12 +22,13 @@ const _MessageSent = (
 ) => {
 	const { message, editable } = props
 
-	const { setChatInput } = useContext(ChatsContext)
 	const [contextMenu, setContextMenu] = useState<{ left: number; top: number }>()
 	const [deleteMessageDialogOpen, setDeleteMessageDialogOpen] = useState(false)
 
 	const { enqueueSnackbar } = useSnackbar()
 	const chatId = useCurrentChatId()
+
+	const dispatch = useAppDispatch()
 
 	const handleOpen = (event: React.MouseEvent) => {
 		event.preventDefault()
@@ -43,22 +45,28 @@ const _MessageSent = (
 		if (!chatId) return
 
 		setContextMenu(undefined)
-		setChatInput(chatId, {
-			text: "",
-			type: "reply",
-			messageId: message.id
-		})
+		dispatch(
+			set_input({
+				chatId,
+				text: "",
+				type: "reply",
+				messageId: message.id
+			})
+		)
 	}
 
 	const handleClickEdit = () => {
 		if (!chatId) return
 
 		setContextMenu(undefined)
-		setChatInput(chatId, {
-			text: message.content!,
-			type: "edit",
-			messageId: message.id
-		})
+		dispatch(
+			set_input({
+				chatId,
+				text: message.content!,
+				type: "edit",
+				messageId: message.id
+			})
+		)
 	}
 
 	const handleClickDelete = () => {

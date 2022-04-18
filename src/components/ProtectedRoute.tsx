@@ -1,10 +1,11 @@
-import { PropsWithChildren, useContext } from "react"
+import { PropsWithChildren } from "react"
 import { Navigate, Outlet } from "react-router-dom"
 
-import AuthContext from "../contexts/AuthContext"
+import useAppSelector from "../hooks/useAppSelector"
 
 const _ProtectedRoute = (props: PropsWithChildren<{}>) => {
-	return useContext(AuthContext) ? (
+	const user = useAppSelector(state => state.auth)
+	return user ? (
 		props.children ? (
 			<>{props.children}</>
 		) : (

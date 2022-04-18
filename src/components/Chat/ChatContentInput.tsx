@@ -1,18 +1,17 @@
 import { doc, setDoc, updateDoc } from "firebase/firestore"
 import { AnimatePresence, motion } from "framer-motion"
-import {
-	ChangeEvent, KeyboardEvent, PropsWithChildren, useContext, useEffect, useRef, useState
-} from "react"
+import { ChangeEvent, KeyboardEvent, PropsWithChildren, useEffect, useRef, useState } from "react"
 
 import { Clear, Edit, Reply } from "@mui/icons-material"
 import {
 	Box, Card, Divider, IconButton, styled, Tooltip, Typography, useTheme
 } from "@mui/material"
 
-import AuthContext from "../../contexts/AuthContext"
-import ChatsContext from "../../contexts/ChatsContext"
 import { messagesColl } from "../../firebase"
+import useAppDispatch from "../../hooks/useAppDispatch"
+import useAppSelector from "../../hooks/useAppSelector"
 import useCurrentChatId from "../../hooks/useCurrentChatId"
+import { defaultInput, reset_input, set_input } from "../../slices/InputsSlice"
 
 const TextAreaWrapper = styled(Card)(({ theme }) => ({
 	width: "100%",
@@ -66,8 +65,6 @@ const _ChatContentInput = (
 ) => {
 	const { receiver } = props
 
-	const user = useContext(AuthContext)!
-	const { getChatMessages, getChatInput, setChatInput } = useContext(ChatsContext)
 	const inputRef = useRef<HTMLTextAreaElement>(null)
 	const [messageId, setMessageId] = useState(doc(messagesColl).id)
 	const [sending, setSending] = useState(false)
@@ -75,27 +72,29 @@ const _ChatContentInput = (
 	const theme = useTheme()
 	const chatId = useCurrentChatId()
 
-	const chatMessages = getChatMessages(chatId)
-	const chatInput = getChatInput(chatId)
+	const dispatch = useAppDispatch()
+	const user = useAppSelector(state => state.auth)!
+	const messages = useAppSelector(state => state.messages[chatId!] || {})
+	const input = useAppSelector(state => state.inputs[chatId!] || defaultInput)
 
 	useEffect(() => {
 		if (chatId && inputRef.current) {
 			inputRef.current.focus()
 		}
-	}, [chatId, inputRef, chatInput])
+	}, [chatId, inputRef, input])
 
 	const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
 		if (!chatId) return
 
-		const input = inputRef.current
-		if (input) {
+		const inputEl = inputRef.current
+		if (inputEl) {
 			if (sending) {
 				setSending(false)
 			} else {
-				setChatInput(chatId, { ...chatInput, text: e.target.value })
-				input.style.height = "20px"
-				input.style.height = input.scrollHeight + "px"
-				input.parentElement!.style.height = input.scrollHeight + 28 + "px"
+				dispatch(set_input({ chatId, ...input, text: e.target.value }))
+				inputEl.style.height = "20px"
+				inputEl.style.height = inputEl.scrollHeight + "px"
+				inputEl.parentElement!.style.height = inputEl.scrollHeight + 28 + "px"
 			}
 		}
 	}
@@ -103,25 +102,25 @@ const _ChatContentInput = (
 	const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
 		if (!chatId) return
 
-		if (e.code === "Enter" && !e.shiftKey && chatInput.text.trim().length > 0) {
+		if (e.code === "Enter" && !e.shiftKey && input.text.trim().length > 0) {
 			setSending(true)
 
 			setMessageId(doc(messagesColl).id)
-			setChatInput(chatId, { text: "", type: "send", messageId: "" })
+			dispatch(reset_input({ chatId }))
 
 			// Firestore calls lagged animations, delayed to prevent lag
 			setTimeout(() => {
-				if (chatInput.type === "edit") {
-					updateDoc(doc(messagesColl, chatInput.messageId), {
-						content: chatInput.text.trim()
+				if (input.type === "edit") {
+					updateDoc(doc(messagesColl, input.messageId), {
+						content: input.text.trim()
 					})
 				} else {
 					setDoc(doc(messagesColl, messageId), {
 						id: messageId,
-						content: chatInput.text.trim(),
+						content: input.text.trim(),
 						media: null,
 						date: Date.now(),
-						replyId: chatInput.type === "reply" ? chatInput.messageId : null,
+						replyId: input.type === "reply" ? input.messageId : null,
 						userId: user.id,
 						chatId,
 						status: 0
@@ -134,7 +133,7 @@ const _ChatContentInput = (
 	const handleClosePopup = () => {
 		if (!chatId) return
 
-		setChatInput(chatId, { text: "", type: "send", messageId: "" })
+		dispatch(reset_input({ chatId }))
 	}
 
 	const handleClick = () => {
@@ -144,8 +143,8 @@ const _ChatContentInput = (
 	const getPopupTitle = () => {
 		if (!chatId) return
 
-		if (chatInput.type === "reply") {
-			const userId = chatMessages[chatInput.messageId]?.userId
+		if (input.type === "reply") {
+			const userId = messages[input?.messageId]?.userId
 			if (userId) {
 				if (user.id === userId) {
 					return `Replying to ${user.username}`
@@ -168,7 +167,7 @@ const _ChatContentInput = (
 			animate={{ opacity: 1, y: 0 }}
 			exit={{ opacity: 0, y: 20 }}>
 			<AnimatePresence>
-				{chatInput.type !== "send" && (
+				{input.type !== "send" && (
 					<motion.div
 						style={{
 							background: theme.palette.background.default,
@@ -184,7 +183,7 @@ const _ChatContentInput = (
 								display: "flex",
 								padding: 6
 							}}>
-							{chatInput.type === "reply" ? (
+							{input.type === "reply" ? (
 								<Reply sx={{ mx: 1.25, my: "auto" }} />
 							) : (
 								<Edit sx={{ mx: 1.25, my: "auto" }} />
@@ -194,10 +193,10 @@ const _ChatContentInput = (
 									{getPopupTitle()}
 								</Typography>
 								<Typography variant="body2">
-									{chatMessages[chatInput.messageId]?.content}
+									{messages[input.messageId]?.content}
 								</Typography>
 							</Box>
-							<Tooltip title={`Clear message ${chatInput.type}`}>
+							<Tooltip title={`Clear message ${input.type}`}>
 								<IconButton sx={{ mx: 0.5, my: "auto" }} onClick={handleClosePopup}>
 									<Clear fontSize="small" />
 								</IconButton>
@@ -210,13 +209,13 @@ const _ChatContentInput = (
 
 			<TextAreaWrapper
 				sx={{
-					borderTopLeftRadius: chatInput.type !== "send" ? 0 : 10,
-					borderTopRightRadius: chatInput.type !== "send" ? 0 : 10
+					borderTopLeftRadius: input.type !== "send" ? 0 : 10,
+					borderTopRightRadius: input.type !== "send" ? 0 : 10
 				}}
 				onClick={handleClick}>
 				<TextArea
 					ref={inputRef}
-					value={chatInput.text}
+					value={input.text}
 					onChange={handleChange}
 					onKeyDown={handleKeyDown}
 					placeholder="Type a message..."
