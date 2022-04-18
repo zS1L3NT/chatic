@@ -9,6 +9,8 @@ type iInputSliceData = Record<
 	}
 >
 
+export const defaultInput = { text: "", type: "send" as "send", messageId: "" }
+
 const slice = createSlice({
 	name: "inputs",
 	initialState: {} as iInputSliceData,
@@ -31,7 +33,7 @@ const slice = createSlice({
 		},
 		reset_input: (state, action: PayloadAction<{ chatId: string }>) => {
 			const { chatId } = action.payload
-			state[chatId] = { text: "", type: "send", messageId: "" }
+			state[chatId] = defaultInput
 		}
 	}
 })

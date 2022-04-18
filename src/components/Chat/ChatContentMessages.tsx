@@ -1,16 +1,16 @@
 import { getDocs, limit, orderBy, query, startAfter, where } from "firebase/firestore"
 import { AnimatePresence, motion } from "framer-motion"
-import { PropsWithChildren, useContext, useEffect, useState } from "react"
+import { PropsWithChildren, useEffect, useState } from "react"
 import InfiniteScroll from "react-infinite-scroll-component"
 
 import { Box, CircularProgress, styled } from "@mui/material"
 
-import AuthContext from "../../contexts/AuthContext"
-import ChatsContext from "../../contexts/ChatsContext"
 import { messagesColl } from "../../firebase"
+import useAppDispatch from "../../hooks/useAppDispatch"
+import useAppSelector from "../../hooks/useAppSelector"
 import useChatMessages from "../../hooks/useChatMessages"
 import useCurrentChatId from "../../hooks/useCurrentChatId"
-import useOnUpdate from "../../hooks/useOnUpdate"
+import { set_messages } from "../../slices/MessagesSlice"
 import MessageReceived from "./MessageReceived"
 import MessageSent from "./MessageSent"
 
@@ -40,12 +40,13 @@ const InfiniteScrollWrapper = styled(motion.div)(({ theme }) => ({
 }))
 
 const _ChatContentMessages = (props: PropsWithChildren<{}>) => {
-	const { setChatMessages } = useContext(ChatsContext)
-	const user = useContext(AuthContext)!
 	const [hasMore, setHasMore] = useState(true)
 
 	const chatId = useCurrentChatId()
-	const messages = useOnUpdate(useChatMessages(chatId))
+	const messages = useChatMessages(chatId)
+
+	const dispatch = useAppDispatch()
+	const user = useAppSelector(state => state.auth)!
 
 	useEffect(() => {
 		if (messages) {
@@ -67,9 +68,11 @@ const _ChatContentMessages = (props: PropsWithChildren<{}>) => {
 		if (snap.docs.length === 0) {
 			setHasMore(false)
 		}
-		setChatMessages(
-			chatId,
-			snap.docs.map(doc => doc.data())
+		dispatch(
+			set_messages({
+				chatId,
+				messages: snap.docs.map(doc => doc.data())
+			})
 		)
 	}
 

@@ -1,11 +1,12 @@
-import { useContext, useDebugValue } from "react"
+import { useDebugValue } from "react"
 
-import AuthContext from "../contexts/AuthContext"
 import { usersColl } from "../firebase"
 import useAppDocument from "./useAppDocument"
+import useAppSelector from "./useAppSelector"
 
 const useChatReceiver = (chat: iChat | null | undefined) => {
-	const user = useContext(AuthContext)
+	const user = useAppSelector(state => state.auth)!
+
 	const [receiver] = useAppDocument(usersColl, chat?.users.filter(id => id !== user?.id)[0])
 
 	useDebugValue(receiver)

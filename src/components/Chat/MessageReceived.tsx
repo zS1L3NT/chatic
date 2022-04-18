@@ -1,13 +1,14 @@
 import { motion } from "framer-motion"
 import { DateTime } from "luxon"
 import { useSnackbar } from "notistack"
-import { PropsWithChildren, useContext, useState } from "react"
+import { PropsWithChildren, useState } from "react"
 
 import { ContentCopy, Reply } from "@mui/icons-material"
 import { Card, Divider, ListItemIcon, ListItemText, Menu, MenuItem, MenuList } from "@mui/material"
 
-import ChatsContext from "../../contexts/ChatsContext"
+import useAppDispatch from "../../hooks/useAppDispatch"
 import useCurrentChatId from "../../hooks/useCurrentChatId"
+import { set_input } from "../../slices/InputsSlice"
 
 const _MessageReceived = (
 	props: PropsWithChildren<{
@@ -16,11 +17,12 @@ const _MessageReceived = (
 ) => {
 	const { message } = props
 
-	const { setChatInput } = useContext(ChatsContext)
 	const [contextMenu, setContextMenu] = useState<{ left: number; top: number }>()
 
 	const { enqueueSnackbar } = useSnackbar()
 	const chatId = useCurrentChatId()
+
+	const dispatch = useAppDispatch()
 
 	const handleOpen = (event: React.MouseEvent) => {
 		event.preventDefault()
@@ -37,11 +39,14 @@ const _MessageReceived = (
 		if (!chatId) return
 
 		setContextMenu(undefined)
-		setChatInput(chatId, {
-			text: "",
-			type: "reply",
-			messageId: message.id
-		})
+		dispatch(
+			set_input({
+				chatId,
+				text: "",
+				type: "reply",
+				messageId: message.id
+			})
+		)
 	}
 
 	const handleClickCopyText = async () => {
