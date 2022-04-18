@@ -6,6 +6,7 @@ import { remove_messages, set_messages } from "../slices/MessagesSlice"
 import useAppCollection from "./useAppCollection"
 import useAppDispatch from "./useAppDispatch"
 import useAppSelector from "./useAppSelector"
+import useOnUpdate from "./useOnUpdate"
 
 const useChatMessages = (chatId: string | null | undefined) => {
 	const [dbMessages] = useAppCollection(
@@ -16,7 +17,7 @@ const useChatMessages = (chatId: string | null | undefined) => {
 	)
 
 	const dispatch = useAppDispatch()
-	const chatMessages = useAppSelector(state => state.messages[chatId!] || {})
+	const chatMessages = useOnUpdate(useAppSelector(state => state.messages[chatId!]))
 
 	useDebugValue(chatMessages)
 
@@ -43,7 +44,9 @@ const useChatMessages = (chatId: string | null | undefined) => {
 		}
 	}, [chatId, dbMessages])
 
-	return chatId ? Object.values(chatMessages).sort((a, b) => b.date - a.date) : null
+	return chatId && chatMessages
+		? Object.values(chatMessages).sort((a, b) => b.date - a.date)
+		: null
 }
 
 export default useChatMessages

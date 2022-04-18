@@ -10,6 +10,7 @@ import useAppDispatch from "../../hooks/useAppDispatch"
 import useAppSelector from "../../hooks/useAppSelector"
 import useChatMessages from "../../hooks/useChatMessages"
 import useCurrentChatId from "../../hooks/useCurrentChatId"
+import useOnUpdate from "../../hooks/useOnUpdate"
 import { set_messages } from "../../slices/MessagesSlice"
 import MessageReceived from "./MessageReceived"
 import MessageSent from "./MessageSent"
@@ -43,16 +44,16 @@ const _ChatContentMessages = (props: PropsWithChildren<{}>) => {
 	const [hasMore, setHasMore] = useState(true)
 
 	const chatId = useCurrentChatId()
-	const messages = useChatMessages(chatId)
+	const messages = useOnUpdate(useChatMessages(chatId))
 
 	const dispatch = useAppDispatch()
 	const user = useAppSelector(state => state.auth)!
 
 	useEffect(() => {
-		if (messages) {
+		if (messages && hasMore) {
 			setHasMore(messages.length >= 40)
 		}
-	}, [messages])
+	}, [messages, hasMore])
 
 	const loadMore = async () => {
 		if (!chatId) return
@@ -65,9 +66,7 @@ const _ChatContentMessages = (props: PropsWithChildren<{}>) => {
 			limit(20)
 		)
 		const snap = await getDocs(queryRef)
-		if (snap.docs.length === 0) {
-			setHasMore(false)
-		}
+		setHasMore(snap.docs.length === 20)
 		dispatch(
 			set_messages({
 				chatId,
