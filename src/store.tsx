@@ -1,8 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit"
 
+import AuthReducer from "./slices/AuthSlice"
+
 const store = configureStore({
 	devTools: { name: "Chatic" },
-	reducer: {}
+	reducer: {
+		auth: AuthReducer
+	}
 })
 
 export type RootState = ReturnType<typeof store.getState>

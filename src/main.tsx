@@ -4,8 +4,8 @@ import { Provider } from "react-redux"
 import { BrowserRouter } from "react-router-dom"
 
 import App from "./App"
-import SnackbarProvider from "./components/SnackbarProvider"
-import { AuthProvider } from "./contexts/AuthContext"
+import AuthProvider from "./providers/AuthProvider"
+import SnackbarProvider from "./providers/SnackbarProvider"
 import store from "./store"
 
 ReactDOM.render(
