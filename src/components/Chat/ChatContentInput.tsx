@@ -12,6 +12,7 @@ import useAppDispatch from "../../hooks/useAppDispatch"
 import useAppSelector from "../../hooks/useAppSelector"
 import useCurrentChatId from "../../hooks/useCurrentChatId"
 import { defaultInput, reset_input, set_input } from "../../slices/InputsSlice"
+import ImageUploadDialog from "../Popups/ImageUploadDialog"
 
 const TextAreaWrapper = styled(Card)(({ theme }) => ({
 	width: "100%",
@@ -68,6 +69,7 @@ const _ChatContentInput = (
 	const inputRef = useRef<HTMLTextAreaElement>(null)
 	const [messageId, setMessageId] = useState(doc(messagesColl).id)
 	const [sending, setSending] = useState(false)
+	const [imageUploadDialogOpen, setImageUploadDialogOpen] = useState(false)
 
 	const theme = useTheme()
 	const chatId = useCurrentChatId()
@@ -140,6 +142,10 @@ const _ChatContentInput = (
 		inputRef.current?.focus()
 	}
 
+	const handleClickAttachment = () => {
+		setImageUploadDialogOpen(true)
+	}
+
 	const getPopupTitle = () => {
 		if (!chatId) return
 
@@ -160,83 +166,87 @@ const _ChatContentInput = (
 	}
 
 	return (
-		<motion.div
-			style={{ padding: 16, paddingTop: 8 }}
-			transition={{ duration: 0.2 }}
-			initial={{ opacity: 0, y: 20 }}
-			animate={{ opacity: 1, y: 0 }}
-			exit={{ opacity: 0, y: 20 }}>
-			<AnimatePresence>
-				{input.type !== "send" && (
-					<motion.div
-						style={{
-							background: theme.palette.background.default,
-							borderTopLeftRadius: 10,
-							borderTopRightRadius: 10
-						}}
-						transition={{ duration: 0.2 }}
-						initial={{ height: 0, opacity: 0 }}
-						animate={{ height: 54, opacity: 1 }}
-						exit={{ height: 0, opacity: 0 }}>
-						<div
+		<>
+			<motion.div
+				style={{ padding: 16, paddingTop: 8 }}
+				transition={{ duration: 0.2 }}
+				initial={{ opacity: 0, y: 20 }}
+				animate={{ opacity: 1, y: 0 }}
+				exit={{ opacity: 0, y: 20 }}>
+				<AnimatePresence>
+					{input.type !== "send" && (
+						<motion.div
 							style={{
-								display: "flex",
-								padding: 6
-							}}>
-							{input.type === "reply" ? (
-								<Reply sx={{ mx: 1.25, my: "auto" }} />
-							) : (
-								<Edit sx={{ mx: 1.25, my: "auto" }} />
-							)}
-							<Box style={{ flexGrow: 1 }}>
-								<Typography variant="subtitle2" sx={{ color: "primary.light" }}>
-									{getPopupTitle()}
-								</Typography>
-								<Typography variant="body2">
-									{messages[input.messageId]?.content}
-								</Typography>
-							</Box>
-							<Tooltip title={`Clear message ${input.type}`}>
-								<IconButton sx={{ mx: 0.5, my: "auto" }} onClick={handleClosePopup}>
-									<Clear fontSize="small" />
-								</IconButton>
-							</Tooltip>
-						</div>
-						<Divider />
-					</motion.div>
-				)}
-			</AnimatePresence>
+								background: theme.palette.background.default,
+								borderTopLeftRadius: 10,
+								borderTopRightRadius: 10
+							}}
+							transition={{ duration: 0.2 }}
+							initial={{ height: 0, opacity: 0 }}
+							animate={{ height: 54, opacity: 1 }}
+							exit={{ height: 0, opacity: 0 }}>
+							<div
+								style={{
+									display: "flex",
+									padding: 6
+								}}>
+								{input.type === "reply" ? (
+									<Reply sx={{ mx: 1.25, my: "auto" }} />
+								) : (
+									<Edit sx={{ mx: 1.25, my: "auto" }} />
+								)}
+								<Box style={{ flexGrow: 1 }}>
+									<Typography variant="subtitle2" sx={{ color: "primary.light" }}>
+										{getPopupTitle()}
+									</Typography>
+									<Typography variant="body2">
+										{messages[input.messageId]?.content}
+									</Typography>
+								</Box>
+								<Tooltip title={`Clear message ${input.type}`}>
+									<IconButton
+										sx={{ mx: 0.5, my: "auto" }}
+										onClick={handleClosePopup}>
+										<Clear fontSize="small" />
+									</IconButton>
+								</Tooltip>
+							</div>
+							<Divider />
+						</motion.div>
+					)}
+				</AnimatePresence>
+				<TextAreaWrapper
+					sx={{
+						position: "relative",
+						display: "flex",
+						paddingLeft: 1,
 
-			<TextAreaWrapper
-				sx={{
-					position: "relative",
-					display: "flex",
-					paddingLeft: 1,
-
-					borderTopLeftRadius: input.type !== "send" ? 0 : 10,
-					borderTopRightRadius: input.type !== "send" ? 0 : 10
-				}}
-				onClick={handleClick}>
-				<div
-					style={{
-						position: "absolute",
-						bottom: 6,
-						width: 40
-					}}>
-					<IconButton>
-						<Attachment fontSize="small" />
-					</IconButton>
-				</div>
-				<TextArea
-					ref={inputRef}
-					sx={{ ml: 5 }}
-					value={input.text}
-					onChange={handleChange}
-					onKeyDown={handleKeyDown}
-					placeholder="Type a message..."
-				/>
-			</TextAreaWrapper>
-		</motion.div>
+						borderTopLeftRadius: input.type !== "send" ? 0 : 10,
+						borderTopRightRadius: input.type !== "send" ? 0 : 10
+					}}
+					onClick={handleClick}>
+					<div
+						style={{
+							position: "absolute",
+							bottom: 6,
+							width: 40
+						}}>
+						<IconButton onClick={handleClickAttachment}>
+							<Attachment fontSize="small" />
+						</IconButton>
+					</div>
+					<TextArea
+						ref={inputRef}
+						sx={{ ml: 5 }}
+						value={input.text}
+						onChange={handleChange}
+						onKeyDown={handleKeyDown}
+						placeholder="Type a message..."
+					/>
+				</TextAreaWrapper>
+			</motion.div>
+			<ImageUploadDialog open={imageUploadDialogOpen} setOpen={setImageUploadDialogOpen} />
+		</>
 	)
 }
 
