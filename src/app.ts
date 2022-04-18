@@ -5,6 +5,7 @@ import firebaseApp from "./firebaseApp"
 const firestore = getFirestore(firebaseApp)
 const messagesColl = firestore.collection("messages") as CollectionReference<iMessage>
 
+console.log("Performing Firestore cleanup")
 messagesColl
 	.get()
 	.then(snaps =>
@@ -20,6 +21,7 @@ messagesColl
 		)
 	)
 	.then(() => {
+		console.log("Listening to document changes...")
 		messagesColl.onSnapshot(snaps => {
 			snaps.docChanges().forEach(change => {
 				if (change.type === "modified" && change.doc.data().content === null) {
