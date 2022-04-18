@@ -1,11 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit"
 
 import AuthReducer from "./slices/AuthSlice"
+import InputsReducer from "./slices/InputsSlice"
 
 const store = configureStore({
 	devTools: { name: "Chatic" },
 	reducer: {
-		auth: AuthReducer
+		auth: AuthReducer,
+		inputs: InputsReducer
 	}
 })
 
