@@ -2,7 +2,7 @@ import { doc, setDoc, updateDoc } from "firebase/firestore"
 import { AnimatePresence, motion } from "framer-motion"
 import { ChangeEvent, KeyboardEvent, PropsWithChildren, useEffect, useRef, useState } from "react"
 
-import { Clear, Edit, Reply } from "@mui/icons-material"
+import { Attachment, Clear, Edit, Reply } from "@mui/icons-material"
 import {
 	Box, Card, Divider, IconButton, styled, Tooltip, Typography, useTheme
 } from "@mui/material"
@@ -209,12 +209,27 @@ const _ChatContentInput = (
 
 			<TextAreaWrapper
 				sx={{
+					position: "relative",
+					display: "flex",
+					paddingLeft: 1.5,
+
 					borderTopLeftRadius: input.type !== "send" ? 0 : 10,
 					borderTopRightRadius: input.type !== "send" ? 0 : 10
 				}}
 				onClick={handleClick}>
+				<div
+					style={{
+						position: "absolute",
+						bottom: 6,
+						width: 40
+					}}>
+					<IconButton>
+						<Attachment fontSize="small" />
+					</IconButton>
+				</div>
 				<TextArea
 					ref={inputRef}
+					sx={{ ml: 6 }}
 					value={input.text}
 					onChange={handleChange}
 					onKeyDown={handleKeyDown}
