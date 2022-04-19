@@ -1,9 +1,14 @@
-import { PropsWithChildren } from "react"
+import { doc } from "firebase/firestore"
+import { PropsWithChildren, useState } from "react"
 
 import {
 	Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField
 } from "@mui/material"
 
+import { messagesColl } from "../../firebase"
+import useAppSelector from "../../hooks/useAppSelector"
+import useCurrentChatId from "../../hooks/useCurrentChatId"
+import { defaultInput } from "../../slices/InputsSlice"
 import SkeletonImage from "../Skeletons/SkeletonImage"
 
 const _ImageUploadDialog = (
@@ -13,13 +18,33 @@ const _ImageUploadDialog = (
 	}>
 ) => {
 	const { file, setClosed } = props
+	const [text, setText] = useState("")
+	const [loading, setLoading] = useState(false)
 
-	const handleSend = () => {
-		setClosed()
-	}
+	const chatId = useCurrentChatId()
+
+	const user = useAppSelector(state => state.auth)!
+	const input = useAppSelector(state => state.inputs[chatId!] || defaultInput)
 
 	const handleClose = () => {
 		setClosed()
+	}
+
+	const send = () => {
+		if (!chatId || !file) return
+
+		setLoading(true)
+
+		const message: iMessage = {
+			id: doc(messagesColl).id,
+			content: text,
+			media: "",
+			date: Date.now(),
+			replyId: input.type === "reply" ? input.messageId : null,
+			userId: user.id,
+			chatId,
+			status: 0
+		}
 	}
 
 	return (
@@ -48,11 +73,13 @@ const _ImageUploadDialog = (
 					]}
 				/>
 				<TextField
-					sx={{ width: "100%", fontSize: 16 }}
+					sx={{ width: "100%", mt: 1, fontSize: 16 }}
+					variant="standard"
 					multiline
 					maxRows={5}
-					variant="standard"
-					placeholder="Type a caption for this file..."
+					value={text}
+					onChange={e => setText(e.target.value)}
+					placeholder="Add a caption to this file..."
 				/>
 			</DialogContent>
 			<DialogActions>
@@ -60,10 +87,11 @@ const _ImageUploadDialog = (
 					Cancel
 				</Button>
 				<Button
+					sx={{ color: "white" }}
 					variant="contained"
 					color="success"
 					disabled={!file}
-					onClick={handleSend}
+					onClick={send}
 					autoFocus>
 					Send
 				</Button>
