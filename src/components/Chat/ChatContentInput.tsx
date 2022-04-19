@@ -12,6 +12,7 @@ import useAppDispatch from "../../hooks/useAppDispatch"
 import useAppSelector from "../../hooks/useAppSelector"
 import useCurrentChatId from "../../hooks/useCurrentChatId"
 import { defaultInput, reset_input, set_input } from "../../slices/InputsSlice"
+import { set_messages } from "../../slices/MessagesSlice"
 
 const TextAreaWrapper = styled(Card)(({ theme }) => ({
 	width: "100%",
@@ -114,6 +115,22 @@ const _ChatContentInput = (
 			setMessageId(doc(messagesColl).id)
 			dispatch(reset_input({ chatId }))
 
+			// Add message to Redux first
+			const message: iMessage =
+				input.type === "edit"
+					? { ...messages[input.messageId]!, content: input.text.trim() }
+					: {
+							id: messageId,
+							content: input.text.trim(),
+							media: null,
+							date: Date.now(),
+							replyId: input.type === "reply" ? input.messageId : null,
+							userId: user.id,
+							chatId,
+							status: 0
+					  }
+			dispatch(set_messages({ chatId, messages: [message] }))
+
 			// Firestore calls lagged animations, delayed to prevent lag
 			setTimeout(() => {
 				if (input.type === "edit") {
@@ -121,18 +138,9 @@ const _ChatContentInput = (
 						content: input.text.trim()
 					})
 				} else {
-					setDoc(doc(messagesColl, messageId), {
-						id: messageId,
-						content: input.text.trim(),
-						media: null,
-						date: Date.now(),
-						replyId: input.type === "reply" ? input.messageId : null,
-						userId: user.id,
-						chatId,
-						status: 0
-					})
+					setDoc(doc(messagesColl, messageId), message)
 				}
-			}, 200)
+			}, 600)
 		}
 	}
 
