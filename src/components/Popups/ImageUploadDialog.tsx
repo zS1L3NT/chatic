@@ -1,6 +1,6 @@
 import { doc, setDoc } from "firebase/firestore"
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage"
-import { ChangeEvent, PropsWithChildren, useEffect, useMemo, useState } from "react"
+import { ChangeEvent, KeyboardEvent, PropsWithChildren, useEffect, useMemo, useState } from "react"
 
 import {
 	Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField
@@ -20,6 +20,7 @@ const _ImageUploadDialog = (
 	}>
 ) => {
 	const { file, setClosed } = props
+	const [sending, setSending] = useState(false)
 	const [loading, setLoading] = useState(false)
 
 	const chatId = useCurrentChatId()
@@ -35,7 +36,22 @@ const _ImageUploadDialog = (
 	}, [chatId])
 
 	const handleTextChange = (e: ChangeEvent<HTMLInputElement>) => {
-		if (chatId) dispatch(set_input({ chatId, ...input, text: e.target.value }))
+		if (!chatId) return
+
+		if (sending) {
+			setSending(false)
+		} else {
+			dispatch(set_input({ chatId, ...input, text: e.target.value }))
+		}
+	}
+
+	const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+		if (!chatId) return
+
+		if (e.key === "Enter" && !e.shiftKey) {
+			setSending(true)
+			send()
+		}
 	}
 
 	const handleClose = () => {
@@ -48,7 +64,7 @@ const _ImageUploadDialog = (
 		setLoading(true)
 
 		const message: iMessage = {
-			id: input.messageId,
+			id: input.messageId || doc(messagesColl).id,
 			content: input.text,
 			media: "",
 			date: Date.now(),
@@ -102,6 +118,7 @@ const _ImageUploadDialog = (
 					maxRows={5}
 					value={input.text}
 					onChange={handleTextChange}
+					onKeyDown={handleKeyDown}
 					placeholder="Add a caption to this file..."
 					autoFocus
 				/>
