@@ -4,7 +4,7 @@ import { ChangeEvent, KeyboardEvent, PropsWithChildren, useEffect, useRef, useSt
 
 import { Attachment, Clear, Edit, Reply } from "@mui/icons-material"
 import {
-	Box, Card, Divider, IconButton, styled, Tooltip, Typography, useTheme
+	Box, Card, Divider, IconButton, styled, TextField, Tooltip, Typography, useTheme
 } from "@mui/material"
 
 import { messagesColl } from "../../firebase"
@@ -15,13 +15,12 @@ import { defaultInput, reset_input, set_input } from "../../slices/InputsSlice"
 import ImageUploadDialog from "../Popups/ImageUploadDialog"
 
 const TextAreaWrapper = styled(Card)(({ theme }) => ({
-	width: "100%",
-	height: 48,
-	maxHeight: 218,
+	position: "relative",
+	display: "flex",
 
 	paddingTop: 14,
 	paddingBottom: 14,
-	paddingLeft: 16,
+	paddingLeft: 8,
 	paddingRight: 16,
 
 	background: theme.palette.background.default,
@@ -29,33 +28,34 @@ const TextAreaWrapper = styled(Card)(({ theme }) => ({
 	cursor: "text"
 }))
 
-const TextArea = styled(`textarea`)(({ theme }) => ({
-	resize: "none",
-
+const TextArea = styled(TextField)(({ theme }) => ({
 	width: "100%",
-	height: 20,
-	maxHeight: 190,
-	padding: 0,
-	margin: 0,
-	color: theme.palette.primary.contrastText,
-	background: theme.palette.background.default,
 
-	outline: 0,
-	border: 0,
+	marginLeft: 40,
 
-	fontSize: 16,
-	fontFamily: "Roboto",
-	fontWeight: "normal",
+	"& > div": {
+		padding: 0,
 
-	"&::-webkit-scrollbar": {
-		width: 4
-	},
-	"&::-webkit-scrollbar-track": {
-		background: theme.palette.background.default
-	},
-	"&::-webkit-scrollbar-thumb": {
-		background: theme.palette.primary.main,
-		borderRadius: 2
+		"& > fieldset": {
+			display: "none"
+		},
+
+		"& > textarea": {
+			fontSize: 16,
+			fontFamily: "Roboto",
+			lineHeight: 1.25,
+
+			"&::-webkit-scrollbar": {
+				width: 4
+			},
+			"&::-webkit-scrollbar-track": {
+				background: theme.palette.background.default
+			},
+			"&::-webkit-scrollbar-thumb": {
+				background: theme.palette.primary.main,
+				borderRadius: 2
+			}
+		}
 	}
 }))
 
@@ -66,7 +66,7 @@ const _ChatContentInput = (
 ) => {
 	const { receiver } = props
 
-	const inputRef = useRef<HTMLTextAreaElement>(null)
+	const inputRef = useRef<HTMLDivElement>(null)
 	const fileInputRef = useRef<HTMLInputElement>(null)
 	const [messageId, setMessageId] = useState(doc(messagesColl).id)
 	const [sending, setSending] = useState(false)
@@ -89,20 +89,14 @@ const _ChatContentInput = (
 	const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
 		if (!chatId) return
 
-		const inputEl = inputRef.current
-		if (inputEl) {
-			if (sending) {
-				setSending(false)
-			} else {
-				dispatch(set_input({ chatId, ...input, text: e.target.value }))
-				inputEl.style.height = "20px"
-				inputEl.style.height = inputEl.scrollHeight + "px"
-				inputEl.parentElement!.style.height = inputEl.scrollHeight + 28 + "px"
-			}
+		if (sending) {
+			setSending(false)
+		} else {
+			dispatch(set_input({ chatId, ...input, text: e.target.value }))
 		}
 	}
 
-	const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
+	const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
 		if (!chatId) return
 
 		if (e.code === "Enter" && !e.shiftKey && input.text.trim().length > 0) {
@@ -227,10 +221,6 @@ const _ChatContentInput = (
 				</AnimatePresence>
 				<TextAreaWrapper
 					sx={{
-						position: "relative",
-						display: "flex",
-						paddingLeft: 1,
-
 						borderTopLeftRadius: input.type !== "send" ? 0 : 10,
 						borderTopRightRadius: input.type !== "send" ? 0 : 10
 					}}
@@ -253,8 +243,9 @@ const _ChatContentInput = (
 						</IconButton>
 					</div>
 					<TextArea
-						ref={inputRef}
-						sx={{ ml: 5 }}
+						inputRef={inputRef}
+						multiline
+						maxRows={5}
 						value={input.text}
 						onChange={handleChange}
 						onKeyDown={handleKeyDown}
