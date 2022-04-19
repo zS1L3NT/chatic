@@ -84,7 +84,7 @@ const _ChatContentInput = (
 		if (chatId && inputRef.current) {
 			inputRef.current.focus()
 		}
-	}, [chatId, inputRef, input])
+	}, [chatId, inputRef, input.type])
 
 	const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
 		if (!chatId) return
