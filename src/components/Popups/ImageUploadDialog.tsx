@@ -1,7 +1,7 @@
 import { PropsWithChildren } from "react"
 
 import {
-	Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle
+	Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField
 } from "@mui/material"
 
 import SkeletonImage from "../Skeletons/SkeletonImage"
@@ -46,6 +46,13 @@ const _ImageUploadDialog = (
 							} as const
 						}
 					]}
+				/>
+				<TextField
+					sx={{ width: "100%", fontSize: 16 }}
+					multiline
+					maxRows={5}
+					variant="standard"
+					placeholder="Type a caption for this file..."
 				/>
 			</DialogContent>
 			<DialogActions>
