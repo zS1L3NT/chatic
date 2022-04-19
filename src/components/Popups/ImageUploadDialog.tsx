@@ -1,4 +1,4 @@
-import { Dispatch, PropsWithChildren, SetStateAction, useRef, useState } from "react"
+import { PropsWithChildren } from "react"
 
 import {
 	Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle
@@ -8,33 +8,22 @@ import SkeletonImage from "../Skeletons/SkeletonImage"
 
 const _ImageUploadDialog = (
 	props: PropsWithChildren<{
-		open: boolean
-		setOpen: Dispatch<SetStateAction<boolean>>
+		file: File | null
+		setClosed: () => void
 	}>
 ) => {
-	const { open, setOpen } = props
-
-	const fileInputRef = useRef<HTMLInputElement>(null)
-	const [file, setFile] = useState<File | null>(null)
-
-	const handleClickFile = () => {
-		if (file) {
-			setFile(null)
-		} else {
-			fileInputRef.current?.click()
-		}
-	}
+	const { file, setClosed } = props
 
 	const handleSend = () => {
-		setOpen(false)
+		setClosed()
 	}
 
 	const handleClose = () => {
-		setOpen(false)
+		setClosed()
 	}
 
 	return (
-		<Dialog open={open} onClose={handleClose}>
+		<Dialog open={!!file} onClose={handleClose}>
 			<DialogTitle>Upload Image</DialogTitle>
 			<DialogContent>
 				<DialogContentText>
@@ -57,23 +46,6 @@ const _ImageUploadDialog = (
 							} as const
 						}
 					]}
-				/>
-				<Button
-					sx={{ width: "100%", mt: 2 }}
-					variant="contained"
-					color={file ? "error" : "primary"}
-					onClick={handleClickFile}>
-					{file ? "Remove file" : "Select File"}
-				</Button>
-				<input
-					ref={fileInputRef}
-					type="file"
-					accept="image/*"
-					hidden
-					onChange={e =>
-						e.target.files?.[0]?.type.startsWith("image/") &&
-						setFile(e.target.files?.[0] || null)
-					}
 				/>
 			</DialogContent>
 			<DialogActions>

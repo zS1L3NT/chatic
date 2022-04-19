@@ -67,9 +67,10 @@ const _ChatContentInput = (
 	const { receiver } = props
 
 	const inputRef = useRef<HTMLTextAreaElement>(null)
+	const fileInputRef = useRef<HTMLInputElement>(null)
 	const [messageId, setMessageId] = useState(doc(messagesColl).id)
 	const [sending, setSending] = useState(false)
-	const [imageUploadDialogOpen, setImageUploadDialogOpen] = useState(false)
+	const [file, setFile] = useState<File | null>(null)
 
 	const theme = useTheme()
 	const chatId = useCurrentChatId()
@@ -143,7 +144,15 @@ const _ChatContentInput = (
 	}
 
 	const handleClickAttachment = () => {
-		setImageUploadDialogOpen(true)
+		// setImageUploadDialogOpen(true)
+		fileInputRef.current?.click()
+	}
+
+	const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+		const file = e.target.files?.item(0)
+		if (file) {
+			setFile(file)
+		}
 	}
 
 	const getPopupTitle = () => {
@@ -232,6 +241,13 @@ const _ChatContentInput = (
 							width: 40
 						}}>
 						<IconButton onClick={handleClickAttachment}>
+							<input
+								ref={fileInputRef}
+								type="file"
+								accept="image/*"
+								hidden
+								onChange={handleFileChange}
+							/>
 							<Attachment fontSize="small" />
 						</IconButton>
 					</div>
@@ -245,7 +261,7 @@ const _ChatContentInput = (
 					/>
 				</TextAreaWrapper>
 			</motion.div>
-			<ImageUploadDialog open={imageUploadDialogOpen} setOpen={setImageUploadDialogOpen} />
+			<ImageUploadDialog file={file} setClosed={() => setFile(null)} />
 		</>
 	)
 }
