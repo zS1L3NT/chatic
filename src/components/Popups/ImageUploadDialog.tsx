@@ -80,7 +80,10 @@ const _ImageUploadDialog = (
 					type="file"
 					accept="image/*"
 					hidden
-					onChange={e => setFile(e.target.files?.[0] || null)}
+					onChange={e =>
+						e.target.files?.[0]?.type.startsWith("image/") &&
+						setFile(e.target.files?.[0] || null)
+					}
 				/>
 			</DialogContent>
 			<DialogActions>
