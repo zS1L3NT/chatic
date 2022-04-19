@@ -150,6 +150,7 @@ const _ChatContentInput = (
 
 	const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
 		const file = e.target.files?.item(0)
+		e.target.value = ""
 		if (file) {
 			setFile(file)
 		}
