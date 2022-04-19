@@ -17,6 +17,7 @@ const _ImageUploadDialog = (
 	const fileInputRef = useRef<HTMLInputElement>(null)
 	const [link, setLink] = useState("")
 	const [file, setFile] = useState<File | null>(null)
+	const [valid, setValid] = useState(false)
 
 	const handleClickFile = () => {
 		if (file) {
@@ -58,6 +59,7 @@ const _ImageUploadDialog = (
 							} as const
 						}
 					]}
+					onValidityChange={setValid}
 				/>
 				<TextField
 					sx={{ width: "100%", mt: 2 }}
@@ -93,7 +95,7 @@ const _ImageUploadDialog = (
 				<Button
 					variant="contained"
 					color="success"
-					disabled={!file && !link}
+					disabled={!valid}
 					onClick={handleSend}
 					autoFocus>
 					Send

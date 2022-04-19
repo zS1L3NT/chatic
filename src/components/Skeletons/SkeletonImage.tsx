@@ -11,6 +11,7 @@ const _SkeletonImage = <P,>(
 		height: string | number
 		variant: "rectangular" | "circular"
 		component: [(props: P) => JSX.Element, (image: string) => P]
+		onValidityChange?: (valid: boolean) => void
 	}>
 ) => {
 	const {
@@ -19,7 +20,8 @@ const _SkeletonImage = <P,>(
 		width,
 		height,
 		variant,
-		component: [Class, ClassProps]
+		component: [Class, ClassProps],
+		onValidityChange
 	} = props
 	/**
 	 * String if loaded successfully,
@@ -39,15 +41,18 @@ const _SkeletonImage = <P,>(
 			image.onload = () => {
 				if (active) {
 					setImage(src)
+					onValidityChange?.(true)
 				}
 			}
 			image.onerror = () => {
 				if (active) {
 					setImage(null)
+					onValidityChange?.(false)
 				}
 			}
 		} else {
 			setImage(null)
+			onValidityChange?.(false)
 		}
 
 		return () => {
