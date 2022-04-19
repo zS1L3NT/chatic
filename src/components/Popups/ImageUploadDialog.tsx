@@ -41,22 +41,6 @@ const _ImageUploadDialog = (
 				<DialogContentText>
 					You can either upload an image by it's link or by uploading a file
 				</DialogContentText>
-				<TextField
-					sx={{ width: "100%", mt: 2 }}
-					variant="standard"
-					placeholder="Paste image link here"
-					value={link}
-					onChange={e => setLink(e.target.value)}
-					disabled={!!file}
-				/>
-				<Button
-					sx={{ width: "100%", mt: 2 }}
-					variant="contained"
-					color={file ? "error" : "primary"}
-					onClick={handleClickFile}
-					disabled={!!link}>
-					{file ? "Remove file" : "Select File"}
-				</Button>
 				<SkeletonImage
 					style={{ margin: "16px auto" }}
 					src={file ? URL.createObjectURL(file) : link}
@@ -75,6 +59,22 @@ const _ImageUploadDialog = (
 						}
 					]}
 				/>
+				<TextField
+					sx={{ width: "100%", mt: 2 }}
+					variant="standard"
+					placeholder="Paste image link here"
+					value={link}
+					onChange={e => setLink(e.target.value)}
+					disabled={!!file}
+				/>
+				<Button
+					sx={{ width: "100%", mt: 2 }}
+					variant="contained"
+					color={file ? "error" : "primary"}
+					onClick={handleClickFile}
+					disabled={!!link}>
+					{file ? "Remove file" : "Select File"}
+				</Button>
 				<input
 					ref={fileInputRef}
 					type="file"
