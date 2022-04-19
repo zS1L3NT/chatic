@@ -83,6 +83,15 @@ const _ChatContentInput = (
 		}
 	}, [chatId, inputRef, input])
 
+	useEffect(() => {
+		const inputEl = inputRef.current
+		if (inputEl) {
+			inputEl.style.height = "20px"
+			inputEl.style.height = inputEl.scrollHeight + "px"
+			inputEl.parentElement!.style.height = inputEl.scrollHeight + 28 + "px"
+		}
+	}, [input])
+
 	const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
 		if (!chatId) return
 
@@ -92,9 +101,6 @@ const _ChatContentInput = (
 				setSending(false)
 			} else {
 				dispatch(set_input({ chatId, ...input, text: e.target.value }))
-				inputEl.style.height = "20px"
-				inputEl.style.height = inputEl.scrollHeight + "px"
-				inputEl.parentElement!.style.height = inputEl.scrollHeight + 28 + "px"
 			}
 		}
 	}
