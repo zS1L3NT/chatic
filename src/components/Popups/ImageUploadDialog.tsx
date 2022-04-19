@@ -1,7 +1,7 @@
 import { Dispatch, PropsWithChildren, SetStateAction, useRef, useState } from "react"
 
 import {
-	Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField
+	Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle
 } from "@mui/material"
 
 import SkeletonImage from "../Skeletons/SkeletonImage"
@@ -15,9 +15,7 @@ const _ImageUploadDialog = (
 	const { open, setOpen } = props
 
 	const fileInputRef = useRef<HTMLInputElement>(null)
-	const [link, setLink] = useState("")
 	const [file, setFile] = useState<File | null>(null)
-	const [valid, setValid] = useState(false)
 
 	const handleClickFile = () => {
 		if (file) {
@@ -44,7 +42,7 @@ const _ImageUploadDialog = (
 				</DialogContentText>
 				<SkeletonImage
 					style={{ margin: "16px auto" }}
-					src={file ? URL.createObjectURL(file) : link}
+					src={file && URL.createObjectURL(file)}
 					width={250}
 					height={250}
 					variant="rectangular"
@@ -59,22 +57,12 @@ const _ImageUploadDialog = (
 							} as const
 						}
 					]}
-					onValidityChange={setValid}
-				/>
-				<TextField
-					sx={{ width: "100%", mt: 2 }}
-					variant="standard"
-					placeholder="Paste image link here"
-					value={link}
-					onChange={e => setLink(e.target.value)}
-					disabled={!!file}
 				/>
 				<Button
 					sx={{ width: "100%", mt: 2 }}
 					variant="contained"
 					color={file ? "error" : "primary"}
-					onClick={handleClickFile}
-					disabled={!!link}>
+					onClick={handleClickFile}>
 					{file ? "Remove file" : "Select File"}
 				</Button>
 				<input
@@ -95,7 +83,7 @@ const _ImageUploadDialog = (
 				<Button
 					variant="contained"
 					color="success"
-					disabled={!valid}
+					disabled={!file}
 					onClick={handleSend}
 					autoFocus>
 					Send
