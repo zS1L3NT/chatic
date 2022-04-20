@@ -15,6 +15,7 @@ import useAppDispatch from "../../hooks/useAppDispatch"
 import useAppSelector from "../../hooks/useAppSelector"
 import useCurrentChatId from "../../hooks/useCurrentChatId"
 import { defaultInput, reset_input } from "../../slices/InputsSlice"
+import { set_messages } from "../../slices/MessagesSlice"
 import SkeletonImage from "../Skeletons/SkeletonImage"
 
 const _FileUploadDialog = (
@@ -85,14 +86,17 @@ const _FileUploadDialog = (
 		try {
 			await uploadBytes(mediaRef, file)
 			message.media = await getDownloadURL(mediaRef)
-			await setDoc(doc(messagesColl, message.id), message)
+
+			dispatch(set_messages({ chatId, messages: [message] }))
 			dispatch(reset_input({ chatId }))
 			setText(null)
 			setClosed()
+			setLoading(false)
+
+			await new Promise(res => setTimeout(res, 600))
+			await setDoc(doc(messagesColl, message.id), message)
 		} catch (err) {
 			console.error(err)
-		} finally {
-			setLoading(false)
 		}
 	}
 
