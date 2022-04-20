@@ -1,5 +1,6 @@
 import { doc, setDoc, updateDoc } from "firebase/firestore"
 import { AnimatePresence, motion } from "framer-motion"
+import { useSnackbar } from "notistack"
 import { ChangeEvent, KeyboardEvent, PropsWithChildren, useEffect, useRef, useState } from "react"
 
 import { Attachment, Clear, Edit, Reply } from "@mui/icons-material"
@@ -8,6 +9,7 @@ import {
 } from "@mui/material"
 
 import { messagesColl } from "../../firebase"
+import round from "../../functions/round"
 import useAppDispatch from "../../hooks/useAppDispatch"
 import useAppSelector from "../../hooks/useAppSelector"
 import useCurrentChatId from "../../hooks/useCurrentChatId"
@@ -72,6 +74,7 @@ const _ChatContentInput = (
 	const [sending, setSending] = useState(false)
 	const [file, setFile] = useState<File | null>(null)
 
+	const { enqueueSnackbar } = useSnackbar()
 	const theme = useTheme()
 	const chatId = useCurrentChatId()
 
@@ -146,7 +149,19 @@ const _ChatContentInput = (
 		const file = e.target.files?.item(0)
 		e.target.value = ""
 		if (file) {
-			setFile(file)
+			if (file.size <= 5_000_000) {
+				setFile(file)
+			} else {
+				enqueueSnackbar(
+					`Maximum file size exceeded! (Limit: 5.00Mb, File: ${round(
+						file.size / 1_000_000,
+						2
+					)}Mb)`,
+					{
+						variant: "error"
+					}
+				)
+			}
 		}
 	}
 
