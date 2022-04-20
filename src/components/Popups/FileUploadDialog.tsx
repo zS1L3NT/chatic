@@ -43,7 +43,7 @@ const _FileUploadDialog = (
 	}, [input])
 
 	const handleTextChange = (e: ChangeEvent<HTMLInputElement>) => {
-		if (!chatId) return
+		if (!chatId || loading) return
 
 		if (sending) {
 			setSending(false)
@@ -53,7 +53,7 @@ const _FileUploadDialog = (
 	}
 
 	const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
-		if (!chatId) return
+		if (!chatId || loading) return
 
 		if (e.key === "Enter" && !e.shiftKey) {
 			setSending(true)
@@ -66,7 +66,7 @@ const _FileUploadDialog = (
 	}
 
 	const send = async () => {
-		if (!chatId || !file || text === null) return
+		if (!chatId || !file || loading || text === null) return
 
 		setLoading(true)
 
