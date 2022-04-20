@@ -18,6 +18,7 @@ specifiers:
   luxon: ^2.3.1
   notistack: ^2.0.4
   react: ^17.0.2
+  react-audio-player: ^0.17.0
   react-dom: ^17.0.2
   react-firebase-hooks: ^5.0.3
   react-infinite-scroll-component: ^6.1.0
@@ -39,6 +40,7 @@ dependencies:
   luxon: 2.3.1
   notistack: 2.0.4_761c8e5d5cc806e883175eab1d8ba931
   react: 17.0.2
+  react-audio-player: 0.17.0_react-dom@17.0.2+react@17.0.2
   react-dom: 17.0.2_react@17.0.2
   react-firebase-hooks: 5.0.3_firebase@9.6.10+react@17.0.2
   react-infinite-scroll-component: 6.1.0_react@17.0.2
@@ -2077,6 +2079,17 @@ packages:
       '@types/long': 4.0.1
       '@types/node': 17.0.23
       long: 4.0.0
+    dev: false
+
+  /react-audio-player/0.17.0_react-dom@17.0.2+react@17.0.2:
+    resolution: {integrity: sha512-aCZgusPxA9HK7rLZcTdhTbBH9l6do9vn3NorgoDZRxRxJlOy9uZWzPaKjd7QdcuP2vXpxGA/61JMnnOEY7NXeA==}
+    peerDependencies:
+      react: '>=16'
+      react-dom: '>=16'
+    dependencies:
+      prop-types: 15.8.1
+      react: 17.0.2
+      react-dom: 17.0.2_react@17.0.2
     dev: false
 
   /react-dom/17.0.2_react@17.0.2:

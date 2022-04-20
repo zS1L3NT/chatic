@@ -1,9 +1,10 @@
 import { doc, setDoc } from "firebase/firestore"
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage"
 import { ChangeEvent, KeyboardEvent, PropsWithChildren, useEffect, useMemo, useState } from "react"
+import AudioPlayer from "react-audio-player"
 import VideoPlayer from "react-player"
 
-import { Article, Image, VideoFile } from "@mui/icons-material"
+import { Article, AudioFile, Image, VideoFile } from "@mui/icons-material"
 import {
 	Box, Button, Card, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Typography
 } from "@mui/material"
@@ -97,10 +98,7 @@ const _FileUploadDialog = (
 				<Card sx={{ my: 2, p: 2 }}>
 					{file?.type.startsWith("image/") ? (
 						<SkeletonImage
-							style={{
-								margin: "0 auto",
-								paddingBottom: 16
-							}}
+							style={{ margin: "0 auto 16px auto" }}
 							src={objectUrl}
 							width={250}
 							height={250}
@@ -117,14 +115,17 @@ const _FileUploadDialog = (
 						/>
 					) : file?.type.startsWith("video/") ? (
 						<VideoPlayer
-							style={{
-								margin: "0 auto",
-								paddingBottom: 16
-							}}
+							style={{ margin: "0 auto 16px auto" }}
 							width="100%"
 							height={250}
 							url={objectUrl || ""}
-							controls={true}
+							controls
+						/>
+					) : file?.type.startsWith("audio/") ? (
+						<AudioPlayer
+							style={{ width: "100%", display: "block", margin: "0 auto 16px auto" }}
+							src={objectUrl || ""}
+							controls
 						/>
 					) : (
 						<></>
@@ -139,6 +140,8 @@ const _FileUploadDialog = (
 							<Image />
 						) : file?.type.startsWith("video/") ? (
 							<VideoFile />
+						) : file?.type.startsWith("audio/") ? (
+							<AudioFile />
 						) : (
 							<Article />
 						)}
