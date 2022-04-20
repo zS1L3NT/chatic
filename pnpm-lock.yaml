@@ -18,9 +18,11 @@ specifiers:
   luxon: ^2.3.1
   notistack: ^2.0.4
   react: ^17.0.2
+  react-audio-player: ^0.17.0
   react-dom: ^17.0.2
   react-firebase-hooks: ^5.0.3
   react-infinite-scroll-component: ^6.1.0
+  react-player: ^2.10.0
   react-redux: ^8.0.0
   react-router-dom: ^6.3.0
   typescript: ^4.5.4
@@ -38,9 +40,11 @@ dependencies:
   luxon: 2.3.1
   notistack: 2.0.4_761c8e5d5cc806e883175eab1d8ba931
   react: 17.0.2
+  react-audio-player: 0.17.0_react-dom@17.0.2+react@17.0.2
   react-dom: 17.0.2_react@17.0.2
   react-firebase-hooks: 5.0.3_firebase@9.6.10+react@17.0.2
   react-infinite-scroll-component: 6.1.0_react@17.0.2
+  react-player: 2.10.0_react@17.0.2
   react-redux: 8.0.0_b5d7bf22a7b46dd4876f0e926ab0c987
   react-router-dom: 6.3.0_react-dom@17.0.2+react@17.0.2
 
@@ -1409,6 +1413,11 @@ packages:
       ms: 2.1.2
     dev: true
 
+  /deepmerge/4.2.2:
+    resolution: {integrity: sha512-FJ3UgI4gIl+PHZm53knsuSFpE+nESMr7M4v9QcgB7S63Kj/6WqMiFQJpBBYz1Pt+66bZpP3Q7Lye0Oo9MPKEdg==}
+    engines: {node: '>=0.10.0'}
+    dev: false
+
   /dom-helpers/5.2.1:
     resolution: {integrity: sha512-nRCa7CK3VTrM2NmGkIy4cbK7IZlgBE/PYMn55rrXefr5xXDP0LdtfPnblFDoVdcAfslJ7or6iqAUnx0CCGIWQA==}
     dependencies:
@@ -1881,6 +1890,10 @@ packages:
     resolution: {integrity: sha512-7ylylesZQ/PV29jhEDl3Ufjo6ZX7gCqJr5F7PKrqc93v7fzSymt1BpwEU8nAUXs8qzzvqhbjhK5QZg6Mt/HkBg==}
     dev: false
 
+  /load-script/1.0.0:
+    resolution: {integrity: sha1-BJGTngvuVkPuSUp+PaPSuscMbKQ=}
+    dev: false
+
   /lodash.camelcase/4.3.0:
     resolution: {integrity: sha1-soqmKIorn8ZRA1x3EfZathkDMaY=}
     dev: false
@@ -1899,6 +1912,10 @@ packages:
   /luxon/2.3.1:
     resolution: {integrity: sha512-I8vnjOmhXsMSlNMZlMkSOvgrxKJl0uOsEzdGgGNZuZPaS9KlefpE9KV95QFftlJSC+1UyCC9/I69R02cz/zcCA==}
     engines: {node: '>=12'}
+    dev: false
+
+  /memoize-one/5.2.1:
+    resolution: {integrity: sha512-zYiwtZUcYyXKo/np96AGZAckk+FWWsUdJ3cHGGmld7+AhvcWmQyGCYUh1hc4Q/pkOhb65dQR/pqCyK0cOaHz4Q==}
     dev: false
 
   /minimatch/3.1.2:
@@ -2064,6 +2081,17 @@ packages:
       long: 4.0.0
     dev: false
 
+  /react-audio-player/0.17.0_react-dom@17.0.2+react@17.0.2:
+    resolution: {integrity: sha512-aCZgusPxA9HK7rLZcTdhTbBH9l6do9vn3NorgoDZRxRxJlOy9uZWzPaKjd7QdcuP2vXpxGA/61JMnnOEY7NXeA==}
+    peerDependencies:
+      react: '>=16'
+      react-dom: '>=16'
+    dependencies:
+      prop-types: 15.8.1
+      react: 17.0.2
+      react-dom: 17.0.2_react@17.0.2
+    dev: false
+
   /react-dom/17.0.2_react@17.0.2:
     resolution: {integrity: sha512-s4h96KtLDUQlsENhMn1ar8t2bEa+q/YAtj8pPPdIjPDGBDIVNsrD9aXNWqspUe6AzKCIG0C1HZZLqLV7qpOBGA==}
     peerDependencies:
@@ -2073,6 +2101,10 @@ packages:
       object-assign: 4.1.1
       react: 17.0.2
       scheduler: 0.20.2
+    dev: false
+
+  /react-fast-compare/3.2.0:
+    resolution: {integrity: sha512-rtGImPZ0YyLrscKI9xTpV8psd6I8VAtjKCzQDlzyDvqJA8XOW78TXYQwNRNd8g8JZnDu8q9Fu/1v4HPAVwVdHA==}
     dev: false
 
   /react-firebase-hooks/5.0.3_firebase@9.6.10+react@17.0.2:
@@ -2103,6 +2135,19 @@ packages:
 
   /react-is/18.0.0:
     resolution: {integrity: sha512-yUcBYdBBbo3QiPsgYDcfQcIkGZHfxOaoE6HLSnr1sPzMhdyxusbfKOSUbSd/ocGi32dxcj366PsTj+5oggeKKw==}
+    dev: false
+
+  /react-player/2.10.0_react@17.0.2:
+    resolution: {integrity: sha512-PccIqea9nxSHAdai6R+Yj9lp6tb2lyXWbaF6YVHi5uO4FiXYMKKr9rMXJrivwV5vXwQa65rYKBmwebsBmRTT3w==}
+    peerDependencies:
+      react: '>=16.6.0'
+    dependencies:
+      deepmerge: 4.2.2
+      load-script: 1.0.0
+      memoize-one: 5.2.1
+      prop-types: 15.8.1
+      react: 17.0.2
+      react-fast-compare: 3.2.0
     dev: false
 
   /react-redux/8.0.0_b5d7bf22a7b46dd4876f0e926ab0c987:
