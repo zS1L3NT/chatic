@@ -12,7 +12,7 @@ import useAppDispatch from "../../hooks/useAppDispatch"
 import useAppSelector from "../../hooks/useAppSelector"
 import useCurrentChatId from "../../hooks/useCurrentChatId"
 import { defaultInput, reset_input, set_input } from "../../slices/InputsSlice"
-import ImageUploadDialog from "../Popups/ImageUploadDialog"
+import FileUploadDialog from "../Popups/FileUploadDialog"
 
 const TextAreaWrapper = styled(Card)(({ theme }) => ({
 	position: "relative",
@@ -138,7 +138,7 @@ const _ChatContentInput = (
 	}
 
 	const handleClickAttachment = () => {
-		// setImageUploadDialogOpen(true)
+		// setFileUploadDialogOpen(true)
 		fileInputRef.current?.click()
 	}
 
@@ -235,7 +235,6 @@ const _ChatContentInput = (
 							<input
 								ref={fileInputRef}
 								type="file"
-								accept="image/*"
 								hidden
 								onChange={handleFileChange}
 							/>
@@ -253,7 +252,7 @@ const _ChatContentInput = (
 					/>
 				</TextAreaWrapper>
 			</motion.div>
-			<ImageUploadDialog file={file} setClosed={() => setFile(null)} />
+			<FileUploadDialog file={file} setClosed={() => setFile(null)} />
 		</>
 	)
 }

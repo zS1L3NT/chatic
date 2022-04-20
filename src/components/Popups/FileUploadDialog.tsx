@@ -1,6 +1,7 @@
 import { doc, setDoc } from "firebase/firestore"
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage"
 import { ChangeEvent, KeyboardEvent, PropsWithChildren, useEffect, useMemo, useState } from "react"
+import VideoPlayer from "react-player"
 
 import {
 	Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField
@@ -13,7 +14,7 @@ import useCurrentChatId from "../../hooks/useCurrentChatId"
 import { defaultInput, reset_input, set_input } from "../../slices/InputsSlice"
 import SkeletonImage from "../Skeletons/SkeletonImage"
 
-const _ImageUploadDialog = (
+const _FileUploadDialog = (
 	props: PropsWithChildren<{
 		file: File | null
 		setClosed: () => void
@@ -89,28 +90,39 @@ const _ImageUploadDialog = (
 	}
 
 	return (
-		<Dialog open={!!file} onClose={handleClose}>
-			<DialogTitle>Upload Image</DialogTitle>
+		<Dialog open={!!file} onClose={handleClose} fullWidth>
+			<DialogTitle>Upload File</DialogTitle>
 			<DialogContent>
-				<DialogContentText>
-					You can either upload an image by it's link or by uploading a file
-				</DialogContentText>
-				<SkeletonImage
-					style={{ margin: "16px auto" }}
-					src={objectUrl}
-					width={250}
-					height={250}
-					variant="rectangular"
-					component={[
-						Box,
-						src =>
-							({
-								component: "img",
-								src,
-								style: { objectFit: "contain" }
-							} as const)
-					]}
-				/>
+				<DialogContentText>Attach a file to this message</DialogContentText>
+				{file?.type.startsWith("image/") ? (
+					<SkeletonImage
+						style={{ margin: "16px auto" }}
+						src={objectUrl}
+						width={250}
+						height={250}
+						variant="rectangular"
+						component={[
+							Box,
+							src =>
+								({
+									component: "img",
+									src,
+									style: { objectFit: "contain" }
+								} as const)
+						]}
+					/>
+				) : file?.type.startsWith("video/") ? (
+					<VideoPlayer
+						style={{ margin: "16px auto" }}
+						width="100%"
+						height={250}
+						url={objectUrl || ""}
+						controls={true}
+					/>
+				) : (
+					<></>
+				)}
+
 				<TextField
 					sx={{ width: "100%", mt: 1, fontSize: 16 }}
 					variant="standard"
@@ -140,4 +152,4 @@ const _ImageUploadDialog = (
 	)
 }
 
-export default _ImageUploadDialog
+export default _FileUploadDialog
