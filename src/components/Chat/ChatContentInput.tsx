@@ -254,7 +254,9 @@ const _ChatContentInput = (
 							bottom: 6,
 							width: 40
 						}}>
-						<IconButton onClick={handleClickAttachment}>
+						<IconButton
+							onClick={handleClickAttachment}
+							disabled={input.type === "edit"}>
 							<input
 								ref={fileInputRef}
 								type="file"
