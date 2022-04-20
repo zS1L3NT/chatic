@@ -25,6 +25,7 @@ const _FileUploadDialog = (
 	const { file, setClosed } = props
 	const [sending, setSending] = useState(false)
 	const [loading, setLoading] = useState(false)
+	const [text, setText] = useState<string | null>(null)
 
 	const chatId = useCurrentChatId()
 
@@ -35,8 +36,10 @@ const _FileUploadDialog = (
 	const input = useAppSelector(state => state.inputs[chatId!] || defaultInput)
 
 	useEffect(() => {
-		if (chatId) dispatch(set_input({ chatId, ...input, type: "send" }))
-	}, [chatId])
+		if (text === null) {
+			setText(input.text)
+		}
+	}, [input])
 
 	const handleTextChange = (e: ChangeEvent<HTMLInputElement>) => {
 		if (!chatId) return
@@ -44,7 +47,7 @@ const _FileUploadDialog = (
 		if (sending) {
 			setSending(false)
 		} else {
-			dispatch(set_input({ chatId, ...input, text: e.target.value }))
+			setText(e.target.value)
 		}
 	}
 
@@ -62,13 +65,13 @@ const _FileUploadDialog = (
 	}
 
 	const send = async () => {
-		if (!chatId || !file) return
+		if (!chatId || !file || text === null) return
 
 		setLoading(true)
 
 		const message: iMessage = {
 			id: input.messageId || doc(messagesColl).id,
-			content: input.text,
+			content: text,
 			media: "",
 			date: Date.now(),
 			replyId: input.type === "reply" ? input.messageId : null,
@@ -83,6 +86,7 @@ const _FileUploadDialog = (
 			message.media = await getDownloadURL(mediaRef)
 			await setDoc(doc(messagesColl, message.id), message)
 			dispatch(reset_input({ chatId }))
+			setText(null)
 			setClosed()
 		} catch (err) {
 			console.error(err)
@@ -154,7 +158,7 @@ const _FileUploadDialog = (
 					variant="standard"
 					multiline
 					maxRows={5}
-					value={input.text}
+					value={text}
 					onChange={handleTextChange}
 					onKeyDown={handleKeyDown}
 					placeholder="Add a caption to this file..."
