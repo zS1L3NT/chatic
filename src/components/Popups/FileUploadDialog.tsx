@@ -3,8 +3,9 @@ import { getDownloadURL, ref, uploadBytes } from "firebase/storage"
 import { ChangeEvent, KeyboardEvent, PropsWithChildren, useEffect, useMemo, useState } from "react"
 import VideoPlayer from "react-player"
 
+import { Article, Image, VideoFile } from "@mui/icons-material"
 import {
-	Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField
+	Box, Button, Card, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Typography
 } from "@mui/material"
 
 import { messagesColl, storage } from "../../firebase"
@@ -93,35 +94,57 @@ const _FileUploadDialog = (
 		<Dialog open={!!file} onClose={handleClose} fullWidth>
 			<DialogTitle>Upload File</DialogTitle>
 			<DialogContent>
-				<DialogContentText>Attach a file to this message</DialogContentText>
-				{file?.type.startsWith("image/") ? (
-					<SkeletonImage
-						style={{ margin: "16px auto" }}
-						src={objectUrl}
-						width={250}
-						height={250}
-						variant="rectangular"
-						component={[
-							Box,
-							src =>
-								({
-									component: "img",
-									src,
-									style: { objectFit: "contain" }
-								} as const)
-						]}
-					/>
-				) : file?.type.startsWith("video/") ? (
-					<VideoPlayer
-						style={{ margin: "16px auto" }}
-						width="100%"
-						height={250}
-						url={objectUrl || ""}
-						controls={true}
-					/>
-				) : (
-					<></>
-				)}
+				<Card sx={{ my: 2, p: 2 }}>
+					{file?.type.startsWith("image/") ? (
+						<SkeletonImage
+							style={{
+								margin: "0 auto",
+								paddingBottom: 16
+							}}
+							src={objectUrl}
+							width={250}
+							height={250}
+							variant="rectangular"
+							component={[
+								Box,
+								src =>
+									({
+										component: "img",
+										src,
+										style: { objectFit: "contain" }
+									} as const)
+							]}
+						/>
+					) : file?.type.startsWith("video/") ? (
+						<VideoPlayer
+							style={{
+								margin: "0 auto",
+								paddingBottom: 16
+							}}
+							width="100%"
+							height={250}
+							url={objectUrl || ""}
+							controls={true}
+						/>
+					) : (
+						<></>
+					)}
+					<div
+						style={{
+							width: "100%",
+							height: 24,
+							display: "flex"
+						}}>
+						{file?.type.startsWith("image/") ? (
+							<Image />
+						) : file?.type.startsWith("video/") ? (
+							<VideoFile />
+						) : (
+							<Article />
+						)}
+						<Typography sx={{ flexGrow: 1, ml: 1 }}>{file?.name}</Typography>
+					</div>
+				</Card>
 
 				<TextField
 					sx={{ width: "100%", mt: 1, fontSize: 16 }}
