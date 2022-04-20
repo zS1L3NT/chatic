@@ -63,7 +63,10 @@ const _FileUploadDialog = (
 	}
 
 	const handleClose = () => {
-		if (!loading) setClosed()
+		if (!loading) {
+			setText(null)
+			setClosed()
+		}
 	}
 
 	const send = async () => {
