@@ -6,14 +6,15 @@ import VideoPlayer from "react-player"
 
 import { Article, AudioFile, Image, VideoFile } from "@mui/icons-material"
 import {
-	Box, Button, Card, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Typography
+	Box, Button, Card, CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle,
+	TextField, Typography
 } from "@mui/material"
 
 import { messagesColl, storage } from "../../firebase"
 import useAppDispatch from "../../hooks/useAppDispatch"
 import useAppSelector from "../../hooks/useAppSelector"
 import useCurrentChatId from "../../hooks/useCurrentChatId"
-import { defaultInput, reset_input, set_input } from "../../slices/InputsSlice"
+import { defaultInput, reset_input } from "../../slices/InputsSlice"
 import SkeletonImage from "../Skeletons/SkeletonImage"
 
 const _FileUploadDialog = (
@@ -97,7 +98,16 @@ const _FileUploadDialog = (
 
 	return (
 		<Dialog open={!!file} onClose={handleClose} fullWidth>
-			<DialogTitle>Upload File</DialogTitle>
+			<DialogTitle sx={{ display: "flex", justifyContent: "space-between" }}>
+				Upload File{" "}
+				{loading && (
+					<CircularProgress
+						sx={{ display: "block", my: "auto" }}
+						size={24}
+						thickness={5}
+					/>
+				)}
+			</DialogTitle>
 			<DialogContent>
 				<Card sx={{ my: 2, p: 2 }}>
 					{file?.type.startsWith("image/") ? (
