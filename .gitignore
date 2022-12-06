@@ -1,6 +1,7 @@
-/node_modules
-/build
-.editorconfig
-.prettierrc
-.todo
-**/serviceAccountKey.json
+**/node_modules
+**/.idea
+**/dist
+**/.env
+**/*.test.ts
+**/.vscode
+**/tsconfig.tsbuildinfo
