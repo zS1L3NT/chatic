@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="header_font_size">18sp</dimen>
+    <dimen name="login_button_end_width">50dp</dimen>
+    <dimen name="register_button_end_width">50dp</dimen>
+    <dimen name="button_frame_side">50dp</dimen>
+</resources>
