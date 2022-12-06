@@ -1,0 +1,23 @@
+{
+    "folders": [
+        {
+            "path": "android-chatic-v1"
+        },
+        {
+            "path": "android-chatic-v2"
+        },
+        {
+            "path": "web-express-chatic"
+        },
+        {
+            "path": "web-react-chatic"
+        },
+        {
+            "path": "web-chatbubble"
+        },
+        {
+            "path": "."
+        }
+    ],
+    "settings": {}
+}
