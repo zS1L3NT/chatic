@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="AppTheme" parent="Theme.Chatic">
+        <item name="android:textViewStyle">@style/textViewStyle</item>
+        <item name="android:statusBarColor">?attr/statusBarBackground</item>
+    </style>
+
+    <style name="textViewStyle" parent="">
+        <item name="android:textColor">?attr/colorOnBackground</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:maxLines">1</item>
+    </style>
+
+    <style name="SplashActivity" parent="Theme.Chatic">
+        <item name="android:windowBackground">@drawable/splash_screen</item>
+        <item name="android:statusBarColor">?attr/statusBarBackground</item>
+    </style>
+
+</resources>

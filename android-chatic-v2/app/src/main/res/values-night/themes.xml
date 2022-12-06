@@ -1,0 +1,16 @@
+<resources>
+    <!-- Base application theme. -->
+    <style name="Theme.Chatic" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:windowContentTransitions">true</item>
+        <item name="android:windowActivityTransitions">true</item>
+
+        <!-- CHANGE -->
+        <item name="colorPrimary">#5BD0A4</item>
+        <item name="colorSecondary">#25BAD8</item>
+        <item name="backgroundColor">#EEE</item>
+        <item name="colorOnBackground">#737373</item>
+        <item name="cardBackgroundColor">#FAFAFA</item>
+        <item name="navigationIconTint">#737373</item>
+        <item name="statusBarBackground">#42C091</item>
+    </style>
+</resources>

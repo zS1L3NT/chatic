@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    android:label="nav_graph"
+    app:startDestination="@id/fragment_chats">
+
+    <fragment
+        android:id="@+id/fragment_chats"
+        android:name="com.zectan.chatic.fragments.ChatsFragment"
+        android:label="fragment_chats"
+        tools:layout="@layout/fragment_chats">
+        <action
+            android:id="@+id/open_chat_view"
+            app:destination="@id/fragment_chat_view"
+            app:enterAnim="@anim/right_to_center"
+            app:exitAnim="@anim/center_to_left"
+            app:popEnterAnim="@anim/left_to_center"
+            app:popExitAnim="@anim/center_to_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragment_chat_view"
+        android:name="com.zectan.chatic.fragments.ChatViewFragment"
+        android:label="fragment_chat_view">
+        <argument
+            android:name="chatId"
+            app:argType="string" />
+        <action
+            android:id="@+id/open_image_view"
+            app:destination="@id/fragment_image_view"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragment_image_view"
+        android:name="com.zectan.chatic.fragments.ImageViewFragment"
+        android:label="fragment_image_view"
+        tools:layout="@layout/fragment_image_view">
+        <argument
+            android:name="url"
+            app:argType="string" />
+    </fragment>
+</navigation>
