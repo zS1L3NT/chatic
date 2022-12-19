@@ -1,1 +1,0 @@
-Back when I used >Javascript< for huge React projects (ewwwww)

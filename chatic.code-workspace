@@ -19,5 +19,19 @@
             "path": "."
         }
     ],
-    "settings": {}
+    "settings": {
+        "files.exclude": {
+            "**/.git": true,
+            "**/.svn": true,
+            "**/.hg": true,
+            "**/CVS": true,
+            "**/.DS_Store": true,
+            "**/Thumbs.db": true,
+            "android-chatic-v1": true,
+            "android-chatic-v2": true,
+            "web-express-chatic": true,
+            "web-react-chatic": true,
+            "web-chatbubble": true
+        }
+    }
 }
